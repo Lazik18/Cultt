@@ -149,7 +149,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 user.send_telegram_message(letter)
 
-                for brand in BrandOptions.objects.filter(name=fr'^{letter}\w+'):
+                for brand in BrandOptions.objects.filter(name__iregex=fr'^{letter}\w+'):
                     if len(line_button) < 1:
                         line_button[brand.name] = f'edit_application brand {brand.name[0]} {brand.id}'
                     else:
