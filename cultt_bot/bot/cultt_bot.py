@@ -119,24 +119,72 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             user.send_telegram_message(bot_text, keyboard)
 
         # Выбор бренда
-        def brand_message():
+        def brand_message(letter=None):
             bot_text = 'Бренд'
+
+            letter_list = []
+
+            # Достаем каждую букву
+            if letter is None:
+                for brand in BrandOptions.objects.filter(is_visible=True):
+                    if brand.name[0] not in letter_list:
+                        letter_list.append(brand.name[0])
+
+            user.send_telegram_message(letter_list)
 
         # Выбор модели
         def model_message():
             bot_text = 'Укажите модель вашего аксессуара'
+            user.send_telegram_message(bot_text)
 
         # Выбор состояние
         def state_message():
             bot_text = 'Состояние'
 
-        # Выбор состояние
+            button_list = []
+            line_button = {}
+
+            for state in StateOptions.objects.filter(is_visible=True):
+                if len(line_button) < 1:
+                    line_button[state.name] = f'edit_application state {state.id}'
+                else:
+                    line_button[state.name] = f'edit_application state {state.id}'
+                    button_list.append(line_button)
+                    line_button = {}
+
+            if len(line_button) != 0:
+                button_list.append(line_button)
+
+            keyboard = build_keyboard('inline', button_list)
+
+            user.send_telegram_message(bot_text, keyboard)
+
+        # Выбор наличие дефектов
         def defect_message():
             bot_text = 'Наличие дефектов'
 
+            button_list = []
+            line_button = {}
+
+            for defect in DefectOptions.objects.filter(is_visible=True):
+                if len(line_button) < 1:
+                    line_button[defect.name] = f'edit_application defect {defect.id}'
+                else:
+                    line_button[defect.name] = f'edit_application defect {defect.id}'
+                    button_list.append(line_button)
+                    line_button = {}
+
+            if len(line_button) != 0:
+                button_list.append(line_button)
+
+            keyboard = build_keyboard('inline', button_list)
+
+            user.send_telegram_message(bot_text, keyboard)
+
         # Введите ожидания по цене
         def waiting_price_message():
-            bot_text = 'Ожидание по цене'
+            bot_text = 'Ваши ожидание по цене'
+            user.send_telegram_message(bot_text)
 
         # Если нет заявки то создаем ее
         application_count = SellApplication.objects.filter(user=user, active=True).count()
@@ -229,22 +277,61 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Бренд
         elif application.brand is None:
             if type_message == 'message':
-                pass
+                brand_message()
         # Модель
         elif application.model is None:
             if type_message == 'message':
-                pass
+                application.model = chat_result
+                application.save()
+
+                state_message()
+            else:
+                model_message()
         # Состояние
         elif application.state is None:
             if type_message == 'message':
-                pass
+                state_message()
+            else:
+                if 'state' in chat_result and StateOptions.objects.filter(
+                        id=chat_result.split(' ')[2]).count() == 1:
+                    try:
+                        bot.deleteMessage((chat_id, message_id))
+                    except telepot.exception.TelegramError:
+                        pass
+
+                    application.state = StateOptions.objects.get(id=chat_result.split(' ')[2])
+                    application.save()
+
+                    defect_message()
+                else:
+                    state_message()
         # Наличие дефектов
         elif application.defect is None:
             if type_message == 'message':
-                pass
+                state_message()
+            else:
+                if 'defect' in chat_result and DefectOptions.objects.filter(
+                        id=chat_result.split(' ')[2]).count() == 1:
+                    try:
+                        bot.deleteMessage((chat_id, message_id))
+                    except telepot.exception.TelegramError:
+                        pass
+
+                    application.defect = DefectOptions.objects.get(id=chat_result.split(' ')[2])
+                    application.save()
+
+                    waiting_price_message()
+                else:
+                    defect_message()
         # Ожидание по цене
         elif application.waiting_price is None:
             if type_message == 'message':
-                pass
+                if chat_result.isdecimal():
+                    application.waiting_price = chat_result
+                    application.save()
+                else:
+                    waiting_price_message()
+            else:
+                waiting_price_message()
     except Exception:
         bug_trap()
