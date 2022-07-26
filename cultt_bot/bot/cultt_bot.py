@@ -135,7 +135,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             line_button = {}
 
             for letter in letter_list:
-                if len(line_button) < 1:
+                if len(line_button) < 2:
                     line_button[letter] = f'edit_application brand {letter}'
                 else:
                     line_button[letter] = f'edit_application brand {letter}'
