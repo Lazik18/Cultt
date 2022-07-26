@@ -96,6 +96,37 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             bot_text = 'Введите номер телефона'
             user.send_telegram_message(bot_text)
 
+        # Выбор категории аксессуара
+        def category_message():
+            bot_text = 'Категория'
+
+            button_list = []
+
+            for category in CategoryOptions.objects.filter(visible=True):
+                button_list.append({category.name: f'edit_application category {category.id}'})
+
+            user.send_telegram_message(bot_text)
+
+        # Выбор бренда
+        def brand_message():
+            bot_text = 'Бренд'
+
+        # Выбор модели
+        def model_message():
+            bot_text = 'Укажите модель вашего аксессуара'
+
+        # Выбор состояние
+        def state_message():
+            bot_text = 'Состояние'
+
+        # Выбор состояние
+        def defect_message():
+            bot_text = 'Наличие дефектов'
+
+        # Введите ожидания по цене
+        def waiting_price_message():
+            bot_text = 'Ожидание по цене'
+
         # Если нет заявки то создаем ее
         application_count = SellApplication.objects.filter(user=user, active=True).count()
 
@@ -130,7 +161,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                     name_message()
                 else:
-                    user.send_telegram_message('error create_application №1')
+                    cooperation_option_message()
         # Имя пользователя
         elif application.name is None:
             if type_message == 'message':
@@ -139,7 +170,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 email_message()
             else:
-                user.send_telegram_message('error create_application №2')
+                name_message()
         # Почту пользователя
         elif application.email is None:
             if type_message == 'message':
@@ -152,7 +183,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     bot_text = "Некорректный email, напишите еще раз"
                     user.send_telegram_message(bot_text)
             else:
-                user.send_telegram_message('error create_application №3')
+                email_message()
         # Номер телефона пользователя
         elif application.tel is None:
             if type_message == 'message':
@@ -160,9 +191,49 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     application.tel = chat_result
                     application.save()
 
-                    user.send_telegram_message('Пока что все')
+                    category_message()
                 else:
                     bot_text = "Некорректный номер телефона, напишите еще раз"
                     user.send_telegram_message(bot_text)
+            else:
+                tel_message()
+        # Категория аксессуара
+        elif application.category is None:
+            if type_message == 'message':
+                category_message()
+            else:
+                if 'category' in chat_result and CategoryOptions.objects.filter(
+                        id=chat_result.split(' ')[2]).count() == 1:
+                    try:
+                        bot.deleteMessage((chat_id, message_id))
+                    except telepot.exception.TelegramError:
+                        pass
+
+                    application.cooperation_option = CategoryOptions.objects.get(id=chat_result.split(' ')[2])
+                    application.save()
+
+                    brand_message()
+                else:
+                    category_message()
+        # Бренд
+        elif application.brand is None:
+            if type_message == 'message':
+                pass
+        # Модель
+        elif application.model is None:
+            if type_message == 'message':
+                pass
+        # Состояние
+        elif application.state is None:
+            if type_message == 'message':
+                pass
+        # Наличие дефектов
+        elif application.defect is None:
+            if type_message == 'message':
+                pass
+        # Ожидание по цене
+        elif application.waiting_price is None:
+            if type_message == 'message':
+                pass
     except Exception:
         bug_trap()

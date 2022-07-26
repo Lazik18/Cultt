@@ -71,6 +71,8 @@ class TelegramUser(models.Model):
 class CategoryOptions(models.Model):
     # Название
     name = models.TextField(verbose_name='Название')
+    # Отображать в боте
+    visible = models.BooleanField(default=True, validators='Отображать в боте')
 
     def __str__(self):
         return self.name
@@ -84,6 +86,8 @@ class CategoryOptions(models.Model):
 class BrandOptions(models.Model):
     # Название
     name = models.TextField(verbose_name='Название')
+    # Отображать в боте
+    visible = models.BooleanField(default=True, validators='Отображать в боте')
 
     def __str__(self):
         return self.name
@@ -97,6 +101,8 @@ class BrandOptions(models.Model):
 class StateOptions(models.Model):
     # Название
     name = models.TextField(verbose_name='Название')
+    # Отображать в боте
+    visible = models.BooleanField(default=True, validators='Отображать в боте')
 
     def __str__(self):
         return self.name
@@ -110,6 +116,8 @@ class StateOptions(models.Model):
 class DefectOptions(models.Model):
     # Название
     name = models.TextField(verbose_name='Название')
+    # Отображать в боте
+    visible = models.BooleanField(default=True, validators='Отображать в боте')
 
     def __str__(self):
         return self.name
