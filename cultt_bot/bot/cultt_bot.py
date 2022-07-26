@@ -120,33 +120,48 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Выбор бренда
         def brand_message(letter=None):
-            bot_text = 'Бренд'
-
-            letter_list = []
+            button_list = []
+            line_button = {}
 
             # Достаем каждую букву
             if letter is None:
+                bot_text = 'Бренд'
+
+                letter_list = []
+
                 for brand in BrandOptions.objects.filter(is_visible=True):
                     if brand.name[0] not in letter_list:
                         letter_list.append(brand.name[0])
 
-            # Собираем клавиатуру
-            button_list = []
-            line_button = {}
+                # Собираем клавиатуру
+                for letter in letter_list:
+                    if len(line_button) < 2:
+                        line_button[letter] = f'edit_application brand {letter}'
+                    else:
+                        line_button[letter] = f'edit_application brand {letter}'
+                        button_list.append(line_button)
+                        line_button = {}
 
-            for letter in letter_list:
-                if len(line_button) < 2:
-                    line_button[letter] = f'edit_application brand {letter}'
-                else:
-                    line_button[letter] = f'edit_application brand {letter}'
+                if len(line_button) != 0:
                     button_list.append(line_button)
-                    line_button = {}
+            else:
+                bot_text = 'Бренд'
 
-            if len(line_button) != 0:
-                button_list.append(line_button)
+                for brand in BrandOptions.objects.filter(name=fr'^{letter}\w+'):
+                    if len(line_button) < 1:
+                        line_button[brand.name] = f'edit_application brand {brand.name[0]} {brand.id}'
+                    else:
+                        line_button[brand.name] = f'edit_application brand {brand.name[0]} {brand.id}'
+                        button_list.append(line_button)
+                        line_button = {}
+
+                if len(line_button) != 0:
+                    button_list.append(line_button)
 
             keyboard = build_keyboard('inline', button_list)
             user.send_telegram_message(bot_text, keyboard)
+
+
 
         # Выбор модели
         def model_message():
@@ -296,6 +311,17 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 brand_message()
             else:
                 if 'brand' in chat_result:
+                    if len(chat_result.split(' ')) == 4:
+                        if BrandOptions.objects.filter(id=chat_result.split(' ')[3]).count() == 1:
+                            application.brand = BrandOptions.objects.get(id=chat_result.split(' ')[3])
+                            application.save()
+
+                            model_message()
+                        else:
+                            brand_message()
+                    else:
+                        brand_message(chat_result.split(' ')[2])
+                else:
                     brand_message()
         # Модель
         elif application.model is None:
