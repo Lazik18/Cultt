@@ -155,7 +155,7 @@ class SellApplication(models.Model):
     waiting_price = models.FloatField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return self.user
+        return self.user.chat_id
 
     class Meta:
         verbose_name = "Заяка продажи вещи"
