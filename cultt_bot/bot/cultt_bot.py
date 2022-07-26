@@ -407,7 +407,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                     application.delete()
 
-                    state_message()
+                    user.send_telegram_message("Напишите что-то чтобы начать заново")
                 else:
                     waiting_price_message()
             else:
