@@ -404,6 +404,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 if chat_result.isdecimal():
                     application.waiting_price = chat_result
                     application.save()
+
+                    application.delete()
+
+                    state_message()
                 else:
                     waiting_price_message()
             else:
