@@ -220,7 +220,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     except telepot.exception.TelegramError:
                         pass
 
-                    application.cooperation_option = CategoryOptions.objects.get(id=chat_result.split(' ')[2])
+                    application.category = CategoryOptions.objects.get(id=chat_result.split(' ')[2])
                     application.save()
 
                     brand_message()
