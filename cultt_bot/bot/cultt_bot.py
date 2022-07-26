@@ -107,8 +107,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 if len(line_button) < 1:
                     line_button[category.name] = f'edit_application category {category.id}'
                 else:
-                    line_button = {}
+                    line_button[category.name] = f'edit_application category {category.id}'
                     button_list.append(line_button)
+                    line_button = {}
 
             if len(line_button) != 0:
                 button_list.append(line_button)
