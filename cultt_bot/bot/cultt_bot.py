@@ -144,8 +144,6 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 if len(line_button) != 0:
                     button_list.append(line_button)
             else:
-                user.send_telegram_message(letter)
-
                 for brand in BrandOptions.objects.filter(name__iregex=fr'^{letter}\w+'):
                     if len(line_button) < 1:
                         line_button[brand.name] = f'edit_application brand {brand.name[0]} {brand.id}'
@@ -237,12 +235,12 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if type_message == 'message':
                 cooperation_option_message()
             else:
-                if 'cooperation_option' in chat_result:
-                    try:
-                        bot.deleteMessage((chat_id, message_id))
-                    except telepot.exception.TelegramError:
-                        pass
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
 
+                if 'cooperation_option' in chat_result:
                     application.cooperation_option = chat_result.split(' ')[2]
                     application.save()
 
@@ -257,6 +255,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 email_message()
             else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
                 name_message()
         # Почту пользователя
         elif application.email is None:
@@ -270,6 +273,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     bot_text = "Некорректный email, напишите еще раз"
                     user.send_telegram_message(bot_text)
             else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
                 email_message()
         # Номер телефона пользователя
         elif application.tel is None:
@@ -283,12 +291,22 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     bot_text = "Некорректный номер телефона, напишите еще раз"
                     user.send_telegram_message(bot_text)
             else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
                 tel_message()
         # Категория аксессуара
         elif application.category is None:
             if type_message == 'message':
                 category_message()
             else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
                 if 'category' in chat_result and CategoryOptions.objects.filter(
                         id=chat_result.split(' ')[2]).count() == 1:
                     try:
@@ -307,6 +325,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if type_message == 'message':
                 brand_message()
             else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
                 if 'brand' in chat_result:
                     if len(chat_result.split(' ')) == 4:
                         if BrandOptions.objects.filter(id=chat_result.split(' ')[3]).count() == 1:
@@ -328,37 +351,47 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 state_message()
             else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
                 model_message()
         # Состояние
         elif application.state is None:
             if type_message == 'message':
                 state_message()
             else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
                 if 'state' in chat_result and StateOptions.objects.filter(
                         id=chat_result.split(' ')[2]).count() == 1:
-                    try:
-                        bot.deleteMessage((chat_id, message_id))
-                    except telepot.exception.TelegramError:
-                        pass
-
                     application.state = StateOptions.objects.get(id=chat_result.split(' ')[2])
                     application.save()
 
                     defect_message()
                 else:
+                    try:
+                        bot.deleteMessage((chat_id, message_id))
+                    except telepot.exception.TelegramError:
+                        pass
+
                     state_message()
         # Наличие дефектов
         elif application.defect is None:
             if type_message == 'message':
                 state_message()
             else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
                 if 'defect' in chat_result and DefectOptions.objects.filter(
                         id=chat_result.split(' ')[2]).count() == 1:
-                    try:
-                        bot.deleteMessage((chat_id, message_id))
-                    except telepot.exception.TelegramError:
-                        pass
-
                     application.defect = DefectOptions.objects.get(id=chat_result.split(' ')[2])
                     application.save()
 
@@ -374,6 +407,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 else:
                     waiting_price_message()
             else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
                 waiting_price_message()
     except Exception:
         bug_trap()
