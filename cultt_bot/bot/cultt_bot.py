@@ -122,11 +122,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         def brand_message(letter=None):
             button_list = []
             line_button = {}
+            bot_text = 'Выберите бренд'
 
             # Достаем каждую букву
             if letter is None:
-                bot_text = 'Бренд'
-
                 letter_list = []
 
                 for brand in BrandOptions.objects.filter(is_visible=True):
@@ -145,8 +144,6 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 if len(line_button) != 0:
                     button_list.append(line_button)
             else:
-                bot_text = 'Бренд'
-
                 user.send_telegram_message(letter)
 
                 for brand in BrandOptions.objects.filter(name__iregex=fr'^{letter}\w+'):
@@ -162,8 +159,6 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             keyboard = build_keyboard('inline', button_list)
             user.send_telegram_message(bot_text, keyboard)
-
-
 
         # Выбор модели
         def model_message():
