@@ -72,7 +72,7 @@ class CategoryOptions(models.Model):
     # Название
     name = models.TextField(verbose_name='Название')
     # Отображать в боте
-    visible = models.BooleanField(default=True, validators='Отображать в боте')
+    is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
 
     def __str__(self):
         return self.name
@@ -87,7 +87,7 @@ class BrandOptions(models.Model):
     # Название
     name = models.TextField(verbose_name='Название')
     # Отображать в боте
-    visible = models.BooleanField(default=True, validators='Отображать в боте')
+    is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
 
     def __str__(self):
         return self.name
@@ -102,7 +102,7 @@ class StateOptions(models.Model):
     # Название
     name = models.TextField(verbose_name='Название')
     # Отображать в боте
-    visible = models.BooleanField(default=True, validators='Отображать в боте')
+    is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
 
     def __str__(self):
         return self.name
@@ -117,7 +117,7 @@ class DefectOptions(models.Model):
     # Название
     name = models.TextField(verbose_name='Название')
     # Отображать в боте
-    visible = models.BooleanField(default=True, validators='Отображать в боте')
+    is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
 
     def __str__(self):
         return self.name
