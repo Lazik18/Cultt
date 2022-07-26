@@ -102,7 +102,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             button_list = []
 
-            for category in CategoryOptions.objects.filter(visible=True):
+            for category in CategoryOptions.objects.filter(is_visible=True):
                 button_list.append({category.name: f'edit_application category {category.id}'})
 
             user.send_telegram_message(bot_text)
