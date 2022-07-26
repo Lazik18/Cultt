@@ -7,7 +7,7 @@ urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
     # Редирект на админу
-    path('/', cultt_bot_views.admin_redirect),
+    path('', cultt_bot_views.admin_redirect),
 
     # Для телеграмма
     path('telegram_bot/<str:bot_url>', cultt_bot_views.web_hook_bot),
