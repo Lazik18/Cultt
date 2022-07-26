@@ -51,7 +51,8 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
 
                 create_application(bot_id, chat_id, chat_result, type_message, message_id)
             else:
-                keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}])
+                keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
+                                          one_time=True)
 
                 user.send_telegram_message(telegram_bot.start_message, keyboard)
         else:
@@ -154,6 +155,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 if len(line_button) != 0:
                     button_list.append(line_button)
+
+                button_list.append(line_button)
+                button_list.append({'Назад': 'edit_application'})
 
             keyboard = build_keyboard('inline', button_list)
             user.send_telegram_message(bot_text, keyboard)

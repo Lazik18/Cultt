@@ -81,7 +81,7 @@ def bug_trap(type_output='telegram', additional_parameter=None):
 # reply - Кнопки под чатом
 # inline - Кнопки под сообщением
 # Нужно еще будет добавить исчезнование клавиатуры
-def build_keyboard(type_keyboard, keyboard_list):
+def build_keyboard(type_keyboard, keyboard_list, one_time=False):
     keyboard_button = []
 
     if type_keyboard == 'inline':
@@ -103,6 +103,6 @@ def build_keyboard(type_keyboard, keyboard_list):
 
             keyboard_button.append(keyboard_line)
 
-        return ReplyKeyboardMarkup(keyboard=keyboard_button, resize_keyboard=True)
+        return ReplyKeyboardMarkup(keyboard=keyboard_button, resize_keyboard=True, one_time_keyboard=one_time)
     else:
         return None
