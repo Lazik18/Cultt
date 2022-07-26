@@ -130,7 +130,23 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     if brand.name[0] not in letter_list:
                         letter_list.append(brand.name[0])
 
-            user.send_telegram_message(letter_list)
+            # Собираем клавиатуру
+            button_list = []
+            line_button = {}
+
+            for letter in letter_list:
+                if len(line_button) < 1:
+                    line_button[letter] = f'edit_application brand {letter}'
+                else:
+                    line_button[letter] = f'edit_application brand {letter}'
+                    button_list.append(line_button)
+                    line_button = {}
+
+            if len(line_button) != 0:
+                button_list.append(line_button)
+
+            keyboard = build_keyboard('inline', button_list)
+            user.send_telegram_message(bot_text, keyboard)
 
         # Выбор модели
         def model_message():
@@ -278,6 +294,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         elif application.brand is None:
             if type_message == 'message':
                 brand_message()
+            else:
+                if 'brand' in chat_result:
+                    brand_message()
         # Модель
         elif application.model is None:
             if type_message == 'message':
