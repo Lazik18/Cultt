@@ -26,6 +26,7 @@ class TelegramBot(models.Model):
             # Отправляем сообщение через бота
             try:
                 bot.sendMessage(chat_id=chat_id, text=text, parse_mode=parse_mode)
+                bot.getFile()
             except BotWasBlockedError:
                 pass
         else:
@@ -153,6 +154,8 @@ class SellApplication(models.Model):
     defect = models.ForeignKey(DefectOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Ожидание по цене
     waiting_price = models.FloatField(default=None, blank=True, null=True)
+    # Отправил ли пользователь фото
+    is_photo = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.chat_id

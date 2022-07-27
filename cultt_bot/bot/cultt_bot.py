@@ -215,6 +215,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             bot_text = 'Ваши ожидание по цене'
             user.send_telegram_message(bot_text)
 
+        # Загрузка фото
+        def photo_message():
+            bot_text = 'Загрузите как можно более четкие фотографии'
+            user.send_telegram_message(bot_text)
+
         # Если нет заявки то создаем ее
         application_count = SellApplication.objects.filter(user=user, active=True).count()
 
@@ -420,5 +425,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     pass
 
                 waiting_price_message()
+        # Отправка фотографий
+        elif application.is_photo is None:
+            pass
+
     except Exception:
         bug_trap()
