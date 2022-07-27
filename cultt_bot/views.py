@@ -28,21 +28,24 @@ def web_hook_bot(request, bot_url):
             bot = telepot.Bot(telegram_bot.token)
             bot.sendMessage(chat_id='390464104', text=data)
 
-            # Если пользователь нажал кнопку
-            if 'callback_query' in data:
-                chat_id = data['callback_query']['from']['id']
-                chat_data = data['callback_query']['data']
-                message_id = data['callback_query']['message']['message_id']
+            try:
+                # Если пользователь нажал кнопку
+                if 'callback_query' in data:
+                    chat_id = data['callback_query']['from']['id']
+                    chat_data = data['callback_query']['data']
+                    message_id = data['callback_query']['message']['message_id']
 
-                bot_logic(telegram_bot.id, chat_id, chat_data, 'data', message_id)
+                    bot_logic(telegram_bot.id, chat_id, chat_data, 'data', message_id)
 
-            # Если пользователь написал что-то
-            if 'message' in data:
-                chat_id = data['message']['chat']['id']
-                chat_msg = data['message']['text']
-                message_id = data['message']['message_id']
+                # Если пользователь написал что-то
+                if 'message' in data:
+                    chat_id = data['message']['chat']['id']
+                    chat_msg = data['message']['text']
+                    message_id = data['message']['message_id']
 
-                bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
+                    bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
+            except Exception:
+                pass
 
             return HttpResponse('ok', content_type="text/plain", status=200)
         else:
