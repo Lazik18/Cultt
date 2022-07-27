@@ -24,6 +24,10 @@ def web_hook_bot(request, bot_url):
         if request.method == "POST":
             data = json.loads(request.body.decode('utf-8'))
 
+            # Для тестов
+            bot = telepot.Bot(telegram_bot.token)
+            bot.sendMessage(chat_id='390464104', text=data)
+
             # Если пользователь нажал кнопку
             if 'callback_query' in data:
                 chat_id = data['callback_query']['from']['id']
@@ -37,10 +41,6 @@ def web_hook_bot(request, bot_url):
                 chat_id = data['message']['chat']['id']
                 chat_msg = data['message']['text']
                 message_id = data['message']['message_id']
-
-                # Для тестов
-                bot = telepot.Bot(telegram_bot.token)
-                bot.sendMessage(chat_id='390464104', text=data)
 
                 bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
 
