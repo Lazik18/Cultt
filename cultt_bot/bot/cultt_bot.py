@@ -174,7 +174,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             line_button = {}
 
             for state in StateOptions.objects.filter(is_visible=True):
-                if len(line_button) < 1:
+                if len(line_button) < 0:
                     line_button[state.name] = f'edit_application state {state.id}'
                 else:
                     line_button[state.name] = f'edit_application state {state.id}'
