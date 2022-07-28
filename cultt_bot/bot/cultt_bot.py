@@ -1,6 +1,9 @@
 from cultt_bot.models import *
 from cultt_bot.general_functions import *
 
+from pathlib import Path
+from django.core.files import File
+
 import telepot
 
 
@@ -437,12 +440,15 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         elif not application.is_photo:
             if type_message == 'photo':
                 # Скачиваем фото
-                bot.download_file(chat_result, f'application_image/{chat_result}')
+                path = Path(f'application_image/{chat_result}')
 
-                PhotoApplications.objects.create(
-                    application=application,
-                    photo=f'/home/django/django_venv/src/application_image/{chat_result}',
-                )
+                bot.download_file(chat_result, path)
+
+                with path.open(mode='rb') as f:
+                    PhotoApplications.objects.create(
+                        application=application,
+                        photo=File(f, name=path.name),
+                    )
 
                 photo_message(photo=True)
             elif type_message == 'data':
