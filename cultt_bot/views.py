@@ -34,7 +34,7 @@ def web_hook_bot(request, bot_url):
 
             # Если пользователь написал что-то
             if 'message' in data:
-                if 'message' in data['message'].keys():
+                if 'text' in data['message'].keys():
                     chat_id = data['message']['chat']['id']
                     chat_msg = data['message']['text']
                     message_id = data['message']['message_id']
