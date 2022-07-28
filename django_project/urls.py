@@ -11,4 +11,7 @@ urlpatterns = [
 
     # Для телеграмма
     path('telegram_bot/<str:bot_url>', cultt_bot_views.web_hook_bot),
+
+    # Для тестов
+    path('test', cultt_bot_views.test)
 ]
