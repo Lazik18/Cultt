@@ -26,7 +26,6 @@ class TelegramBot(models.Model):
             # Отправляем сообщение через бота
             try:
                 bot.sendMessage(chat_id=chat_id, text=text, parse_mode=parse_mode)
-                bot.getFile()
             except BotWasBlockedError:
                 pass
         else:
