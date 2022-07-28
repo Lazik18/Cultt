@@ -77,9 +77,8 @@ def web_hook_bot(request, bot_url):
 
 # Для теста
 def test(request):
-    # amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
+    amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
 
-    # args = {'test': amo_crm_session.create_leads_complex(10)}
-    result = 'test'
-    return HttpResponse('result', content_type="text/plain", status=200)
+    result = amo_crm_session.create_leads_complex(10)
+    return HttpResponse(result, content_type="text/plain", status=200)
 
