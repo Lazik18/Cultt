@@ -170,3 +170,34 @@ class PhotoApplications(models.Model):
     application = models.ForeignKey(SellApplication, on_delete=models.CASCADE)
     # Фото
     photo = models.ImageField(upload_to='application_image', blank=True, null=True)
+
+    def __str__(self):
+        return self.application.id
+
+    class Meta:
+        verbose_name = "Фото заявки"
+        verbose_name_plural = "Фотографии заявки"
+
+
+class AmoCRMData(models.Model):
+    # Поддомен нужного аккаунта
+    sub_domain = models.TextField()
+    # ID интеграции
+    client_id = models.TextField()
+    # Секрет интеграции
+    client_secret = models.TextField()
+    # Полученный код авторизации
+    code = models.TextField()
+    # Redirect URI указанный в настройках интеграции
+    redirect_uri = models.TextField()
+    # Access Token в формате JWT
+    access_token = models.TextField()
+    # Refresh Token
+    refresh_token = models.TextField()
+
+    def __str__(self):
+        return self.sub_domain
+
+    class Meta:
+        verbose_name = "Данные для AmoCRM"
+        verbose_name_plural = "Данные для AmoCRM"

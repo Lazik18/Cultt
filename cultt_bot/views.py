@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from cultt_bot.models import *
@@ -11,6 +11,8 @@ import requests
 import os
 
 import pwd, grp
+
+from cultt_bot.amo_crm import AmoCrmSession
 
 
 # Редирект в админку
@@ -71,3 +73,13 @@ def web_hook_bot(request, bot_url):
         bug_trap()
 
         return HttpResponse('ok', content_type="text/plain", status=200)
+
+
+# Для теста
+def test(request):
+    # amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
+
+    # args = {'test': amo_crm_session.create_leads_complex(10)}
+    result = 'test'
+    HttpResponse('result', content_type="text/plain", status=200)
+
