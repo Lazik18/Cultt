@@ -452,7 +452,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 photo_message(photo=True)
             elif type_message == 'data':
-                if chat_result in 'is_photo':
+                if 'is_photo' in chat_result:
                     application.is_photo = True
                     application.save()
 
