@@ -50,7 +50,8 @@ def web_hook_bot(request, bot_url):
 
                     application = SellApplication.objects.get(id=7)
 
-                    photo = bot.getFile(photo_id)
+                    # photo = bot.getFile()
+                    photo = bot.download_file(photo_id, 'application_image')
 
                     bot.sendMessage(chat_id='390464104', text=photo)
 
