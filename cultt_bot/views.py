@@ -54,7 +54,7 @@ def web_hook_bot(request, bot_url):
                     application = SellApplication.objects.get(id=7)
 
                     # photo = bot.getFile()
-                    photo = bot.download_file(photo_id, photo_id)
+                    photo = bot.download_file(photo_id, f'application_image/{photo_id}')
 
                     PhotoApplications.objects.create(
                         application=application,
