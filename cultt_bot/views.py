@@ -24,10 +24,6 @@ def web_hook_bot(request, bot_url):
         if request.method == "POST":
             data = json.loads(request.body.decode('utf-8'))
 
-            # Для тестов
-            bot = telepot.Bot(telegram_bot.token)
-            bot.sendMessage(chat_id='390464104', text=data)
-
             try:
                 # Если пользователь нажал кнопку
                 if 'callback_query' in data:
@@ -39,11 +35,30 @@ def web_hook_bot(request, bot_url):
 
                 # Если пользователь написал что-то
                 if 'message' in data:
-                    chat_id = data['message']['chat']['id']
-                    chat_msg = data['message']['text']
-                    message_id = data['message']['message_id']
+                    if 'message' in data['message'].keys():
+                        chat_id = data['message']['chat']['id']
+                        chat_msg = data['message']['text']
+                        message_id = data['message']['message_id']
 
-                    bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
+                        bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
+                    elif 'photo' in data['message'].keys():
+                        chat_id = data['message']['chat']['id']
+                        photo_id = data['message']['photo']
+                        message_id = data['message']['message_id']
+
+                        # Для тестов
+                        bot = telepot.Bot(telegram_bot.token)
+
+                        application = SellApplication.objects.get(id=7)
+
+                        photo = bot.getFile(photo_id)
+
+                        PhotoApplications.objects.create(
+                            application=application,
+                            photo=photo,
+                        )
+
+                        # bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
             except Exception:
                 pass
 

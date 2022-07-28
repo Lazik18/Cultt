@@ -163,3 +163,11 @@ class SellApplication(models.Model):
     class Meta:
         verbose_name = "Заяка продажи вещи"
         verbose_name_plural = "Заяки продажи вещей"
+
+
+# Фото для заявок
+class PhotoApplications(models.Model):
+    # Заяка
+    application = models.ForeignKey(SellApplication, on_delete=models.CASCADE)
+    # Фото
+    photo = models.ImageField(upload_to='application_image', blank=True, null=True)
