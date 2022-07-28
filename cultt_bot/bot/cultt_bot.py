@@ -233,6 +233,32 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 user.send_telegram_message(bot_text, keyboard)
 
+        # Подтверждение заявки
+        def end_message():
+            if application.cooperation_option == 'trade_in':
+                cooperation_option = 'trade in'
+            else:
+                cooperation_option = 'круговорот'
+
+            bot_text = 'Ваша заявка:\n\n' \
+                       f'Вариант сотрудничества: {cooperation_option}\n' \
+                       f'Имя: {application.name}\n' \
+                       f'Почта: {application.email}\n' \
+                       f'Телефон: {application.tel}\n' \
+                       f'Категория: {application.category.name}\n' \
+                       f'Бренд: {application.brand.name}\n' \
+                       f'Модель: {application.model}\n' \
+                       f'Состояние: {application.state.name}\n' \
+                       f'Наличие дефектов: {application.defect.name}\n' \
+                       f'Ожидание по цене: {application.waiting_price}\n'
+
+            keyboard = build_keyboard('inline', [
+                {'Отправить': 'edit_application end_message send'},
+                {'Отменить': 'edit_application end_message delete'}
+            ])
+
+            user.send_telegram_message(bot_text, keyboard)
+
         # Если нет заявки то создаем ее
         application_count = SellApplication.objects.filter(user=user, active=True).count()
 
@@ -456,11 +482,36 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     application.is_photo = True
                     application.save()
 
-                    user.send_telegram_message('123')
+                    end_message()
                 else:
                     photo_message()
             else:
                 photo_message()
+        # Подтверждение заявки
+        else:
+            if type_message == 'message':
+                end_message()
+            else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
 
+                if 'end_message' in chat_result:
+                    if 'send' in chat_result:
+                        application.active = False
+                        application.save()
+                    else:
+                        application.delete()
+
+                    user.step = 'start_message'
+                    user.save()
+
+                    keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
+                                              one_time=True)
+
+                    user.send_telegram_message(telegram_bot.start_message, keyboard)
+                else:
+                    cooperation_option_message()
     except Exception:
         bug_trap()
