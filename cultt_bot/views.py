@@ -81,5 +81,5 @@ def test(request):
 
     # args = {'test': amo_crm_session.create_leads_complex(10)}
     result = 'test'
-    HttpResponse('result', content_type="text/plain", status=200)
+    return HttpResponse('result', content_type="text/plain", status=200)
 
