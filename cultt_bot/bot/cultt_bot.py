@@ -426,8 +426,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 waiting_price_message()
         # Отправка фотографий
-        elif application.is_photo is None:
-            pass
+        elif not application.is_photo:
+            user.send_telegram_message("test")
 
     except Exception:
         bug_trap()
