@@ -78,3 +78,5 @@ def web_hook_bot(request, bot_url):
             return HttpResponse(req_text)
     except Exception:
         bug_trap()
+
+        return HttpResponse('ok', content_type="text/plain", status=200)
