@@ -48,20 +48,7 @@ def web_hook_bot(request, bot_url):
                     photo_id = data['message']['photo'][2]['file_id']
                     message_id = data['message']['message_id']
 
-                    # Для тестов
-                    bot = telepot.Bot(telegram_bot.token)
-
-                    application = SellApplication.objects.get(id=7)
-
-                    # photo = bot.getFile()
-                    photo = bot.download_file(photo_id, f'application_image/{photo_id}')
-
-                    PhotoApplications.objects.create(
-                        application=application,
-                        photo=photo,
-                    )
-
-                    # bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
+                    bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
 
             return HttpResponse('ok', content_type="text/plain", status=200)
         else:
