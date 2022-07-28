@@ -56,8 +56,6 @@ def web_hook_bot(request, bot_url):
                     # photo = bot.getFile()
                     photo = bot.download_file(photo_id, photo_id)
 
-                    bot.sendMessage(chat_id='390464104', text=photo)
-
                     PhotoApplications.objects.create(
                         application=application,
                         photo=photo,
