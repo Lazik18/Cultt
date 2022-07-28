@@ -216,9 +216,19 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             user.send_telegram_message(bot_text)
 
         # Загрузка фото
-        def photo_message():
-            bot_text = 'Загрузите как можно более четкие фотографии'
-            user.send_telegram_message(bot_text)
+        def photo_message(photo=False):
+            if not photo:
+                bot_text = 'Отправте как можно более четкие фотографии'
+
+                user.send_telegram_message(bot_text)
+            else:
+                bot_text = 'Отправте еще фото или воспользуйтесь кнопкой ниже'
+
+                keyboard = build_keyboard('inline', [
+                    {'Закончить': 'edit_application is_photo True'}
+                ])
+
+                user.send_telegram_message(bot_text, keyboard)
 
         # Если нет заявки то создаем ее
         application_count = SellApplication.objects.filter(user=user, active=True).count()
@@ -413,9 +423,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     application.waiting_price = chat_result
                     application.save()
 
-                    application.delete()
-
-                    user.send_telegram_message("Напишите что-то чтобы начать заново")
+                    photo_message()
                 else:
                     waiting_price_message()
             else:
@@ -427,7 +435,26 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 waiting_price_message()
         # Отправка фотографий
         elif not application.is_photo:
-            user.send_telegram_message("test")
+            if type_message == 'photo':
+                # Скачиваем фото
+                bot.download_file(chat_result, f'application_image/{chat_result}')
+
+                PhotoApplications.objects.create(
+                    application=application,
+                    photo=f'/home/django/django_venv/src/application_image/{chat_result}',
+                )
+
+                photo_message(photo=True)
+            elif type_message == 'data':
+                if chat_result in 'is_photo':
+                    application.is_photo = True
+                    application.save()
+
+                    user.send_telegram_message('123')
+                else:
+                    photo_message()
+            else:
+                photo_message()
 
     except Exception:
         bug_trap()
