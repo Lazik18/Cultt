@@ -98,6 +98,10 @@ class AmoCrmSession:
                         {
                             "field_id": 904331,
                             "values": [{"value": str(application.waiting_price)}, ]
+                        },
+                        {
+                            "field_id": 904333,
+                            "values": [{"value": f"http://culttbot.ru/views/application/{application.id}"}, ]
                         }
                     ]
                 }],
