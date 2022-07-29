@@ -29,7 +29,7 @@
         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false">
             <div class="carousel-inner">
                 {% for image in image_list %}
-                    <div class="carousel-item text-center {% if forloop.first %}active{% endif %}">
+                    <div class="carousel-item text-center img-thumbnail {% if forloop.first %}active{% endif %}">
                         <img class="h-50" src="/{{ image.photo }}" alt="/{{ image.photo }}">
                     </div>
                 {% endfor %}
