@@ -75,6 +75,16 @@ def web_hook_bot(request, bot_url):
         return HttpResponse('ok', content_type="text/plain", status=200)
 
 
+# Показать карточку заявки
+def views_application(request, application_id):
+    args = {
+        'application': SellApplication.objects.get(id=application_id),
+        'image_list': PhotoApplications.objects.filter(application__id=application_id)
+    }
+
+    return render(request, 'application_view.html', args)
+
+
 # Для теста
 def test(request):
     amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')

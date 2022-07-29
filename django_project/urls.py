@@ -15,6 +15,9 @@ urlpatterns = [
     # Для телеграмма
     path('telegram_bot/<str:bot_url>', cultt_bot_views.web_hook_bot),
 
+    # Вывод карточки заявки
+    path('views/application/<int:application_id>', cultt_bot_views.views_application),
+
     # Для тестов
     path('test', cultt_bot_views.test)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
