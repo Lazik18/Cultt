@@ -92,7 +92,7 @@ class AmoCrmSession:
             ],
             "_embedded": {
                 "contacts": [{
-                    "name": application.name,
+                    "first_name": application.name,
                     "custom_fields_values": [
                         {
                             "field_id": 67725,
