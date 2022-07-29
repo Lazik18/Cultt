@@ -156,6 +156,12 @@ class SellApplication(models.Model):
     # Отправил ли пользователь фото
     is_photo = models.BooleanField(default=False)
 
+    def cooperation_option_name(self):
+        if self.cooperation_option == 'circulation':
+            return 'круговорот'
+        else:
+            return 'trade_in'
+
     def __str__(self):
         return self.user.chat_id
 

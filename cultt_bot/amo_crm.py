@@ -58,58 +58,65 @@ class AmoCrmSession:
 
         application = SellApplication.objects.get(id=application_id)
 
-        data = [
-            {
-                "name": "Заявка из TelegramBot",
-                "custom_fields_values": [
+        data = [{
+            "source_uid": "telegram bot",
+            "source_name": "Заявка из TelegramBot",
+            "_embedded": {
+                "leads": [
                     {
-                        "field_id": 904315,
-                        "values": [{"value": application.cooperation_option}, ]
-                    },
-                    {
-                        "field_id": 904321,
-                        "values": [{"value": application.category.name}, ]
-                    },
-                    {
-                        "field_id": 904323,
-                        "values": [{"value": application.brand.name}, ]
-                    },
-                    {
-                        "field_id": 904325,
-                        "values": [{"value": application.model}, ]
-                    },
-                    {
-                        "field_id": 904327,
-                        "values": [{"value": application.state.name}, ]
-                    },
-                    {
-                        "field_id": 904329,
-                        "values": [{"value": application.defect.name}, ]
-                    },
-                    {
-                        "field_id": 904331,
-                        "values": [{"value": str(application.waiting_price)}, ]
-                    }
-                ],
-                "_embedded": {
-                    "contacts": [{
-                        "first_name": application.name,
+                        "name": "Заявка из TelegramBot",
+                        "created_by": 0,
                         "custom_fields_values": [
                             {
-                                "field_id": 67725,
-                                "values": [{"value": application.tel}, ]
+                                "field_id": 904315,
+                                "values": [{"value": application.cooperation_option_name()}, ]
                             },
                             {
-                                "field_id": 67727,
-                                "values": [{"value": application.email}, ]
+                                "field_id": 904321,
+                                "values": [{"value": application.category.name}, ]
+                            },
+                            {
+                                "field_id": 904323,
+                                "values": [{"value": application.brand.name}, ]
+                            },
+                            {
+                                "field_id": 904325,
+                                "values": [{"value": application.model}, ]
+                            },
+                            {
+                                "field_id": 904327,
+                                "values": [{"value": application.state.name}, ]
+                            },
+                            {
+                                "field_id": 904329,
+                                "values": [{"value": application.defect.name}, ]
+                            },
+                            {
+                                "field_id": 904331,
+                                "values": [{"value": str(application.waiting_price)}, ]
                             }
-                        ]
-                    }]
-                }
+                        ],
+                        "_embedded": {
+                            "contacts": [{
+                                "first_name": application.name,
+                                "custom_fields_values": [
+                                    {
+                                        "field_id": 67725,
+                                        "values": [{"value": application.tel}, ]
+                                    },
+                                    {
+                                        "field_id": 67727,
+                                        "values": [{"value": application.email}, ]
+                                    }
+                                ]
+                            }]
+                        }
+                    }
+                ]
             }
-        ]
+        }]
 
-        result = requests.post(f'https://{self.sub_domain}/api/v4/leads/complex', headers=headers, json=data)
+        result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
         return result.text
 
