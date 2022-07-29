@@ -24,7 +24,7 @@
     <body style="background-color: #F0ECE0">
         <h1 class="text-center">Заявка №{{ application.id }}</h1>
 
-        <div id="carouselExampleControls" class="carousel" data-bs-ride="carousel">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false">
             <div class="carousel-inner">
                 {% for image in image_list %}
                     <div class="carousel-item text-center {% if forloop.first %}active{% endif %}">
