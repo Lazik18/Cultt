@@ -46,6 +46,8 @@ def web_hook_bot(request, bot_url):
 
                     bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
                 elif 'photo' in data['message'].keys():
+                    bot = telepot.Bot(cultt_telegram_bot_token)
+                    bot.sendMessage(chat_id='390464104', text=data)
                     chat_id = data['message']['chat']['id']
                     photo_id = data['message']['photo'][max(data['message']['photo'].keys())]['file_id']
                     message_id = data['message']['message_id']
