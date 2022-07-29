@@ -107,7 +107,12 @@ class AmoCrmSession:
                                 "values": [{"value": application.email}, ]
                             }
                         ]
-                    }]
+                    }],
+                    "metadata": {
+                        "form_id": "telegram bot",
+                        "form_name": "telegram bot",
+                        "form_page": "telegram bot"
+                    }
                 }]
             }
         }]
