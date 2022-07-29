@@ -37,5 +37,52 @@
                 <span class="sr-only text-dark">Следующий</span>
             </a>
         </div>
+
+        <h1 class="text-center">Данные</h1>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Имя пользователя</td>
+                    <td>{{ application.name }}</td>
+                </tr>
+                <tr>
+                    <td>Почта пользователя</td>
+                    <td>{{ application.email }}</td>
+                </tr>
+                <tr>
+                    <td>Телефон пользователя</td>
+                    <td>{{ application.tel }}</td>
+                </tr>
+                <tr>
+                    <td>Вариант сотрудничества</td>
+                    <td>{{ application.cooperation_option_name }}</td>
+                </tr>
+                <tr>
+                    <td>Категория аксессуара</td>
+                    <td>{{ application.category.name }}</td>
+                </tr>
+                <tr>
+                    <td>Бренд</td>
+                    <td>{{ application.brand.name }}</td>
+                </tr>
+                <tr>
+                    <td>Модель</td>
+                    <td>{{ application.model }}</td>
+                </tr>
+                <tr>
+                    <td>Состояние</td>
+                    <td>{{ application.state.name }}</td>
+                </tr>
+                <tr>
+                    <td>Наличие дефектов</td>
+                    <td>{{ application.defect.name }}</td>
+                </tr>
+                <tr>
+                    <td>Ожидание по цене</td>
+                    <td>{{ application.waiting_price }}</td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
