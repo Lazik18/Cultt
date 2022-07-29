@@ -160,7 +160,7 @@ class SellApplication(models.Model):
         if self.cooperation_option == 'circulation':
             return 'круговорот'
         else:
-            return 'trade_in'
+            return 'trade in'
 
     def __str__(self):
         return self.user.chat_id

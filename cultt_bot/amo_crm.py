@@ -99,21 +99,20 @@ class AmoCrmSession:
                             "field_id": 904331,
                             "values": [{"value": str(application.waiting_price)}, ]
                         }
-                    ],
-                    "contacts": [{
-                        "first_name": application.name,
-                        "custom_fields_values": [
-                            {
-                                "field_id": 67725,
-                                "values": [{"value": application.tel}, ]
-                            },
-                            {
-                                "field_id": 67727,
-                                "values": [{"value": application.email}, ]
-                            }
-                        ]
-                    }]
-
+                    ]
+                }],
+                "contacts": [{
+                    "first_name": application.name,
+                    "custom_fields_values": [
+                        {
+                            "field_id": 67725,
+                            "values": [{"value": application.tel}, ]
+                        },
+                        {
+                            "field_id": 67727,
+                            "values": [{"value": application.email}, ]
+                        }
+                    ]
                 }]
             },
             "metadata": {
