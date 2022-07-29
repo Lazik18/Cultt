@@ -120,7 +120,7 @@ class AmoCrmSession:
                 "form_id": "telegram bot",
                 "form_name": "telegram bot",
                 "form_page": "telegram bot",
-                "form_sent_at": unix_timestamp,
+                "form_sent_at": int(unix_timestamp),
                 "referer": "telegram bot"
             }
         }]
