@@ -62,57 +62,53 @@ class AmoCrmSession:
             "source_uid": "telegram bot",
             "source_name": "Заявка из TelegramBot",
             "_embedded": {
-                "leads": [
-                    {
-                        "name": "Заявка из TelegramBot",
-                        "created_by": 0,
+                "leads": [{
+                    "name": "Заявка из TelegramBot",
+                    "created_by": 0,
+                    "custom_fields_values": [
+                        {
+                            "field_id": 904315,
+                            "values": [{"value": application.cooperation_option_name()}, ]
+                        },
+                        {
+                            "field_id": 904321,
+                            "values": [{"value": application.category.name}, ]
+                        },
+                        {
+                            "field_id": 904323,
+                            "values": [{"value": application.brand.name}, ]
+                        },
+                        {
+                            "field_id": 904325,
+                            "values": [{"value": application.model}, ]
+                        },
+                        {
+                            "field_id": 904327,
+                            "values": [{"value": application.state.name}, ]
+                        },
+                        {
+                            "field_id": 904329,
+                            "values": [{"value": application.defect.name}, ]
+                        },
+                        {
+                            "field_id": 904331,
+                            "values": [{"value": str(application.waiting_price)}, ]
+                        }
+                    ],
+                    "contacts": [{
+                        "first_name": application.name,
                         "custom_fields_values": [
                             {
-                                "field_id": 904315,
-                                "values": [{"value": application.cooperation_option_name()}, ]
+                                "field_id": 67725,
+                                "values": [{"value": application.tel}, ]
                             },
                             {
-                                "field_id": 904321,
-                                "values": [{"value": application.category.name}, ]
-                            },
-                            {
-                                "field_id": 904323,
-                                "values": [{"value": application.brand.name}, ]
-                            },
-                            {
-                                "field_id": 904325,
-                                "values": [{"value": application.model}, ]
-                            },
-                            {
-                                "field_id": 904327,
-                                "values": [{"value": application.state.name}, ]
-                            },
-                            {
-                                "field_id": 904329,
-                                "values": [{"value": application.defect.name}, ]
-                            },
-                            {
-                                "field_id": 904331,
-                                "values": [{"value": str(application.waiting_price)}, ]
+                                "field_id": 67727,
+                                "values": [{"value": application.email}, ]
                             }
-                        ],
-                        "_embedded": {
-                            "contacts": [{
-                                "first_name": application.name,
-                                "custom_fields_values": [
-                                    {
-                                        "field_id": 67725,
-                                        "values": [{"value": application.tel}, ]
-                                    },
-                                    {
-                                        "field_id": 67727,
-                                        "values": [{"value": application.email}, ]
-                                    }
-                                ]
-                            }]
-                        }
-                    }
-                ]
+                        ]
+                    }]
+                }]
             }
         }]
 
