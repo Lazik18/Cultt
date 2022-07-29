@@ -468,7 +468,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         elif not application.is_photo:
             if type_message == 'photo':
                 # Скачиваем фото
-                path = Path(f'application_image/{chat_result}')
+                path = Path(f'application_image/{chat_result}.jpg')
 
                 bot.download_file(chat_result, path)
 
