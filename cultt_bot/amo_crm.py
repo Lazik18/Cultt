@@ -88,7 +88,7 @@ class AmoCrmSession:
                     },
                     {
                         "field_id": 904331,
-                        "values": [{"value": application.waiting_price}, ]
+                        "values": [{"value": str(application.waiting_price)}, ]
                     }
                 ],
                 "_embedded": {
