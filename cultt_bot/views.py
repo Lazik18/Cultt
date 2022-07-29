@@ -80,5 +80,5 @@ def test(request):
     amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
 
     result = amo_crm_session.create_leads_complex(10)
-    return HttpResponse(str(result).encode('utf8'), content_type="text/plain", status=200)
+    return HttpResponse(result, content_type="text/plain", status=200)
 
