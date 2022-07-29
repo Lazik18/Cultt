@@ -101,7 +101,7 @@ class AmoCrmSession:
                         },
                         {
                             "field_id": 904333,
-                            "values": [{"value": f"http://culttbot.ru/views/application/{application.id}"}, ]
+                            "values": [{"value": f"https://culttbot.ru/views/application/{application.id}"}, ]
                         }
                     ]
                 }],
