@@ -21,7 +21,7 @@
         <div class="carousel-inner">
             {% for image in image_list %}
                 <div class="carousel-item">
-                    <img class="d-block w-100" src="{{ image.photo }}">
+                    <img class="d-block w-100" src="/{{ image.photo }}" alt="/{{ image.photo }}">
                 </div>
             {% endfor %}
         </div>
