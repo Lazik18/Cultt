@@ -47,7 +47,7 @@ def web_hook_bot(request, bot_url):
                     bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
                 elif 'photo' in data['message'].keys():
                     chat_id = data['message']['chat']['id']
-                    photo_id = data['message']['photo'][2]['file_id']
+                    photo_id = data['message']['photo'][max(data['message']['photo'].keys())]['file_id']
                     message_id = data['message']['message_id']
 
                     bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
