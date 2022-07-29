@@ -49,7 +49,7 @@ def web_hook_bot(request, bot_url):
                     bot = telepot.Bot(cultt_telegram_bot_token)
                     bot.sendMessage(chat_id='390464104', text=data)
                     chat_id = data['message']['chat']['id']
-                    photo_id = data['message']['photo'][max(data['message']['photo'].keys())]['file_id']
+                    photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
                     message_id = data['message']['message_id']
 
                     bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
