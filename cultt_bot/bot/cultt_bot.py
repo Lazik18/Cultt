@@ -4,6 +4,8 @@ from cultt_bot.general_functions import *
 from pathlib import Path
 from django.core.files import File
 
+from cultt_bot.amo_crm import AmoCrmSession
+
 import telepot
 
 
@@ -506,6 +508,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     if 'send' in chat_result:
                         application.active = False
                         application.save()
+
+                        amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
+                        amo_crm_session.create_leads_complex(application.id)
                     else:
                         application.delete()
 
