@@ -4,6 +4,8 @@ from cultt_bot.conf import cultt_telegram_bot_token
 import requests
 import json
 import telepot
+import time
+import datetime
 
 
 # Для отравки уведомлений Илье и тестов
@@ -57,6 +59,9 @@ class AmoCrmSession:
         }
 
         application = SellApplication.objects.get(id=application_id)
+
+        presentDate = datetime.datetime.now()
+        unix_timestamp = datetime.datetime.timestamp(presentDate) * 1000
 
         data = [{
             "source_uid": "telegram bot",
@@ -114,7 +119,9 @@ class AmoCrmSession:
             "metadata": {
                 "form_id": "telegram bot",
                 "form_name": "telegram bot",
-                "form_page": "telegram bot"
+                "form_page": "telegram bot",
+                "form_sent_at": unix_timestamp,
+                "referer": "telegram bot"
             }
         }]
 
