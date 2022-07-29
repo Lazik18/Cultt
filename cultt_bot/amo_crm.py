@@ -109,7 +109,7 @@ class AmoCrmSession:
 
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/complex', headers=headers, json=data)
 
-        return result
+        return result.text
 
 
 
