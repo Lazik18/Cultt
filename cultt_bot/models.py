@@ -178,7 +178,7 @@ class PhotoApplications(models.Model):
     photo = models.ImageField(upload_to='application_image', blank=True, null=True)
 
     def __str__(self):
-        return self.application
+        return self.application.user.chat_id
 
     class Meta:
         verbose_name = "Фото заявки"
