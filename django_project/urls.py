@@ -3,6 +3,9 @@ from django.urls import path
 
 from cultt_bot import views as cultt_bot_views
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
@@ -14,4 +17,4 @@ urlpatterns = [
 
     # Для тестов
     path('test', cultt_bot_views.test)
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
