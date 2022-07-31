@@ -130,6 +130,8 @@ class AmoCrmSession:
 
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
+        send_telegram_error_message(result.text)
+
         return result.text
 
 
