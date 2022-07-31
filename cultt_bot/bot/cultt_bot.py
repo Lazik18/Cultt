@@ -136,8 +136,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 letter_list = []
 
                 for brand in BrandOptions.objects.filter(is_visible=True):
-                    if brand.name[0] not in letter_list:
-                        letter_list.append(brand.name[0])
+                    if brand.name[0].upper() not in letter_list:
+                        letter_list.append(brand.name[0].upper())
 
                 # Собираем клавиатуру
                 for letter in letter_list:
