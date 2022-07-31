@@ -11,7 +11,7 @@ import datetime
 # Для отравки уведомлений Илье и тестов
 def send_telegram_error_message(message):
     bot = telepot.Bot(cultt_telegram_bot_token)
-    bot.sendMessage(chat_id='390464104', text=message)
+    bot.sendMessage(chat_id='390464104', text=f'Только для Ильи:\n{message}')
 
 
 # Для работы с API
