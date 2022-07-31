@@ -484,7 +484,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         photo=File(f, name=path.name),
                     )
 
-                    date_start = date_end - timedelta(seconds=1)
+                    date_start = date_end - timedelta(seconds=2)
 
                     if PhotoApplications.objects.filter(application=application, date__gte=date_start,
                                                         date__lte=date_end).count() < 2:
