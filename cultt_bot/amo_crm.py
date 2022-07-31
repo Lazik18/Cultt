@@ -27,7 +27,7 @@ class AmoCrmSession:
         self.refresh_token = self.amo_crm_data.refresh_token
 
     # Обмен кода авторизации на access token и refresh token
-    def get_access_token(self, grant_type='authorization_code'):
+    def get_access_token(self, grant_type='authorization_code', double=False):
         data = {
             "client_id": self.client_id,
             "client_secret": self.client_secret,
@@ -36,7 +36,7 @@ class AmoCrmSession:
         }
 
         if grant_type == 'authorization_code':
-            data['authorization_code'] = self.code
+            data['code'] = self.code
         elif grant_type == 'refresh_token':
             data['refresh_token'] = self.refresh_token
 
@@ -53,13 +53,11 @@ class AmoCrmSession:
         else:
             send_telegram_error_message(result)
 
-            """
-            if grant_type == 'authorization_code':
-                № return self.get_access_token('refresh_token')
-            else:
-                
-                #return self.get_access_token('authorization_code')
-            """
+            if not double:
+                if grant_type == 'authorization_code':
+                    return self.get_access_token('refresh_token', True)
+                else:
+                    return self.get_access_token('authorization_code', True)
 
     # Создать заявку
     def create_leads_complex(self, application_id):
