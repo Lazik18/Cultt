@@ -514,8 +514,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         result = amo_crm_session.create_leads_complex(application.id)
 
                         if json.loads(result).get('title') == 'Unauthorized':
-                            amo_crm_session.get_access_token('refresh_token')
-                            amo_crm_session.create_leads_complex(application.id)
+                            if amo_crm_session.get_access_token('refresh_token'):
+                                amo_crm_session.create_leads_complex(application.id)
                     else:
                         application.delete()
 

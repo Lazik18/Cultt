@@ -53,7 +53,10 @@ class AmoCrmSession:
         else:
             send_telegram_error_message(result)
 
-            return False
+            if grant_type == 'authorization_code':
+                return self.get_access_token('refresh_token')
+            else:
+                return self.get_access_token('authorization_code')
 
     # Создать заявку
     def create_leads_complex(self, application_id):
