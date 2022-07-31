@@ -485,11 +485,6 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     date_end = datetime.datetime.now()
                     date_start = date_end - timedelta(seconds=2)
 
-                    test = PhotoApplications.objects.filter(application=application, date__gte=date_start,
-                                                            date__lte=date_end).count()
-
-                    user.send_telegram_message(test)
-
                     if PhotoApplications.objects.filter(application=application, date__gte=date_start,
                                                         date__lte=date_end).count() < 2:
                         photo_message(photo=True)
