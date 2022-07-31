@@ -167,7 +167,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             keyboard = build_keyboard('inline', button_list)
             user.send_telegram_message(bot_text, keyboard)
 
-        # Выбор модели
+        # Ввод модели
         def model_message():
             bot_text = 'Укажите модель вашего аксессуара'
             user.send_telegram_message(bot_text)
