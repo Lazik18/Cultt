@@ -8,6 +8,9 @@ from cultt_bot.amo_crm import AmoCrmSession
 
 import telepot
 import json
+import datetime
+
+from datetime import timedelta
 
 
 # Бот для взаимодействия с total coin
@@ -474,12 +477,18 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 bot.download_file(chat_result, path)
 
                 with path.open(mode='rb') as f:
+                    date_start = datetime.datetime.now()
+
                     PhotoApplications.objects.create(
                         application=application,
                         photo=File(f, name=path.name),
                     )
 
-                photo_message(photo=True)
+                    date_end = date_start + timedelta(seconds=1)
+
+                    if PhotoApplications.objects.filter(application=application, date__gte=date_start,
+                                                        date__lte=date_end).count() < 2:
+                        photo_message(photo=True)
             elif type_message == 'data':
                 try:
                     bot.deleteMessage((chat_id, message_id))

@@ -200,6 +200,8 @@ class SellApplication(models.Model):
 
 # Фото для заявок
 class PhotoApplications(models.Model):
+    # Дата отпрвки сообщения
+    date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     # Заяка
     application = models.ForeignKey(SellApplication, on_delete=models.CASCADE)
     # Фото
