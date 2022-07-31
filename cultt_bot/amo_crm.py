@@ -131,7 +131,7 @@ class AmoCrmSession:
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
         if json.loads(result.text).get('title') == 'Unauthorized':
-            self.get_access_token()
+            self.get_access_token('refresh_token')
             self.create_leads_complex(application_id)
         else:
             send_telegram_error_message(result.text)
