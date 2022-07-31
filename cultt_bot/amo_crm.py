@@ -133,7 +133,7 @@ class AmoCrmSession:
         if json.loads(result.text).get('title') == 'Unauthorized':
             self.get_access_token('refresh_token')
             self.create_leads_complex(application_id)
-        else:
-            send_telegram_error_message(result.text)
+
+        send_telegram_error_message(result.text)
 
         return result.text
