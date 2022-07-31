@@ -79,7 +79,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Стандартное сообщение
         # Вариант сотрудничества
         def cooperation_option_message():
-            bot_text = 'Выберите вариант сотрудничества'
+            bot_text = telegram_bot.cooperation_option_message
 
             keyboard = build_keyboard('inline', [
                 {'trade in': 'edit_application cooperation_option trade_in'},
@@ -90,22 +90,22 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Введите имя
         def name_message():
-            bot_text = 'Введите имя'
+            bot_text = telegram_bot.name_message
             user.send_telegram_message(bot_text)
 
         # Введите почту
         def email_message():
-            bot_text = 'Введите электронную почту'
+            bot_text = telegram_bot.email_message
             user.send_telegram_message(bot_text)
 
         # Введите номер телефона
         def tel_message():
-            bot_text = 'Введите номер телефона'
+            bot_text = telegram_bot.tel_message
             user.send_telegram_message(bot_text)
 
         # Выбор категории аксессуара
         def category_message():
-            bot_text = 'Категория'
+            bot_text = telegram_bot.category_message
 
             button_list = []
             line_button = {}
@@ -129,7 +129,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         def brand_message(letter=None):
             button_list = []
             line_button = {}
-            bot_text = 'Выберите бренд'
+            bot_text = telegram_bot.brand_message
 
             # Достаем каждую букву
             if letter is None:
@@ -169,12 +169,12 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Ввод модели
         def model_message():
-            bot_text = 'Укажите модель вашего аксессуара'
+            bot_text = telegram_bot.model_message
             user.send_telegram_message(bot_text)
 
         # Выбор состояние
         def state_message():
-            bot_text = 'Состояние'
+            bot_text = telegram_bot.state_message
 
             button_list = []
             line_button = {}
@@ -196,7 +196,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Выбор наличие дефектов
         def defect_message():
-            bot_text = 'Наличие дефектов'
+            bot_text = telegram_bot.defect_message
 
             button_list = []
             line_button = {}
@@ -218,17 +218,17 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Введите ожидания по цене
         def waiting_price_message():
-            bot_text = 'Ваши ожидание по цене'
+            bot_text = telegram_bot.waiting_price_message
             user.send_telegram_message(bot_text)
 
         # Загрузка фото
         def photo_message(photo=False):
             if not photo:
-                bot_text = 'Отправте как можно более четкие фотографии'
+                bot_text = telegram_bot.photo_message_1
 
                 user.send_telegram_message(bot_text)
             else:
-                bot_text = 'Отправте еще фото или воспользуйтесь кнопкой ниже'
+                bot_text = telegram_bot.photo_message_2
 
                 keyboard = build_keyboard('inline', [
                     {'Закончить': 'edit_application is_photo True'}
@@ -525,7 +525,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
                                               one_time=True)
 
-                    user.send_telegram_message(telegram_bot.start_message, keyboard)
+                    user.send_telegram_message(telegram_bot.end_message, keyboard)
                 else:
                     cooperation_option_message()
     except Exception:
