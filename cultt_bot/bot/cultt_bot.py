@@ -513,7 +513,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
                         result = amo_crm_session.create_leads_complex(application.id)
 
-                        if json.loads(result.text).get('title') == 'Unauthorized':
+                        if json.loads(result).get('title') == 'Unauthorized':
                             amo_crm_session.get_access_token('refresh_token')
                             amo_crm_session.create_leads_complex(application.id)
                     else:
