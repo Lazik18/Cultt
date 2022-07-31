@@ -49,7 +49,11 @@ class AmoCrmSession:
             self.amo_crm_data.refresh_token = result['refresh_token']
             self.amo_crm_data.save()
 
-        return self.amo_crm_data.access_token
+            return True
+        else:
+            send_telegram_error_message(result)
+
+            return False
 
     # Создать заявку
     def create_leads_complex(self, application_id):
