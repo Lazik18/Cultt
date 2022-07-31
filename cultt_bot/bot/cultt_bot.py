@@ -477,14 +477,14 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 bot.download_file(chat_result, path)
 
                 with path.open(mode='rb') as f:
-                    date_start = datetime.datetime.now()
+                    date_end = datetime.datetime.now()
 
                     PhotoApplications.objects.create(
                         application=application,
                         photo=File(f, name=path.name),
                     )
 
-                    date_end = date_start + timedelta(seconds=1)
+                    date_start = date_end - timedelta(seconds=1)
 
                     if PhotoApplications.objects.filter(application=application, date__gte=date_start,
                                                         date__lte=date_end).count() < 2:
