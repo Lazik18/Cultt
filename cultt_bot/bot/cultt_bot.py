@@ -7,6 +7,7 @@ from django.core.files import File
 from cultt_bot.amo_crm import AmoCrmSession
 
 import telepot
+import json
 
 
 # Бот для взаимодействия с total coin
@@ -510,7 +511,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         application.save()
 
                         amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
-                        amo_crm_session.create_leads_complex(application.id)
+                        result = amo_crm_session.create_leads_complex(application.id)
+
+                        if json.loads(result.text).get('title') == 'Unauthorized':
+                            amo_crm_session.get_access_token('refresh_token')
+                            amo_crm_session.create_leads_complex(application.id)
                     else:
                         application.delete()
 
