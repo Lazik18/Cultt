@@ -176,8 +176,8 @@ class SellApplication(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
     # Статус заявки True (активная, заполняется)
     active = models.BooleanField(default=True)
-    # Вариант сотрудничества (circulation, trade_in)
-    cooperation_option = models.ForeignKey(CooperationOption, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    # Вариант сотрудничества
+
     # Имя
     name = models.TextField(default=None, blank=True, null=True)
     # Почта
