@@ -155,6 +155,21 @@ class DefectOptions(models.Model):
         verbose_name_plural = "Варианты дефектов"
 
 
+# Вариант сотрудничества
+class CooperationOption(models.Model):
+    # Название
+    name = models.TextField(verbose_name='Название')
+    # Отображать в боте
+    is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Вариант сотрудничества"
+        verbose_name_plural = "Варианты сотрудничества"
+
+
 # Заяка на продажи вещи
 class SellApplication(models.Model):
     # Пользователь
@@ -162,7 +177,7 @@ class SellApplication(models.Model):
     # Статус заявки True (активная, заполняется)
     active = models.BooleanField(default=True)
     # Вариант сотрудничества (circulation, trade_in)
-    cooperation_option = models.CharField(max_length=20, default=None, blank=True, null=True)
+    cooperation_option = models.ForeignKey(CategoryOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Имя
     name = models.TextField(default=None, blank=True, null=True)
     # Почта

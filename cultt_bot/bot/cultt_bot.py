@@ -84,10 +84,21 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         def cooperation_option_message():
             bot_text = telegram_bot.cooperation_option_message
 
-            keyboard = build_keyboard('inline', [
-                {'trade in': 'edit_application cooperation_option trade_in'},
-                {'круговорот': 'edit_application cooperation_option circulation'}
-            ])
+            button_list = []
+            line_button = {}
+
+            for cooperation_id in CooperationOption.objects.filter(is_visible=True):
+                if len(line_button) < 1:
+                    line_button[cooperation_id.name] = f'edit_application cooperation_option {cooperation_id.id}'
+                else:
+                    line_button[cooperation_id.name] = f'edit_application cooperation_option {cooperation_id.id}'
+                    button_list.append(line_button)
+                    line_button = {}
+
+            if len(line_button) != 0:
+                button_list.append(line_button)
+
+            keyboard = build_keyboard('inline', button_list)
 
             user.send_telegram_message(bot_text, keyboard)
 
@@ -293,8 +304,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 except telepot.exception.TelegramError:
                     pass
 
-                if 'cooperation_option' in chat_result:
-                    application.cooperation_option = chat_result.split(' ')[2]
+                if 'cooperation_option' in chat_result and CooperationOption.objects.filter(
+                        id=chat_result.split(' ')[2]).count() == 1:
+                    application.cooperation_option = CooperationOption.objects.get(id=chat_result.split(' ')[2])
                     application.save()
 
                     name_message()
