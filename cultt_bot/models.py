@@ -18,32 +18,34 @@ class TelegramBot(models.Model):
     start_message = models.TextField(verbose_name='Приветственное сообщение')
     # Стартовая кнопка (Продать вещи)
     start_button = models.TextField(verbose_name='Стартовая кнопка')
+    # Отмена заявки
+    close_button = models.TextField(verbose_name='Отмена заявки')
     # Вариант сотрудничества
-    cooperation_option_message = models.TextField(default='123', verbose_name='Вариант сотрудничества')
+    cooperation_option_message = models.TextField(default='Вариант сотрудничества', verbose_name='Вариант сотрудничества')
     # Введите имя
-    name_message = models.TextField(default='123', verbose_name='Введите имя')
+    name_message = models.TextField(default='Введите имя', verbose_name='Введите имя')
     # Введите почту
-    email_message = models.TextField(default='123', verbose_name='Введите почту')
+    email_message = models.TextField(default='Введите почту', verbose_name='Введите почту')
     # Введите номер телефона
-    tel_message = models.TextField(default='123', verbose_name='Введите номер телефона')
+    tel_message = models.TextField(default='Введите номер телефона', verbose_name='Введите номер телефона')
     # Выбор категории аксессуара
-    category_message = models.TextField(default='123', verbose_name='Выбор категории аксессуара')
+    category_message = models.TextField(default='Выбор категории аксессуара', verbose_name='Выбор категории аксессуара')
     # Выбор бренда
-    brand_message = models.TextField(default='123', verbose_name='Выбор бренда')
+    brand_message = models.TextField(default='Выбор бренда', verbose_name='Выбор бренда')
     # Ввод модели
-    model_message = models.TextField(default='123', verbose_name='Ввод модели')
+    model_message = models.TextField(default='Ввод модели', verbose_name='Ввод модели')
     # Выбор состояние
-    state_message = models.TextField(default='123', verbose_name='Выбор состояние')
+    state_message = models.TextField(default='Выбор состояние', verbose_name='Выбор состояние')
     # Выбор наличие дефектов
-    defect_message = models.TextField(default='123', verbose_name='Выбор наличие дефектов')
+    defect_message = models.TextField(default='Выбор наличие дефектов', verbose_name='Выбор наличие дефектов')
     # Введите ожидания по цене
-    waiting_price_message = models.TextField(default='123', verbose_name='Введите ожидания по цене')
+    waiting_price_message = models.TextField(default='Введите ожидания по цене', verbose_name='Введите ожидания по цене')
     # Загрузка фото №1
-    photo_message_1 = models.TextField(default='123', verbose_name='Загрузка фото №1')
+    photo_message_1 = models.TextField(default='Загрузка фото №1', verbose_name='Загрузка фото №1')
     # Загрузка фото №2
-    photo_message_2 = models.TextField(default='123', verbose_name='Загрузка фото №2')
+    photo_message_2 = models.TextField(default='Загрузка фото №2', verbose_name='Загрузка фото №2')
     # Сообщение об успешной отправки заявки
-    end_message = models.TextField(default='123', verbose_name='Сообщение об успешной отправки заявки')
+    end_message = models.TextField(default='Сообщение об успешной отправки заявки', verbose_name='Сообщение об успешной отправки заявки')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):

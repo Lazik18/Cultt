@@ -36,6 +36,11 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
                 user.save()
 
                 SellApplication.objects.filter(user=user, active=True).delete()
+            elif chat_result == 'Отменить заявку':
+                user.step = 'start_message'
+                user.save()
+
+                SellApplication.objects.filter(user=user, active=True).delete()
 
             # Приветственное сообщение
             if user.step == 'start_message':
@@ -60,18 +65,18 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
         user = TelegramUser.objects.get(chat_id=chat_id, bot=telegram_bot)
 
         if type_message == 'message':
-            if chat_result == telegram_bot.start_button:
+            keyboard = build_keyboard('inline', [{f'{telegram_bot.start_button}': 'create_application_start_button'}],
+                                      one_time=True)
+
+            user.send_telegram_message(telegram_bot.start_message, keyboard)
+        else:
+            if chat_result == 'create_application_start_button':
                 user.step = 'create_application'
                 user.save()
 
                 create_application(bot_id, chat_id, chat_result, type_message, message_id)
             else:
-                keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
-                                          one_time=True)
-
-                user.send_telegram_message(telegram_bot.start_message, keyboard)
-        else:
-            user.send_telegram_message('error start_message №1')
+                user.send_telegram_message('error start_message №1')
     except Exception:
         bug_trap()
 
@@ -88,6 +93,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Стандартное сообщение
         # Вариант сотрудничества
         def cooperation_option_message():
+            user.send_telegram_message(telegram_bot.close_button,
+                                       build_keyboard('reply', [{'Отменить заявку', 'Отменить заявку'}], one_time=True))
+
             bot_text = telegram_bot.cooperation_option_message
 
             button_list = []
