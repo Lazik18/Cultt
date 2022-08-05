@@ -31,6 +31,12 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
         if TelegramUser.objects.filter(chat_id=chat_id, bot=telegram_bot).count() == 1:
             user = TelegramUser.objects.get(chat_id=chat_id, bot=telegram_bot)
 
+            if chat_result == '/start':
+                user.step = 'start_message'
+                user.save()
+
+                SellApplication.objects.filter(user=user, active=True).delete()
+
             # Приветственное сообщение
             if user.step == 'start_message':
                 start_message(bot_id, chat_id, chat_result, type_message, message_id)
