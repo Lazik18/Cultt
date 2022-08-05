@@ -252,13 +252,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Подтверждение заявки
         def end_message():
-            if application.cooperation_option == 'trade_in':
-                cooperation_option = 'trade in'
-            else:
-                cooperation_option = 'круговорот'
-
             bot_text = 'Ваша заявка:\n\n' \
-                       f'Вариант сотрудничества: {cooperation_option}\n' \
+                       f'Вариант сотрудничества: {application.cooperation_option.name}\n' \
                        f'Имя: {application.name}\n' \
                        f'Почта: {application.email}\n' \
                        f'Телефон: {application.tel}\n' \
