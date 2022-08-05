@@ -200,10 +200,7 @@ class SellApplication(models.Model):
     is_photo = models.BooleanField(default=False)
 
     def cooperation_option_name(self):
-        if self.cooperation_option == 'circulation':
-            return 'круговорот'
-        else:
-            return 'trade in'
+        return self.cooperation_option.name
 
     def __str__(self):
         return self.user.chat_id
