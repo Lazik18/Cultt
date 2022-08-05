@@ -20,6 +20,8 @@ class TelegramBot(models.Model):
     start_button = models.TextField(verbose_name='Стартовая кнопка')
     # Отмена заявки
     close_button = models.TextField(verbose_name='Отмена заявки')
+    # Текст после отмены
+    close_message = models.TextField(verbose_name='Текст после отмены')
     # Вариант сотрудничества
     cooperation_option_message = models.TextField(default='Вариант сотрудничества', verbose_name='Вариант сотрудничества')
     # Введите имя

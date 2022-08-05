@@ -40,6 +40,10 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
                 user.step = 'start_message'
                 user.save()
 
+                bot_text = telegram_bot.close_message
+                keyboard = [{'': ''}]
+                user.send_telegram_message(bot_text, keyboard)
+
                 SellApplication.objects.filter(user=user, active=True).delete()
 
             # Приветственное сообщение
@@ -547,6 +551,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             if amo_crm_session.get_access_token('refresh_token'):
                                 amo_crm_session.create_leads_complex(application.id)
                     else:
+                        bot_text = telegram_bot.close_message
+                        keyboard = [{'': ''}]
+                        user.send_telegram_message(bot_text, keyboard)
+
                         application.delete()
 
                     user.step = 'start_message'
