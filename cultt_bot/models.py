@@ -48,6 +48,8 @@ class TelegramBot(models.Model):
     photo_message_2 = models.TextField(default='Загрузка фото №2', verbose_name='Загрузка фото №2')
     # Сообщение об успешной отправки заявки
     end_message = models.TextField(default='Сообщение об успешной отправки заявки', verbose_name='Сообщение об успешной отправки заявки')
+    # Консьерж текст
+    concierge_message = models.TextField(default='Консьерж текст', verbose_name='Консьерж текст')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
@@ -202,6 +204,8 @@ class SellApplication(models.Model):
     waiting_price = models.FloatField(default=None, blank=True, null=True)
     # Отправил ли пользователь фото
     is_photo = models.BooleanField(default=False)
+    #
+    concierge_count = models.IntegerField(default=0)
 
     def cooperation_option_name(self):
         return self.cooperation_option.name
