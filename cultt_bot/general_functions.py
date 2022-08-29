@@ -28,7 +28,7 @@ def random_string(length=10, numbers=True, letters=True):
 
 # Проверка на email
 def email_validation(email):
-    pat = "^[a-zA-Z0-9-_-.]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
+    pat = "^[a-zA-Z0-9-_.]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
 
     if re.match(pat, email):
         return True
