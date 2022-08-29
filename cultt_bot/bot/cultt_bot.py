@@ -308,7 +308,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             keyboard = build_keyboard('inline', [
                 {'Отправить': 'edit_application end_message send'},
-                {'Ошибка заявки': 'edit_application reset'}
+                {'Отменить': 'edit_application end_message delete'}
             ])
 
             user.send_telegram_message(bot_text, keyboard)
@@ -453,7 +453,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         application.category = CategoryOptions.objects.get(id=chat_result.split(' ')[2])
                         application.save()
 
-                        brand_message()
+                        if application.category.id in [10, 11]:
+                            brand_message()
+                        else:
+                            waiting_price_message()
                     else:
                         category_message()
             elif application.category.id in [10, 11]:
@@ -710,6 +713,5 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 user.send_telegram_message(telegram_bot.end_message, keyboard)
                             else:
                                 cooperation_option_message()
-
     except Exception:
         bug_trap()
