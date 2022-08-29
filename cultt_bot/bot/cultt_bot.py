@@ -345,7 +345,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Почту пользователя
         elif application.email is None:
             if type_message == 'message':
-                if email_validation(chat_result.replase('.', '')):
+                if email_validation(str(chat_result).replace('.', '')):
                     application.email = chat_result
                     application.save()
 
