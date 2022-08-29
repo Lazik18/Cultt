@@ -313,10 +313,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             user.send_telegram_message(bot_text, keyboard)
 
-            application.delete()
+            # application.delete()
 
-            user.step = 'start_message'
-            user.save()
+            # user.step = 'start_message'
+            # user.save()
 
         # Консьерж текст
         def concierge_message():
