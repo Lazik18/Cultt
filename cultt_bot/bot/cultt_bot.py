@@ -296,13 +296,13 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if application.model is not None:
                 bot_text += f'Модель: {application.model}\n'
 
-            if application.name is not None:
+            if application.state.name is not None:
                 bot_text += f'Состояние: {application.state.name}\n'
 
-            if application.name is not None:
+            if application.defect.name is not None:
                 bot_text += f'Наличие дефектов: {application.defect.name}\n'
 
-            if application.name is not None:
+            if application.waiting_price is not None:
                 bot_text += f'Ожидание по цене: {application.waiting_price}\n'
 
             keyboard = build_keyboard('inline', [
