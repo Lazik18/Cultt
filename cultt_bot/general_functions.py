@@ -89,7 +89,10 @@ def build_keyboard(type_keyboard, keyboard_list, one_time=False):
             keyboard_line = []
 
             for key, value in keyboard.items():
-                keyboard_line.append(InlineKeyboardButton(text=key, callback_data=value))
+                if 'this_url' in value:
+                    keyboard_line.append(InlineKeyboardButton(text=key, url=value.replace('this_url', '')))
+                else:
+                    keyboard_line.append(InlineKeyboardButton(text=key, callback_data=value))
 
             keyboard_button.append(keyboard_line)
 
