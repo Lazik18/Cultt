@@ -344,7 +344,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         if chat_result == 'edit_application site link':
             bot_text = telegram_bot.not_brand
             keyboard = build_keyboard('inline', [
-                {'Сайт': 'this_url_http://cultt.wemd.ru/'}
+                {'Сайт': 'this_urlhttp://cultt.wemd.ru/'}
             ])
             user.send_telegram_message(bot_text, keyboard)
         # Проверяем что еще не заполнено
