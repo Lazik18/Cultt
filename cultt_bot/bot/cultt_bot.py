@@ -273,17 +273,37 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Подтверждение заявки
         def end_message():
-            bot_text = 'Ваша заявка:\n\n' \
-                       f'Вариант сотрудничества: {application.cooperation_option.name}\n' \
-                       f'Имя: {application.name}\n' \
-                       f'Почта: {application.email}\n' \
-                       f'Телефон: {application.tel}\n' \
-                       f'Категория: {application.category.name}\n' \
-                       f'Бренд: {application.brand.name}\n' \
-                       f'Модель: {application.model}\n' \
-                       f'Состояние: {application.state.name}\n' \
-                       f'Наличие дефектов: {application.defect.name}\n' \
-                       f'Ожидание по цене: {application.waiting_price}\n'
+            bot_text = 'Ваша заявка:\n\n'
+
+            if application.cooperation_option.name is not None:
+                bot_text += f'Вариант сотрудничества: {application.cooperation_option.name}\n'
+
+            if application.name is not None:
+                bot_text += f'Имя: {application.name}\n'
+
+            if application.email is not None:
+                bot_text += f'Почта: {application.email}\n'
+
+            if application.tel is not None:
+                bot_text += f'Телефон: {application.tel}\n'
+
+            if application.category is not None:
+                bot_text += f'Категория: {application.category.name}\n'
+
+            if application.brand is not None:
+                bot_text += f'Бренд: {application.brand.name}\n'
+
+            if application.model is not None:
+                bot_text += f'Модель: {application.model}\n'
+
+            if application.name is not None:
+                bot_text += f'Состояние: {application.state.name}\n'
+
+            if application.name is not None:
+                bot_text += f'Наличие дефектов: {application.defect.name}\n'
+
+            if application.name is not None:
+                bot_text += f'Ожидание по цене: {application.waiting_price}\n'
 
             keyboard = build_keyboard('inline', [
                 {'Отправить': 'edit_application end_message send'},
