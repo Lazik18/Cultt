@@ -99,8 +99,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Вариант сотрудничества
         def cooperation_option_message():
             message = telegram_bot.close_button
-            keyboard = build_keyboard('reply', [{"Назад": "Назад"}, {'Отменить заявку': 'Отменить заявку'}],
-                                      one_time=True)
+            keyboard = build_keyboard('reply', [{'Отменить заявку': 'Отменить заявку'}], one_time=True)
             user.send_telegram_message(message, keyboard)
 
             bot_text = telegram_bot.cooperation_option_message
