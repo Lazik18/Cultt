@@ -307,7 +307,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             keyboard = build_keyboard('inline', [
                 {'Отправить': 'edit_application end_message send'},
-                {'Отменить': 'edit_application end_message delete'}
+                {'Ошибка заявки': 'edit_application reset'}
             ])
 
             user.send_telegram_message(bot_text, keyboard)

@@ -50,6 +50,8 @@ class TelegramBot(models.Model):
     end_message = models.TextField(default='Сообщение об успешной отправки заявки', verbose_name='Сообщение об успешной отправки заявки')
     # Консьерж текст
     concierge_message = models.TextField(default='Консьерж текст', verbose_name='Консьерж текст')
+    # Ошибка заполнения
+    error_applications_message = models.TextField(default='Ошибка заполнения', verbose_name='Ошибка заполнения')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
