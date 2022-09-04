@@ -442,7 +442,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 concierge_message()
         else:
             # Категория аксессуара
-            if application.category is None:
+            if application.category is None and application.concierge_count == 0:
                 if type_message == 'message':
                     category_message()
                 else:
@@ -467,7 +467,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             waiting_price_message()
                     else:
                         category_message()
-            elif application.category.id in [10, 11]:
+            elif application.category.id in [10, 11] and application.concierge_count == 0:
                 # Бренд
                 if application.brand is None and application.concierge_count == 0:
                     if type_message == 'message':
@@ -749,5 +749,3 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             cooperation_option_message()
     except Exception as ex:
         bug_trap(additional_parameter=traceback.format_exc())
-    finally:
-        user.send_telegram_message(f'{type_message}\n{chat_result}')
