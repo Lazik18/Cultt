@@ -39,11 +39,14 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
 
                 SellApplication.objects.filter(user=user, active=True).delete()
             elif chat_result == 'Отменить заявку':
-                user.step = 'start_message'
-                user.save()
+                # user.step = 'start_message'
+                # user.save()
 
                 bot_text = telegram_bot.close_message
-                user.send_telegram_message(bot_text, ReplyKeyboardRemove())
+                keyboard = build_keyboard('inline',
+                                          [{f'{telegram_bot.start_button}': 'create_application_start_button'}],
+                                          one_time=True)
+                user.send_telegram_message(bot_text, keyboard)
 
                 SellApplication.objects.filter(user=user, active=True).delete()
 
