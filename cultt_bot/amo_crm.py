@@ -89,7 +89,7 @@ class AmoCrmSession:
                         },
                         {
                             "field_id": 904323,
-                            "values": [{"value": application.brand.name or 'не указан'}, ]
+                            "values": [{"value": application.brand_name}, ]
                         },
                         {
                             "field_id": 904325,

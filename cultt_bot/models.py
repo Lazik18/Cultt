@@ -216,6 +216,9 @@ class SellApplication(models.Model):
     def cooperation_option_name(self):
         return self.cooperation_option.name
 
+    def brand_name(self):
+        return self.brand.name or 'не указан'
+
     def __str__(self):
         return self.user.chat_id
 
