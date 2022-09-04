@@ -59,6 +59,17 @@ class TelegramBot(models.Model):
     # Завершить загрузку фото
     end_photo_message = models.TextField(default='Завершить загрузку', verbose_name='Завершить загрузку фото')
 
+    # Ошибка ввода почты
+    error_email = models.TextField(default='Ошибка ввода почты', verbose_name='Ошибка ввода почты')
+    # Ошибка ввода номера телефона
+    error_phone = models.TextField(default='Ошибка ввода номера телефона', verbose_name='Ошибка ввода номера телефона')
+    # Если отправили текст вместо фото
+    error_photo = models.TextField(default='Текст вместо фото', verbose_name='Текст вместо фото')
+    # Неудачно написал имя/фамилия
+    error_name = models.TextField(default='Неудачно написал имя/фамилия', verbose_name='Неудачно написал имя/фамилия')
+    # Контакт менеджера
+    contact_manager = models.TextField(default='Контакт менеджера', verbose_name='Контакт менеджера')
+
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
         bot = telepot.Bot(self.token)
