@@ -1,3 +1,5 @@
+import traceback
+
 from cultt_bot.models import *
 from cultt_bot.general_functions import *
 
@@ -745,7 +747,5 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             user.send_telegram_message(telegram_bot.end_message, keyboard)
                         else:
                             cooperation_option_message()
-    except Exception:
-        bug_trap()
-    finally:
-        user.send_telegram_message(f'{str(chat_result)}\n\n{str(type_message)}')
+    except Exception as ex:
+        bug_trap(additional_parameter=traceback.format_exc())
