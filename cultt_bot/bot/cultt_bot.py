@@ -104,7 +104,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Вариант сотрудничества
         def cooperation_option_message():
             message = telegram_bot.close_button
-            keyboard = build_keyboard('reply', [{'Отменить заявку': 'Отменить заявку'}], one_time=True)
+            keyboard = build_keyboard('reply', [{'Отменить заявку': 'Отменить заявку'},
+                                                {'Связаться с менеджером': 'Связаться с менеджером'}],
+                                      one_time=True)
             user.send_telegram_message(message, keyboard)
 
             bot_text = telegram_bot.cooperation_option_message
@@ -354,6 +356,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             ])
             user.send_telegram_message(bot_text, keyboard)
 
+        # Для связи с менеджером
+        elif chat_result == 'Связаться с менеджером':
+            bot.sendContact(chat_id, '@thecultt', 'Менеджер')
+
         # Проверяем что еще не заполнено
         # Вариант сотрудничества
         elif application.cooperation_option is None:
@@ -376,10 +382,14 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Имя пользователя
         elif application.name is None:
             if type_message == 'message':
-                application.name = chat_result
-                application.save()
+                if len(chat_result.split(' ')) == 2:
+                    application.name = chat_result
+                    application.save()
 
-                email_message()
+                    email_message()
+                else:
+                    bot_text = telegram_bot.error_name
+                    user.send_telegram_message(bot_text)
             else:
                 try:
                     bot.deleteMessage((chat_id, message_id))
@@ -396,7 +406,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                     tel_message()
                 else:
-                    bot_text = "Некорректный email, напишите еще раз"
+                    bot_text = telegram_bot.error_email
                     user.send_telegram_message(bot_text)
             else:
                 try:
@@ -417,7 +427,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     else:
                         category_message()
                 else:
-                    bot_text = "Некорректный номер телефона, напишите еще раз"
+                    bot_text = telegram_bot.error_phone
                     user.send_telegram_message(bot_text)
             else:
                 try:
@@ -652,10 +662,13 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 if application.waiting_price is None:
                     if type_message == 'message':
                         if chat_result.isdecimal():
-                            application.waiting_price = chat_result
-                            application.save()
+                            if int(chat_result) >= 1000:
+                                application.waiting_price = chat_result
+                                application.save()
 
-                            photo_message()
+                                photo_message()
+                            else:
+                                waiting_price_message()
                         else:
                             waiting_price_message()
                     elif type_message == 'data':
@@ -711,6 +724,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             end_message()
                         else:
                             photo_message()
+                    else:
+                        bot_text = telegram_bot.error_photo
+                        user.send_telegram_message(bot_text)
                 # Подтверждение заявки
                 else:
                     if type_message == 'message':
