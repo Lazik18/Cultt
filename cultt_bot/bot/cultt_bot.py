@@ -352,9 +352,6 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             ])
             user.send_telegram_message(bot_text, keyboard)
 
-        if chat_result == 'help_to_evaluate_price':
-            application.waiting_price = 0
-            application.save()
         # Проверяем что еще не заполнено
         # Вариант сотрудничества
         elif application.cooperation_option is None:
@@ -557,6 +554,14 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             photo_message()
                         else:
                             waiting_price_message()
+                    elif type_message == 'data':
+                        if chat_result == 'help_to_evaluate_price':
+                            application.waiting_price = 0
+                            application.save()
+
+                            photo_message()
+                        else:
+                            waiting_price_message()
                     else:
                         try:
                             bot.deleteMessage((chat_id, message_id))
@@ -641,6 +646,14 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     if type_message == 'message':
                         if chat_result.isdecimal():
                             application.waiting_price = chat_result
+                            application.save()
+
+                            photo_message()
+                        else:
+                            waiting_price_message()
+                    elif type_message == 'data':
+                        if chat_result == 'help_to_evaluate_price':
+                            application.waiting_price = 0
                             application.save()
 
                             photo_message()
