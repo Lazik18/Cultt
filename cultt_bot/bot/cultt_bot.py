@@ -39,8 +39,8 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
 
                 SellApplication.objects.filter(user=user, active=True).delete()
             elif chat_result == 'Отменить заявку':
-                # user.step = 'start_message'
-                # user.save()
+                user.step = 'pass'
+                user.save()
 
                 bot_text = telegram_bot.close_message
                 keyboard = build_keyboard('inline',
@@ -55,6 +55,8 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
                 start_message(bot_id, chat_id, chat_result, type_message, message_id)
             elif user.step == 'create_application':
                 create_application(bot_id, chat_id, chat_result, type_message, message_id)
+            elif user.step == 'pass':
+                pass
             else:
                 user.send_telegram_message('Ошибка шага')
         else:
