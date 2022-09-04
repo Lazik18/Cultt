@@ -222,6 +222,9 @@ class SellApplication(models.Model):
     def state_name(self):
         return self.state.name or 'не указано'
 
+    def defect_name(self):
+        return self.defect.name or 'не указано'
+
     def __str__(self):
         return self.user.chat_id
 

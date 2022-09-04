@@ -101,7 +101,7 @@ class AmoCrmSession:
                         },
                         {
                             "field_id": 904329,
-                            "values": [{"value": application.defect.name}, ]
+                            "values": [{"value": application.defect_name}, ]
                         },
                         {
                             "field_id": 904331,
