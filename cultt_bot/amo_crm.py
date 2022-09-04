@@ -84,10 +84,10 @@ class AmoCrmSession:
                                 "field_id": 904315,
                                 "values": [{"value": application.cooperation_option_name()}, ]
                             },
-                            # {
-                            #     "field_id": 904335,
-                            #     "values": [{"value": str(application.concierge_count)}, ]
-                            # }
+                            {
+                                "field_id": 904727,
+                                "values": [{"value": str(application.concierge_count)}, ]
+                            }
                         ]
                     }],
                     "contacts": [{
