@@ -80,10 +80,10 @@ class AmoCrmSession:
                         "name": "Заявка из TelegramBot",
                         "created_by": 0,
                         "custom_fields_values": [
-                            {
-                                "field_id": 904315,
-                                "values": [{"value": application.cooperation_option_name()}, ]
-                            },
+                            # {
+                            #     "field_id": 904315,
+                            #     "values": [{"value": application.cooperation_option_name()}, ]
+                            # },
                             {
                                 "field_id": 904335,
                                 "values": [{"value": str(application.concierge_count)}, ]
