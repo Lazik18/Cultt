@@ -511,6 +511,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                         state_message()
                     else:
+                        try:
+                            bot.deleteMessage((chat_id, message_id))
+                        except telepot.exception.TelegramError:
+                            pass
+
                         if 'not_know_model' in chat_result:
                             application.model = '-'
                             application.save()
