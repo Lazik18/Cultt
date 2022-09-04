@@ -81,7 +81,7 @@ class AmoCrmSession:
                     "custom_fields_values": [
                         {
                             "field_id": 904315,
-                            "values": [{"value": application.cooperation_option_name()}, ]
+                            "values": [{"value": application.cooperation_option_name}, ]
                         },
                         {
                             "field_id": 904321,
@@ -97,7 +97,7 @@ class AmoCrmSession:
                         },
                         {
                             "field_id": 904327,
-                            "values": [{"value": application.state.name}, ]
+                            "values": [{"value": application.state_name}, ]
                         },
                         {
                             "field_id": 904329,
