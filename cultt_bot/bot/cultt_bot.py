@@ -274,7 +274,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 bot_text = telegram_bot.photo_message_2
 
                 keyboard = build_keyboard('inline', [
-                    {'Завершить отправку': 'edit_application is_photo True'}
+                    {telegram_bot.end_photo_message: 'edit_application is_photo True'}
                 ])
 
                 user.send_telegram_message(bot_text, keyboard)

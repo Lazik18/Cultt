@@ -56,6 +56,8 @@ class TelegramBot(models.Model):
     not_brand = models.TextField(default='Нет нужного бренда', verbose_name='Нет нужного бренда')
     # Не знаю. Помогите оценить
     help_to_evaluate = models.TextField(default='Не знаю. Помогите оценить', verbose_name='Не знаю. Помогите оценить')
+    # Завершить загрузку фото
+    end_photo_message = models.TextField(default='Завершить загрузку', verbose_name='Завершить загрузку фото')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
