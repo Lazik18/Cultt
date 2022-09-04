@@ -478,7 +478,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             waiting_price_message()
                     else:
                         category_message()
-            elif application.category.id in [10, 11] and application.concierge_count == 0:
+            elif application.concierge_count == 0 and application.category.id in [10, 11]:
                 # Бренд
                 if application.brand is None and application.concierge_count == 0:
                     if type_message == 'message':
