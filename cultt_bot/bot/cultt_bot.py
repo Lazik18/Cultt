@@ -358,7 +358,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Для связи с менеджером
         elif chat_result == 'Связаться с менеджером':
-            bot.sendContact(chat_id, '@thecultt', 'Менеджер')
+            bot.sendContact(chat_id, '89991576806', 'Менеджер')
 
         # Проверяем что еще не заполнено
         # Вариант сотрудничества
