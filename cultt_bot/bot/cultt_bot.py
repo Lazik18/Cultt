@@ -353,7 +353,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             user.send_telegram_message(bot_text, keyboard)
 
         if chat_result == 'help_to_evaluate_price':
-            application.waiting_price = chat_result
+            application.waiting_price = 'Нужна помощь'
             application.save()
         # Проверяем что еще не заполнено
         # Вариант сотрудничества
