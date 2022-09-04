@@ -454,7 +454,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 concierge_message()
         else:
             # Категория аксессуара
-            if application.category is None and application.concierge_count == 0:
+            if application.category is None:
                 if type_message == 'message':
                     category_message()
                 else:
@@ -479,9 +479,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             waiting_price_message()
                     else:
                         category_message()
-            elif application.concierge_count == 0 and application.category.id in [10, 11]:
+            elif application.category.id in [10, 11]:
                 # Бренд
-                if application.brand is None and application.concierge_count == 0:
+                if application.brand is None:
                     if type_message == 'message':
                         brand_message()
                     else:
@@ -504,7 +504,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         else:
                             brand_message()
                 # Модель
-                elif application.model is None and application.concierge_count == 0:
+                elif application.model is None:
                     if type_message == 'message':
                         application.model = chat_result
                         application.save()
@@ -529,7 +529,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                             model_message()
                 # Состояние
-                elif application.state is None and application.concierge_count == 0:
+                elif application.state is None:
                     if type_message == 'message':
                         state_message()
                     else:
@@ -552,7 +552,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                             state_message()
                 # Наличие дефектов
-                elif application.defect is None and application.concierge_count == 0:
+                elif application.defect is None:
                     if type_message == 'message':
                         state_message()
                     else:
@@ -570,7 +570,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         else:
                             defect_message()
                 # Ожидание по цене
-                elif application.waiting_price is None and application.concierge_count == 0:
+                elif application.waiting_price is None:
                     if type_message == 'message':
                         if chat_result.isdecimal():
                             if int(chat_result) >= 1000:
@@ -603,7 +603,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                         waiting_price_message()
                 # Отправка фотографий
-                elif not application.is_photo and application.concierge_count == 0:
+                elif not application.is_photo:
                     if type_message == 'photo':
                         # Скачиваем фото
                         path = Path(f'application_image/{chat_result}.jpg')
