@@ -358,7 +358,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Для связи с менеджером
         elif chat_result == 'Связаться с менеджером':
-            bot.sendContact(chat_id, '89991576806', 'Менеджер')
+            bot_text = telegram_bot.contact_manager
+            user.send_telegram_message(bot_text)
 
         # Проверяем что еще не заполнено
         # Вариант сотрудничества

@@ -67,6 +67,8 @@ class TelegramBot(models.Model):
     error_photo = models.TextField(default='Текст вместо фото', verbose_name='Текст вместо фото')
     # Неудачно написал имя/фамилия
     error_name = models.TextField(default='Неудачно написал имя/фамилия', verbose_name='Неудачно написал имя/фамилия')
+    # Контакт менеджера
+    contact_manager = models.TextField(default='Контакт менеджера', verbose_name='Контакт менеджера')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
