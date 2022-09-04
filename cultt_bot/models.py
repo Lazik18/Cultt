@@ -54,6 +54,8 @@ class TelegramBot(models.Model):
     error_applications_message = models.TextField(default='Ошибка заполнения', verbose_name='Ошибка заполнения')
     # Нет нужного бренда
     not_brand = models.TextField(default='Нет нужного бренда', verbose_name='Нет нужного бренда')
+    # Не знаю. Помогите оценить
+    help_to_evaluate = models.TextField(default='Не знаю. Помогите оценить', verbose_name='Не знаю. Помогите оценить')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):

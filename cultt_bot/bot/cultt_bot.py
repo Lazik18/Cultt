@@ -257,8 +257,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Введите ожидания по цене
         def waiting_price_message():
+            keyboard = build_keyboard('inline', [{f'{telegram_bot.help_to_evaluate}': 'help_to_evaluate_price'}],
+                                      one_time=True)
             bot_text = telegram_bot.waiting_price_message
-            user.send_telegram_message(bot_text)
+            user.send_telegram_message(bot_text, keyboard)
 
         # Загрузка фото
         def photo_message(photo=False):
@@ -349,6 +351,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 {'Сайт': 'this_urlhttp://cultt.wemd.ru/'}
             ])
             user.send_telegram_message(bot_text, keyboard)
+
+        if chat_result == 'help_to_evaluate_price':
+            application.waiting_price = chat_result
+            application.save()
         # Проверяем что еще не заполнено
         # Вариант сотрудничества
         elif application.cooperation_option is None:
