@@ -85,32 +85,8 @@ class AmoCrmSession:
                                 "values": [{"value": application.cooperation_option_name()}, ]
                             },
                             {
-                                "field_id": 904321,
-                                "values": [{"value": application.category.name}, ]
-                            },
-                            {
-                                "field_id": 904323,
-                                "values": [{"value": application.brand_name()}, ]
-                            },
-                            {
-                                "field_id": 904325,
-                                "values": [{"value": application.model}, ]
-                            },
-                            {
-                                "field_id": 904327,
-                                "values": [{"value": application.state_name()}, ]
-                            },
-                            {
-                                "field_id": 904329,
-                                "values": [{"value": application.defect_name()}, ]
-                            },
-                            {
-                                "field_id": 904331,
-                                "values": [{"value": str(application.waiting_price)}, ]
-                            },
-                            {
-                                "field_id": 904333,
-                                "values": [{"value": f"https://culttbot.ru/views/application/{application.id}"}, ]
+                                "field_id": 904335,
+                                "values": [{"value": str(application.concierge_count)}, ]
                             }
                         ]
                     }],
