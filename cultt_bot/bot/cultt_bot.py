@@ -427,7 +427,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 tel_message()
         # Если ветка консьерж
-        elif 'консьерж' in application.cooperation_option.name.lower():
+        elif 'консьерж' in application.cooperation_option.name.lower() and application.concierge_count == 0:
             if type_message == 'message':
                 application.concierge_count = chat_result
                 application.save()

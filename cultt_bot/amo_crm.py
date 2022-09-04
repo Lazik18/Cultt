@@ -71,7 +71,73 @@ class AmoCrmSession:
         presentDate = datetime.datetime.now()
         unix_timestamp = datetime.datetime.timestamp(presentDate) * 1000
 
-        data = [{
+        if application.cooperation_option.name.lower() == 'консьерж':
+            data = [{
+                "source_uid": "telegram bot",
+                "source_name": "Заявка из TelegramBot",
+                "_embedded": {
+                    "leads": [{
+                        "name": "Заявка из TelegramBot",
+                        "created_by": 0,
+                        "custom_fields_values": [
+                            {
+                                "field_id": 904315,
+                                "values": [{"value": application.cooperation_option_name()}, ]
+                            },
+                            {
+                                "field_id": 904321,
+                                "values": [{"value": application.category.name}, ]
+                            },
+                            {
+                                "field_id": 904323,
+                                "values": [{"value": application.brand_name()}, ]
+                            },
+                            {
+                                "field_id": 904325,
+                                "values": [{"value": application.model}, ]
+                            },
+                            {
+                                "field_id": 904327,
+                                "values": [{"value": application.state_name()}, ]
+                            },
+                            {
+                                "field_id": 904329,
+                                "values": [{"value": application.defect_name()}, ]
+                            },
+                            {
+                                "field_id": 904331,
+                                "values": [{"value": str(application.waiting_price)}, ]
+                            },
+                            {
+                                "field_id": 904333,
+                                "values": [{"value": f"https://culttbot.ru/views/application/{application.id}"}, ]
+                            }
+                        ]
+                    }],
+                    "contacts": [{
+                        "first_name": application.name,
+                        "custom_fields_values": [
+                            {
+                                "field_id": 67725,
+                                "values": [{"value": application.tel}, ]
+                            },
+                            {
+                                "field_id": 67727,
+                                "values": [{"value": application.email}, ]
+                            }
+                        ]
+                    }]
+                },
+                "metadata": {
+                    "form_id": "telegram bot",
+                    "form_name": "telegram bot",
+                    "form_page": "telegram bot",
+                    "form_sent_at": int(unix_timestamp),
+                    "referer": "telegram bot"
+                }
+            }]
+        else:
+            data = [{
             "source_uid": "telegram bot",
             "source_name": "Заявка из TelegramBot",
             "_embedded": {
