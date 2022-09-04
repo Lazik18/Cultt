@@ -559,6 +559,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             application.waiting_price = 0
                             application.save()
 
+                            try:
+                                bot.deleteMessage((chat_id, message_id))
+                            except telepot.exception.TelegramError:
+                                pass
+
                             photo_message()
                         else:
                             waiting_price_message()
@@ -655,6 +660,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         if chat_result == 'help_to_evaluate_price':
                             application.waiting_price = 0
                             application.save()
+
+                            try:
+                                bot.deleteMessage((chat_id, message_id))
+                            except telepot.exception.TelegramError:
+                                pass
 
                             photo_message()
                         else:
