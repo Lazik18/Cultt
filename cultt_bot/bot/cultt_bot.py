@@ -213,7 +213,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Ввод модели
         def model_message():
             bot_text = telegram_bot.model_message
-            user.send_telegram_message(bot_text)
+            keyboard = build_keyboard('inline', [{'Я не знаю модель': 'not_know_model'}])
+            user.send_telegram_message(bot_text, keyboard)
 
         # Выбор состояние
         def state_message():
@@ -510,12 +511,18 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                         state_message()
                     else:
-                        try:
-                            bot.deleteMessage((chat_id, message_id))
-                        except telepot.exception.TelegramError:
-                            pass
+                        if 'not_know_model' in chat_result:
+                            application.model = '-'
+                            application.save()
 
-                        model_message()
+                            state_message()
+                        else:
+                            try:
+                                bot.deleteMessage((chat_id, message_id))
+                            except telepot.exception.TelegramError:
+                                pass
+
+                            model_message()
                 # Состояние
                 elif application.state is None and application.concierge_count == 0:
                     if type_message == 'message':
