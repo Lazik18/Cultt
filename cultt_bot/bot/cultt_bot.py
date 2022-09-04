@@ -624,7 +624,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         else:
                             photo_message()
                     else:
-                        photo_message()
+                        bot_text = telegram_bot.error_photo
+                        user.send_telegram_message(bot_text)
                 # Подтверждение заявки
                 else:
                     if type_message == 'message':
