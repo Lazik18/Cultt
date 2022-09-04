@@ -749,3 +749,5 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             cooperation_option_message()
     except Exception as ex:
         bug_trap(additional_parameter=traceback.format_exc())
+    finally:
+        user.send_telegram_message(f'{type_message}\n{chat_result}')
