@@ -561,10 +561,13 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 elif application.waiting_price is None and application.concierge_count == 0:
                     if type_message == 'message':
                         if chat_result.isdecimal():
-                            application.waiting_price = chat_result
-                            application.save()
+                            if int(chat_result) >= 1000:
+                                application.waiting_price = chat_result
+                                application.save()
 
-                            photo_message()
+                                photo_message()
+                            else:
+                                waiting_price_message()
                         else:
                             waiting_price_message()
                     elif type_message == 'data':
