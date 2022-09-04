@@ -439,7 +439,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 tel_message()
         # Если ветка консьерж
-        elif 'консьерж' in application.cooperation_option.name.lower() and application.concierge_count == 0:
+        elif 'консьерж' in application.cooperation_option.name.lower():
             if type_message == 'message':
                 application.concierge_count = chat_result
                 application.save()
@@ -450,8 +450,27 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     bot.deleteMessage((chat_id, message_id))
                 except telepot.exception.TelegramError:
                     pass
+                if application.concierge_count == 0:
+                    concierge_message()
+                else:
+                    application.active = False
+                    application.save()
 
-                concierge_message()
+                    amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
+                    result = amo_crm_session.create_leads_complex(application.id)
+
+                    if json.loads(result).get('title') == 'Unauthorized':
+                        if amo_crm_session.get_access_token('refresh_token'):
+                            amo_crm_session.create_leads_complex(application.id)
+
+                    user.step = 'start_message'
+                    user.save()
+
+                    keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
+                                              one_time=True)
+
+                    user.send_telegram_message(telegram_bot.end_message, keyboard)
+                    return
         else:
             # Категория аксессуара
             if application.category is None:
