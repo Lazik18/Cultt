@@ -73,7 +73,7 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
                                       one_time=True)
             bot_text = telegram_bot.start_message
 
-            if user.step == 'create_application':
+            if user.step == 'cancel_application':
                 bot_text = telegram_bot.close_message
 
             user.send_telegram_message(bot_text, keyboard)
