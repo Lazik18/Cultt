@@ -726,6 +726,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                     application.active = False
                                     application.save()
 
+                                    user.send_telegram_message('TEEEST')
+
                                     amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
                                     result = amo_crm_session.create_leads_complex(application.id)
 
