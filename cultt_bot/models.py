@@ -217,13 +217,22 @@ class SellApplication(models.Model):
         return self.cooperation_option.name
 
     def brand_name(self):
-        return self.brand.name or 'не указан'
+        try:
+            return self.brand.name or 'не указан'
+        except AttributeError:
+            return 'не указан'
 
     def state_name(self):
-        return self.state.name or 'не указано'
+        try:
+            return self.state.name or 'не указано'
+        except AttributeError:
+            return 'не указано'
 
     def defect_name(self):
-        return self.defect.name or 'не указано'
+        try:
+            return self.defect.name or 'не указано'
+        except AttributeError:
+            return 'не указано'
 
     def __str__(self):
         return self.user.chat_id
