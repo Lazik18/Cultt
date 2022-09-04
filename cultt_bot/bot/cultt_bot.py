@@ -709,42 +709,42 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             end_message()
                         else:
                             photo_message()
-                    # Подтверждение заявки
+                # Подтверждение заявки
+                else:
+                    if type_message == 'message':
+                        end_message()
                     else:
-                        if type_message == 'message':
-                            end_message()
-                        else:
-                            try:
-                                bot.deleteMessage((chat_id, message_id))
-                            except telepot.exception.TelegramError:
-                                pass
+                        try:
+                            bot.deleteMessage((chat_id, message_id))
+                        except telepot.exception.TelegramError:
+                            pass
 
-                            if 'end_message' in chat_result:
-                                if 'send' in chat_result:
-                                    application.active = False
-                                    application.save()
+                        if 'end_message' in chat_result:
+                            if 'send' in chat_result:
+                                application.active = False
+                                application.save()
 
-                                    amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
-                                    result = amo_crm_session.create_leads_complex(application.id)
+                                amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
+                                result = amo_crm_session.create_leads_complex(application.id)
 
-                                    if json.loads(result).get('title') == 'Unauthorized':
-                                        if amo_crm_session.get_access_token('refresh_token'):
-                                            amo_crm_session.create_leads_complex(application.id)
-                                else:
-                                    bot_text = telegram_bot.close_message
-                                    user.send_telegram_message(bot_text, ReplyKeyboardRemove())
-
-                                    application.delete()
-
-                                user.step = 'start_message'
-                                user.save()
-
-                                keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
-                                                          one_time=True)
-
-                                user.send_telegram_message(telegram_bot.end_message, keyboard)
+                                if json.loads(result).get('title') == 'Unauthorized':
+                                    if amo_crm_session.get_access_token('refresh_token'):
+                                        amo_crm_session.create_leads_complex(application.id)
                             else:
-                                cooperation_option_message()
+                                bot_text = telegram_bot.close_message
+                                user.send_telegram_message(bot_text, ReplyKeyboardRemove())
+
+                                application.delete()
+
+                            user.step = 'start_message'
+                            user.save()
+
+                            keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
+                                                      one_time=True)
+
+                            user.send_telegram_message(telegram_bot.end_message, keyboard)
+                        else:
+                            cooperation_option_message()
     except Exception:
         bug_trap()
     finally:
