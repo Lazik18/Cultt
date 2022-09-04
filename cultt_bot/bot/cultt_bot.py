@@ -627,8 +627,6 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
                                 result = amo_crm_session.create_leads_complex(application.id)
 
-                                user.send_telegram_message(str(result))
-
                                 if json.loads(result).get('title') == 'Unauthorized':
                                     if amo_crm_session.get_access_token('refresh_token'):
                                         amo_crm_session.create_leads_complex(application.id)
@@ -726,12 +724,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                     application.active = False
                                     application.save()
 
-                                    user.send_telegram_message('TEEEST')
-
                                     amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
                                     result = amo_crm_session.create_leads_complex(application.id)
-
-                                    user.send_telegram_message(str(result))
 
                                     if json.loads(result).get('title') == 'Unauthorized':
                                         if amo_crm_session.get_access_token('refresh_token'):
@@ -753,3 +747,5 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 cooperation_option_message()
     except Exception:
         bug_trap()
+    finally:
+        user.send_telegram_message(f'{str(chat_result)}\n\n{str(type_message)}')
