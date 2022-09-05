@@ -469,7 +469,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     user.step = 'start_message'
                     user.save()
 
-                    keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
+                    keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application_start_button'}],
                                               one_time=True)
 
                     user.send_telegram_message(telegram_bot.end_message, keyboard)
