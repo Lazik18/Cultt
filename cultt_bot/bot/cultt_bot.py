@@ -110,7 +110,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                                 {'Связаться с менеджером': 'Связаться с менеджером'}],
                                       one_time=True)
             user.send_telegram_message(message, keyboard)
-            user.send_telegram_message(message, keyboard)
+            # user.send_telegram_message(message, keyboard)
 
             bot_text = telegram_bot.cooperation_option_message
 
