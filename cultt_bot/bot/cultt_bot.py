@@ -43,9 +43,6 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
             elif chat_result == 'Отменить заявку':
                 user.step = 'cancel_application'
                 user.save()
-                keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
-                                          one_time=True)
-                user.send_telegram_message('Заявка отменена', keyboard=keyboard)
                 SellApplication.objects.filter(user=user, active=True).delete()
 
             # Приветственное сообщение
