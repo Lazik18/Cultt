@@ -43,7 +43,6 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
             elif chat_result == 'Отменить заявку':
                 user.step = 'cancel_application'
                 user.save()
-
                 SellApplication.objects.filter(user=user, active=True).delete()
 
             # Приветственное сообщение
@@ -76,6 +75,9 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
             bot_text = telegram_bot.start_message
 
             if user.step == 'cancel_application':
+                keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
+                                          one_time=True)
+                user.send_telegram_message('Заявка отменена', keyboard)
                 bot_text = telegram_bot.close_message
 
             user.send_telegram_message(bot_text, keyboard)
@@ -107,6 +109,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             keyboard = build_keyboard('reply', [{'Отменить заявку': 'Отменить заявку'},
                                                 {'Связаться с менеджером': 'Связаться с менеджером'}],
                                       one_time=True)
+            user.send_telegram_message(message, keyboard)
             user.send_telegram_message(message, keyboard)
 
             bot_text = telegram_bot.cooperation_option_message
