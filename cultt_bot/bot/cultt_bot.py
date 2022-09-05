@@ -75,9 +75,6 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
             bot_text = telegram_bot.start_message
 
             if user.step == 'cancel_application':
-                keyboard1 = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application_start_button'}],
-                                          one_time=True)
-                user.send_telegram_message('Заявка отменена', keyboard1)
                 bot_text = telegram_bot.close_message
 
             user.send_telegram_message(bot_text, keyboard)
