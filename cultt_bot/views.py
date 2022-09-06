@@ -53,6 +53,10 @@ def web_hook_bot(request, bot_url):
                     message_id = data['message']['message_id']
 
                     bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
+                elif 'document' in data['message'].keys():
+                    chat_id = data['message']['chat']['id']
+
+                    telegram_bot.send_telegram_message(chat_id, 'Бот не поддерживает отправку файлов')
 
             return HttpResponse('ok', content_type="text/plain", status=200)
         else:
