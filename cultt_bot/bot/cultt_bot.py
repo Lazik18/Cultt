@@ -326,6 +326,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if application.waiting_price is not None:
                 bot_text += f'Ожидание по цене: {application.waiting_price}\n'  # TODO: в словарь
 
+            if application.concierge_count is not None:
+                bot_text += f'Количество товаров для продажи: {application.concierge_count}\n'  # TODO: в словарь
+
             keyboard = build_keyboard('inline', [
                 {'Отправить': 'edit_application end_message send'},  # TODO: в словарь
                 # {'Отменить': 'edit_application end_message delete'}
