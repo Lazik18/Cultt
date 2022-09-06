@@ -614,9 +614,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                                 photo_message()
                             else:
-                                waiting_price_message()
+                                waiting_price_message(incorrect='small')
                         else:
-                            waiting_price_message()
+                            waiting_price_message(incorrect='not_decimal')
                     elif type_message == 'data':
                         if chat_result == 'help_to_evaluate_price':
                             application.waiting_price = 0
@@ -720,9 +720,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                                 photo_message()
                             else:
-                                waiting_price_message()
+                                waiting_price_message(incorrect='small')
                         else:
-                            waiting_price_message()
+                            waiting_price_message(incorrect='not_decimal')
                     elif type_message == 'data':
                         if chat_result == 'help_to_evaluate_price':
                             application.waiting_price = 0
