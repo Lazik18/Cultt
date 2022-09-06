@@ -78,7 +78,7 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
                 bot_text = telegram_bot.close_message
                 user.step = 'start_message'
                 user.save()
-                keyboard1 = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
+                keyboard1 = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application_start_button'}],
                                           one_time=True)
                 user.send_telegram_message('Заявка отменена', keyboard=keyboard1)  # TODO: в словарь
 
