@@ -42,6 +42,10 @@ class TelegramBot(models.Model):
     defect_message = models.TextField(default='Выбор наличие дефектов', verbose_name='Выбор наличие дефектов')
     # Введите ожидания по цене
     waiting_price_message = models.TextField(default='Введите ожидания по цене', verbose_name='Введите ожидания по цене')
+    # Введите ожидания по цене, если сумма < 1000
+    waiting_price_message_incorrect_small = models.TextField(default='Цена должна быть не менее 1000', verbose_name='Введите ожидания по цене, если сумма < 1000')
+    # Введите ожидания по цене, если введены не числа
+    waiting_price_message_incorrect_decimal = models.TextField(default='Неправильный ввод', verbose_name='Введите ожидания по цене , если введены не числа')
     # Загрузка фото №1
     photo_message_1 = models.TextField(default='Загрузка фото №1', verbose_name='Загрузка фото №1')
     # Загрузка фото №2

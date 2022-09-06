@@ -40,7 +40,7 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
                 user.save()
 
                 SellApplication.objects.filter(user=user, active=True).delete()
-            elif chat_result == 'Отменить заявку':
+            elif chat_result == 'Отменить заявку':  # TODO: в словарь
                 user.step = 'cancel_application'
                 user.save()
                 SellApplication.objects.filter(user=user, active=True).delete()
@@ -53,9 +53,9 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
             elif user.step == 'cancel_application':
                 start_message(bot_id, chat_id, chat_result, type_message, message_id)
             else:
-                user.send_telegram_message('Ошибка шага')
+                user.send_telegram_message('Ошибка шага')  # TODO: в словарь
         else:
-            bot.sendMessage(chat_id=chat_id, text='Ошибка пользователя')
+            bot.sendMessage(chat_id=chat_id, text='Ошибка пользователя')  # TODO: в словарь
 
     except Exception:
         bug_trap()
@@ -80,7 +80,7 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
                 user.save()
                 keyboard1 = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
                                           one_time=True)
-                user.send_telegram_message('Заявка отменена', keyboard=keyboard1)
+                user.send_telegram_message('Заявка отменена', keyboard=keyboard1)  # TODO: в словарь
 
             user.send_telegram_message(bot_text, keyboard)
         else:
@@ -108,8 +108,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Вариант сотрудничества
         def cooperation_option_message():
             message = telegram_bot.close_button
-            keyboard = build_keyboard('reply', [{'Отменить заявку': 'Отменить заявку'},
-                                                {'Связаться с менеджером': 'Связаться с менеджером'}],
+            keyboard = build_keyboard('reply', [{'Отменить заявку': 'Отменить заявку'},  # TODO: в словарь
+                                                {'Связаться с менеджером': 'Связаться с менеджером'}],  # TODO: в словарь
                                       one_time=True)
             user.send_telegram_message(message, keyboard)
             # user.send_telegram_message(message, keyboard)
@@ -208,9 +208,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 if len(line_button) != 0:
                     button_list.append(line_button)
 
-                button_list.append({'Назад': 'edit_application'})
+                button_list.append({'Назад': 'edit_application'})  # TODO: в словарь
 
-                button_list.append({'Нужный бренд не указан': 'edit_application site link'})
+                button_list.append({'Нужный бренд не указан': 'edit_application site link'})  # TODO: в словарь
 
             keyboard = build_keyboard('inline', button_list)
             user.send_telegram_message(bot_text, keyboard)
@@ -218,7 +218,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Ввод модели
         def model_message():
             bot_text = telegram_bot.model_message
-            keyboard = build_keyboard('inline', [{'Я не знаю модель': 'not_know_model'}])
+            keyboard = build_keyboard('inline', [{'Я не знаю модель': 'not_know_model'}])  # TODO: в словарь
             user.send_telegram_message(bot_text, keyboard)
 
         # Выбор состояние
@@ -266,10 +266,15 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             user.send_telegram_message(bot_text, keyboard)
 
         # Введите ожидания по цене
-        def waiting_price_message():
+        def waiting_price_message(incorrect=None):
             keyboard = build_keyboard('inline', [{f'{telegram_bot.help_to_evaluate}': 'help_to_evaluate_price'}],
                                       one_time=True)
-            bot_text = telegram_bot.waiting_price_message
+            if incorrect == 'not_decimal':
+                bot_text = telegram_bot.waiting_price_message_incorrect_decimal
+            elif incorrect == 'small':
+                bot_text = telegram_bot.waiting_price_message_incorrect_small
+            else:
+                bot_text = telegram_bot.waiting_price_message
             user.send_telegram_message(bot_text, keyboard)
 
         # Загрузка фото
@@ -289,40 +294,40 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Подтверждение заявки
         def end_message():
-            bot_text = 'Ваша заявка:\n\n'
+            bot_text = 'Ваша заявка:\n\n'  # TODO: в словарь
 
             if application.cooperation_option.name is not None:
-                bot_text += f'Вариант сотрудничества: {application.cooperation_option.name}\n'
+                bot_text += f'Вариант сотрудничества: {application.cooperation_option.name}\n'  # TODO: в словарь
 
             if application.name is not None:
-                bot_text += f'Имя: {application.name}\n'
+                bot_text += f'Имя: {application.name}\n'  # TODO: в словарь
 
             if application.email is not None:
-                bot_text += f'Почта: {application.email}\n'
+                bot_text += f'Почта: {application.email}\n'  # TODO: в словарь
 
             if application.tel is not None:
-                bot_text += f'Телефон: {application.tel}\n'
+                bot_text += f'Телефон: {application.tel}\n'  # TODO: в словарь
 
             if application.category is not None:
-                bot_text += f'Категория: {application.category.name}\n'
+                bot_text += f'Категория: {application.category.name}\n'  # TODO: в словарь
 
             if application.brand is not None:
-                bot_text += f'Бренд: {application.brand.name}\n'
+                bot_text += f'Бренд: {application.brand.name}\n'  # TODO: в словарь
 
             if application.model is not None:
-                bot_text += f'Модель: {application.model}\n'
+                bot_text += f'Модель: {application.model}\n'  # TODO: в словарь
 
             if application.state is not None:
-                bot_text += f'Состояние: {application.state.name}\n'
+                bot_text += f'Состояние: {application.state.name}\n'  # TODO: в словарь
 
             if application.defect is not None:
-                bot_text += f'Наличие дефектов: {application.defect.name}\n'
+                bot_text += f'Наличие дефектов: {application.defect.name}\n'  # TODO: в словарь
 
             if application.waiting_price is not None:
-                bot_text += f'Ожидание по цене: {application.waiting_price}\n'
+                bot_text += f'Ожидание по цене: {application.waiting_price}\n'  # TODO: в словарь
 
             keyboard = build_keyboard('inline', [
-                {'Отправить': 'edit_application end_message send'},
+                {'Отправить': 'edit_application end_message send'},  # TODO: в словарь
                 # {'Отменить': 'edit_application end_message delete'}
             ])
 
@@ -358,12 +363,12 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         if chat_result == 'edit_application site link':
             bot_text = telegram_bot.not_brand
             keyboard = build_keyboard('inline', [
-                {'Сайт': 'this_urlhttp://cultt.wemd.ru/'}
+                {'Сайт': 'this_urlhttp://cultt.wemd.ru/'}  # TODO: в словарь
             ])
             user.send_telegram_message(bot_text, keyboard)
 
         # Для связи с менеджером
-        elif chat_result == 'Связаться с менеджером':
+        elif chat_result == 'Связаться с менеджером':  # TODO: в словарь
             bot_text = telegram_bot.contact_manager
             user.send_telegram_message(bot_text)
 
@@ -429,7 +434,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     application.tel = chat_result
                     application.save()
 
-                    if 'консьерж' in application.cooperation_option.name.lower():
+                    if 'консьерж' in application.cooperation_option.name.lower():  # TODO: в словарь
                         concierge_message()
                     else:
                         category_message()
@@ -444,7 +449,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 tel_message()
         # Если ветка консьерж
-        elif 'консьерж' in application.cooperation_option.name.lower():
+        elif 'консьерж' in application.cooperation_option.name.lower():  # TODO: в словарь
             if type_message == 'message':
                 application.concierge_count = chat_result
                 application.save()
