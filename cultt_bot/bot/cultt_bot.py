@@ -40,7 +40,7 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
                 user.save()
 
                 SellApplication.objects.filter(user=user, active=True).delete()
-            elif chat_result == 'Отменить заявку':  # TODO: в словарь
+            elif chat_result == telegram_bot.cancel_applications:
                 user.step = 'cancel_application'
                 user.save()
                 SellApplication.objects.filter(user=user, active=True).delete()
@@ -56,9 +56,9 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
             elif user.step == 'cancel_application':
                 start_message(bot_id, chat_id, chat_result, type_message, message_id)
             else:
-                user.send_telegram_message('Ошибка шага')  # TODO: в словарь
+                user.send_telegram_message('Error step')
         else:
-            bot.sendMessage(chat_id=chat_id, text='Ошибка пользователя')  # TODO: в словарь
+            bot.sendMessage(chat_id=chat_id, text='Error user')
 
     except Exception:
         bug_trap()
@@ -111,8 +111,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Вариант сотрудничества
         def cooperation_option_message():
             message = telegram_bot.close_button
-            keyboard = build_keyboard('reply', [{'Отменить заявку': 'Отменить заявку'},  # TODO: в словарь
-                                                {'Связаться с менеджером': 'Связаться с менеджером'}],  # TODO: в словарь
+            keyboard = build_keyboard('reply', [{telegram_bot.cancel_applications: telegram_bot.cancel_applications},
+                                                {telegram_bot.contact_to_manager: telegram_bot.contact_to_manager}],
                                       one_time=True)
             user.send_telegram_message(message, keyboard)
             # user.send_telegram_message(message, keyboard)
@@ -211,9 +211,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 if len(line_button) != 0:
                     button_list.append(line_button)
 
-                button_list.append({'Назад': 'edit_application'})  # TODO: в словарь
+                button_list.append({telegram_bot.brand_back_button: 'edit_application'})
 
-                button_list.append({'Нужный бренд не указан': 'edit_application site link'})  # TODO: в словарь
+                button_list.append({telegram_bot.brand_not_found: 'edit_application site link'})
 
             keyboard = build_keyboard('inline', button_list)
             user.send_telegram_message(bot_text, keyboard)
@@ -297,40 +297,40 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Подтверждение заявки
         def end_message():
-            bot_text = 'Ваша заявка:\n\n'  # TODO: в словарь
+            bot_text = telegram_bot.applications_main_text + '\n\n'
 
             if application.cooperation_option.name is not None:
-                bot_text += f'Вариант сотрудничества: {application.cooperation_option.name}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_cooperation_option + f': {application.cooperation_option.name}\n'
 
             if application.name is not None:
-                bot_text += f'Имя: {application.name}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_name + f': {application.name}\n'
 
             if application.email is not None:
-                bot_text += f'Почта: {application.email}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_email + f': {application.email}\n'
 
             if application.tel is not None:
-                bot_text += f'Телефон: {application.tel}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_tel + f': {application.tel}\n'
 
             if application.category is not None:
-                bot_text += f'Категория: {application.category.name}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_category + f': {application.category.name}\n'
 
             if application.brand is not None:
-                bot_text += f'Бренд: {application.brand.name}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_brand + f': {application.brand.name}\n'
 
-            if application.model is not None:
-                bot_text += f'Модель: {application.model}\n'  # TODO: в словарь
+            if application.brand is not None:
+                bot_text += telegram_bot.applications_model + f': {application.model}\n'
 
             if application.state is not None:
-                bot_text += f'Состояние: {application.state.name}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_state + f': {application.state.name}\n'
 
             if application.defect is not None:
-                bot_text += f'Наличие дефектов: {application.defect.name}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_defect + f': {application.defect.name}\n'
 
             if application.waiting_price is not None:
-                bot_text += f'Ожидание по цене: {application.waiting_price}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_waiting_price + f': {application.waiting_price}\n'
 
             if application.concierge_count is not None:
-                bot_text += f'Количество товаров для продажи: {application.concierge_count}\n'  # TODO: в словарь
+                bot_text += telegram_bot.applications_concierge_count + f': {application.concierge_count}\n'
 
             keyboard = build_keyboard('inline', [
                 {'Отправить': 'edit_application end_message send'},  # TODO: в словарь
@@ -374,7 +374,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             user.send_telegram_message(bot_text, keyboard)
 
         # Для связи с менеджером
-        elif chat_result == 'Связаться с менеджером':  # TODO: в словарь
+        elif chat_result == telegram_bot.contact_to_manager:
             bot_text = telegram_bot.contact_manager
             user.send_telegram_message(bot_text)
 

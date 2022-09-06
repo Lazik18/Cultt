@@ -62,7 +62,6 @@ class TelegramBot(models.Model):
     help_to_evaluate = models.TextField(default='Не знаю. Помогите оценить', verbose_name='Не знаю. Помогите оценить')
     # Завершить загрузку фото
     end_photo_message = models.TextField(default='Завершить загрузку', verbose_name='Завершить загрузку фото')
-
     # Ошибка ввода почты
     error_email = models.TextField(default='Ошибка ввода почты', verbose_name='Ошибка ввода почты')
     # Ошибка ввода номера телефона
@@ -73,6 +72,38 @@ class TelegramBot(models.Model):
     error_name = models.TextField(default='Неудачно написал имя/фамилия', verbose_name='Неудачно написал имя/фамилия')
     # Контакт менеджера
     contact_manager = models.TextField(default='Контакт менеджера', verbose_name='Контакт менеджера')
+    # Бренд - кнопка назад
+    brand_back_button = models.TextField(default='Назад', verbose_name='Бренд - кнопка назад')
+    # Нужный бренд не указан
+    brand_not_found = models.TextField(default='Нужный бренд не указан', verbose_name='Нужный бренд не указан')
+    # Ваша заявка
+    applications_main_text = models.TextField(default='Ваша заявка:', verbose_name='Ваша заявка')
+    # Вариант сотрудничества
+    applications_cooperation_option = models.TextField(default='Вариант сотрудничества', verbose_name='Вариант сотрудничества')
+    # Имя
+    applications_name = models.TextField(default='Имя', verbose_name='Имя')
+    # Почта
+    applications_email = models.TextField(default='Почта', verbose_name='Почта')
+    # Телефон
+    applications_tel = models.TextField(default='Телефон', verbose_name='Телефон')
+    # Категория
+    applications_category = models.TextField(default='Категория', verbose_name='Категория')
+    # Бренд
+    applications_brand = models.TextField(default='Бренд', verbose_name='Бренд')
+    # Модель
+    applications_model = models.TextField(default='Модель', verbose_name='Модель')
+    # Состояние
+    applications_state = models.TextField(default='Состояние', verbose_name='Состояние')
+    # Наличие дефектов
+    applications_defect = models.TextField(default='Наличие дефектов', verbose_name='Наличие дефектов')
+    # Ожидание по цене
+    applications_waiting_price = models.TextField(default='Ожидание по цене', verbose_name='Ожидание по цене')
+    # Количество товаров для продажи
+    applications_concierge_count = models.TextField(default='Количество товаров для продажи', verbose_name='Количество товаров для продажи')
+    # Отменить заявку
+    cancel_applications = models.TextField(default='Отменить заявку', verbose_name='Отменить заявку')
+    # Связаться с менеджером
+    contact_to_manager = models.TextField(default='Связаться с менеджером', verbose_name='Связаться с менеджером')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
