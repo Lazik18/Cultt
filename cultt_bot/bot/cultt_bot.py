@@ -44,6 +44,9 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
                 user.step = 'cancel_application'
                 user.save()
                 SellApplication.objects.filter(user=user, active=True).delete()
+            elif chat_result == telegram_bot.start_message:
+                chat_result = 'create_application_start_button'
+                type_message = 'data'
 
             # Приветственное сообщение
             if user.step == 'start_message':
