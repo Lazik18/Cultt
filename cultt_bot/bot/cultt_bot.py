@@ -329,7 +329,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if application.waiting_price is not None:
                 bot_text += telegram_bot.applications_waiting_price + f': {application.waiting_price}\n'
 
-            if application.concierge_count is not None:
+            if application.concierge_count != 0:
                 bot_text += telegram_bot.applications_concierge_count + f': {application.concierge_count}\n'
 
             keyboard = build_keyboard('inline', [
