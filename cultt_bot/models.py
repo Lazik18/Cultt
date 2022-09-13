@@ -329,3 +329,15 @@ class AmoCRMData(models.Model):
     class Meta:
         verbose_name = "Данные для AmoCRM"
         verbose_name_plural = "Данные для AmoCRM"
+
+
+class AmoCRMLog(models.Model):
+    result = models.TextField(verbose_name='Ответ')
+    date = models.DateTimeField(auto_now=True, verbose_name='Время')
+
+    def __str__(self):
+        return self.pk
+
+    class Meta:
+        verbose_name = "AmoCRM лог"
+        verbose_name_plural = "AmoCRM логи"

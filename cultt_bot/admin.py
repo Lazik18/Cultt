@@ -17,3 +17,8 @@ admin.site.register(CooperationOption)
 class SellApplicationAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'email', 'tel', 'active')
     search_fields = ('name', 'email', 'tel')
+
+
+@admin.register(AmoCRMLog)
+class AmoCRMLogAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'date')

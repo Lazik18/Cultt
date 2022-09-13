@@ -180,4 +180,6 @@ class AmoCrmSession:
 
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
+        AmoCRMLog.objects.create(result=str(result))
+
         return result.text
