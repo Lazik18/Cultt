@@ -336,7 +336,7 @@ class AmoCRMLog(models.Model):
     date = models.DateTimeField(auto_now=True, verbose_name='Время')
 
     def __str__(self):
-        return self.pk
+        return f'{self.pk}'
 
     class Meta:
         verbose_name = "AmoCRM лог"
