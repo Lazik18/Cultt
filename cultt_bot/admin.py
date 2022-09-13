@@ -21,4 +21,4 @@ class SellApplicationAdmin(admin.ModelAdmin):
 
 @admin.register(AmoCRMLog)
 class AmoCRMLogAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'date')
+    list_display = ('pk', 'date', 'result')
