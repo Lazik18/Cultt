@@ -333,7 +333,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 bot_text += telegram_bot.applications_concierge_count + f': {application.concierge_count}\n'
 
             keyboard = build_keyboard('inline', [
-                {'Отправить': 'edit_application end_message send'},  # TODO: в словарь
+                {telegram_bot.send_application_button: 'edit_application end_message send'},  # TODO: в словарь
                 # {'Отменить': 'edit_application end_message delete'}
             ])
 

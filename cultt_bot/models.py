@@ -104,6 +104,8 @@ class TelegramBot(models.Model):
     cancel_applications = models.TextField(default='Отменить заявку', verbose_name='Отменить заявку')
     # Связаться с менеджером
     contact_to_manager = models.TextField(default='Связаться с менеджером', verbose_name='Связаться с менеджером')
+    # Отправить заявку
+    send_application_button = models.TextField(default='Отправить заявку', verbose_name='Отправить заявку - кнопка')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
