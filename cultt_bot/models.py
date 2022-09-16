@@ -262,6 +262,8 @@ class SellApplication(models.Model):
     is_photo = models.BooleanField(default=False)
     #
     concierge_count = models.IntegerField(default=0)
+    # Дата создания
+    date_create = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Дата создания')
 
     def cooperation_option_name(self):
         return self.cooperation_option.name
