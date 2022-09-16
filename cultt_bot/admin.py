@@ -15,7 +15,7 @@ admin.site.register(CooperationOption)
 
 @admin.register(SellApplication)
 class SellApplicationAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name', 'email', 'tel', 'active')
+    list_display = ('pk', 'name', 'email', 'tel', 'active', 'date_create')
     search_fields = ('name', 'email', 'tel')
 
 
