@@ -410,7 +410,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     application.cooperation_option = CooperationOption.objects.get(id=chat_result.split(' ')[2])
                     application.save()
 
-                    name_message()
+                    # name_message()
+                    create_application(bot_id, chat_id, chat_result, type_message, message_id)
                 else:
                     cooperation_option_message()
         # Имя пользователя
