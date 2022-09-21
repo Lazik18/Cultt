@@ -365,7 +365,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 user=user,
                 name=user.name,
                 surname=user.surname,
-                enail=user.email,
+                email=user.email,
                 tel=user.tel
             )
         elif application_count > 1:
@@ -375,7 +375,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 user=user,
                 name=user.name,
                 surname=user.surname,
-                enail=user.email,
+                email=user.email,
                 tel=user.tel
             )
 
