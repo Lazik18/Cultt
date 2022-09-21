@@ -26,6 +26,8 @@ class TelegramBot(models.Model):
     cooperation_option_message = models.TextField(default='Вариант сотрудничества', verbose_name='Вариант сотрудничества')
     # Введите имя
     name_message = models.TextField(default='Введите имя', verbose_name='Введите имя')
+    # Введите фамилию
+    surname_message = models.TextField(default='Введите фамилию', verbose_name='Введите фамилию')
     # Введите почту
     email_message = models.TextField(default='Введите почту', verbose_name='Введите почту')
     # Введите номер телефона
@@ -248,6 +250,7 @@ class SellApplication(models.Model):
     cooperation_option = models.ForeignKey(CooperationOption, on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Имя
     name = models.TextField(default=None, blank=True, null=True)
+    surname = models.TextField(default=None, blank=True, null=True)
     # Почта
     email = models.TextField(default=None, blank=True, null=True)
     # Телефон

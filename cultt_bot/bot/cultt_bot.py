@@ -142,6 +142,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             bot_text = telegram_bot.name_message
             user.send_telegram_message(bot_text)
 
+        # Введите фамилию
+        def surname_message():
+            bot_text = telegram_bot.surname_message
+            user.send_telegram_message(bot_text)
+
         # Введите почту
         def email_message():
             bot_text = telegram_bot.email_message
@@ -400,14 +405,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Имя пользователя
         elif application.name is None:
             if type_message == 'message':
-                if len(chat_result.split(' ')) == 2:
-                    application.name = chat_result
-                    application.save()
+                application.name = chat_result
+                application.save()
 
-                    email_message()
-                else:
-                    bot_text = telegram_bot.error_name
-                    user.send_telegram_message(bot_text)
+                surname_message()
             else:
                 try:
                     bot.deleteMessage((chat_id, message_id))
@@ -415,6 +416,20 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     pass
 
                 name_message()
+        # Фамилия пользователя
+        elif application.surname is None:
+            if type_message == 'message':
+                application.surname = chat_result
+                application.save()
+
+                email_message()
+            else:
+                try:
+                    bot.deleteMessage((chat_id, message_id))
+                except telepot.exception.TelegramError:
+                    pass
+
+                surname_message()
         # Почту пользователя
         elif application.email is None:
             if type_message == 'message':
