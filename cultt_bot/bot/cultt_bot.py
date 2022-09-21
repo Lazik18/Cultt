@@ -368,7 +368,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             SellApplication.objects.filter(user=user, active=True).delete()
 
             SellApplication.objects.create(
-                user=user
+                user=user,
+                name=user.name,
+                surname=user.surname,
+                enail=user.email,
+                tel=user.tel
             )
 
         # Получаем заявку пользователя
