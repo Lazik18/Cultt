@@ -141,11 +141,11 @@ class TelegramUser(models.Model):
     # Текущий шаг
     step = models.TextField(default='start_message', verbose_name='Текущий шаг')
 
-    name = models.CharField(verbose_name='Имя', max_length=64)
-    surname = models.CharField(verbose_name='Фамилия', max_length=64)
-    tel = models.CharField(verbose_name='Телефон', max_length=32)
-    email = models.CharField(verbose_name='Email', max_length=32)
-    username = models.CharField(verbose_name='Telegram username', max_length=32)
+    name = models.CharField(verbose_name='Имя', max_length=64, blank=True, null=True)
+    surname = models.CharField(verbose_name='Фамилия', max_length=64, blank=True, null=True)
+    tel = models.CharField(verbose_name='Телефон', max_length=32, blank=True, null=True)
+    email = models.CharField(verbose_name='Email', max_length=32, blank=True, null=True)
+    username = models.CharField(verbose_name='Telegram username', max_length=32, blank=True, null=True)
 
     # Отправляем сообщение
     # Отправить пользователю сообщение
