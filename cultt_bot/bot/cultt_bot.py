@@ -415,7 +415,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 else:
                     cooperation_option_message()
         # Имя пользователя
-        elif application.name is None:
+        elif application.name is None and user.name is None:
             if type_message == 'message':
                 application.name = chat_result
                 application.save()
