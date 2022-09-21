@@ -372,7 +372,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             )
 
         # Получаем заявку пользователя
-        application = SellApplication.objects.get(user=user, active=True)
+        application = SellApplication.objects.get(user=user, active=True,
+                                                  name=user.name,
+                                                  surname=user.surname,
+                                                  enail=user.email,
+                                                  tel=user.tel)
 
         if chat_result == 'edit_application site link':
             bot_text = telegram_bot.not_brand
@@ -411,6 +415,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 application.name = chat_result
                 application.save()
 
+                user.name = chat_result
+                user.save()
+
                 surname_message()
             else:
                 try:
@@ -420,10 +427,13 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 name_message()
         # Фамилия пользователя
-        elif application.surname is None:
+        elif application.surname is None and user.surname is None:
             if type_message == 'message':
                 application.surname = chat_result
                 application.save()
+
+                user.surname = chat_result
+                user.save()
 
                 email_message()
             else:
@@ -434,11 +444,14 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 surname_message()
         # Почту пользователя
-        elif application.email is None:
+        elif application.email is None and user.email is None:
             if type_message == 'message':
                 if email_validation(chat_result):
                     application.email = chat_result
                     application.save()
+
+                    user.email = chat_result
+                    user.save()
 
                     tel_message()
                 else:
@@ -452,11 +465,14 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 email_message()
         # Номер телефона пользователя
-        elif application.tel is None:
+        elif application.tel is None and user.tel is None:
             if type_message == 'message':
                 if phone_number_validator(chat_result):
                     application.tel = chat_result
                     application.save()
+
+                    user.tel = chat_result
+                    user.save()
 
                     if 'консьерж' in application.cooperation_option.name.lower():  # TODO: в словарь
                         concierge_message()
