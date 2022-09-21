@@ -84,6 +84,8 @@ class TelegramBot(models.Model):
     applications_cooperation_option = models.TextField(default='Вариант сотрудничества', verbose_name='Вариант сотрудничества')
     # Имя
     applications_name = models.TextField(default='Имя', verbose_name='Имя')
+    # Фамилия
+    applications_surname = models.TextField(default='Фамилия', verbose_name='Фамилия')
     # Почта
     applications_email = models.TextField(default='Почта', verbose_name='Почта')
     # Телефон

@@ -310,6 +310,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if application.name is not None:
                 bot_text += telegram_bot.applications_name + f': {application.name}\n'
 
+            if application.surname is not None:
+                bot_text += telegram_bot.applications_surname + f': {application.surname}\n'
+
             if application.email is not None:
                 bot_text += telegram_bot.applications_email + f': {application.email}\n'
 
