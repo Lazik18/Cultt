@@ -158,6 +158,7 @@ class AmoCrmSession:
                 }],
                 "contacts": [{
                     "first_name": application.name,
+                    "last_name": application.surname,
                     "custom_fields_values": [
                         {
                             "field_id": 67725,
