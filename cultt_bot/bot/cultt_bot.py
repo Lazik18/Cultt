@@ -372,11 +372,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             )
 
         # Получаем заявку пользователя
-        application = SellApplication.objects.get(user=user, active=True,
-                                                  name=user.name,
-                                                  surname=user.surname,
-                                                  enail=user.email,
-                                                  tel=user.tel)
+        application = SellApplication.objects.get(user=user, active=True)
 
         if chat_result == 'edit_application site link':
             bot_text = telegram_bot.not_brand
