@@ -362,7 +362,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         if application_count == 0:
             SellApplication.objects.create(
-                user=user
+                user=user,
+                name=user.name,
+                surname=user.surname,
+                enail=user.email,
+                tel=user.tel
             )
         elif application_count > 1:
             SellApplication.objects.filter(user=user, active=True).delete()
