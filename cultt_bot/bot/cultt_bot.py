@@ -96,7 +96,7 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
                 user.save()
 
                 create_application(bot_id, chat_id, chat_result, type_message, message_id)
-            elif chat_result == 'my_profile_button':
+            elif 'my_profile_button' in chat_result:
                 user.send_telegram_message(f'В разработке')
                 my_profile(bot_id, chat_id, chat_result, type_message, message_id)
             else:
