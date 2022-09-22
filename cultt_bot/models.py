@@ -354,7 +354,7 @@ class AmoCRMData(models.Model):
 
 class AmoCRMLog(models.Model):
     result = models.TextField(verbose_name='Ответ')
-    date = models.DateTimeField(auto_now=True, verbose_name='Время')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Время')
 
     def __str__(self):
         return f'{self.pk}'
@@ -369,7 +369,7 @@ class Indicator(models.Model):
     applications_sent = models.IntegerField(verbose_name='Количество отправленных заявок', default=0)
     clicks_manager = models.IntegerField(verbose_name='Количество переходов на чат с менеджером', default=0)
 
-    date = models.DateTimeField(auto_now=True, verbose_name='Дата создания')
+    date = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
 
     def __str__(self):
         return f'{self.pk}'
