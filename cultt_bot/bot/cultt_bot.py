@@ -98,10 +98,25 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
                 create_application(bot_id, chat_id, chat_result, type_message, message_id)
             elif chat_result == 'my_profile_button':
                 user.send_telegram_message('В разработке')
+                my_profile(bot_id, chat_id, chat_result, type_message, message_id)
             else:
                 user.send_telegram_message('error start_message №1')
     except Exception:
         bug_trap()
+
+
+def my_profile(bot_id, chat_id, chat_result, type_message, message_id):
+    # Получаем данные бота
+    telegram_bot = TelegramBot.objects.get(id=bot_id)
+    # Пользователь
+    user = TelegramUser.objects.get(chat_id=chat_id, bot=telegram_bot)
+
+    if type_message == 'message':
+        text = 'Чтобы изменить данные нажмите сбросить.\nПри создании новой заявки вы сможете их заполнить.\n'
+        text += f'Имя: {user.name}\nФамилия: {user.surname}\nПочта: {user.email}Телефон: {user.tel}'
+        keyboard = build_keyboard('reply', [{f'{telegram_bot.reset_data}': 'my_profile_button_reset_data'}])
+    else:
+        pass
 
 
 def create_application(bot_id, chat_id, chat_result, type_message, message_id):
