@@ -180,9 +180,13 @@ class AmoCrmSession:
             }
         }]
 
+        user = TelegramUser.objects.get(pk=user_id)
+
+        if user.amocrm_id is not None:
+            data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
+
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
-        user = TelegramUser.objects.get(pk=user_id)
         user.amocrm_id = result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id']
 
         AmoCRMLog.objects.create(result=str(result.json()))
