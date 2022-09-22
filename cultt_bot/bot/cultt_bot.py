@@ -47,6 +47,9 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
             elif chat_result == telegram_bot.start_button:
                 chat_result = 'create_application_start_button'
                 type_message = 'data'
+            elif chat_result == telegram_bot.my_profile_button:
+                chat_result = 'my_profile_button'
+                type_message = 'data'
 
             # Приветственное сообщение
             if user.step == 'start_message':
@@ -81,7 +84,8 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
                 bot_text = telegram_bot.close_message
                 user.step = 'start_message'
                 user.save()
-                keyboard1 = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application_start_button'}],
+                keyboard1 = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application_start_button'},
+                                                     {f'{telegram_bot.my_profile_button}': 'my_profile_button'}],
                                           one_time=True)
                 user.send_telegram_message('Заявка отменена', keyboard=keyboard1)  # TODO: в словарь
 
@@ -521,7 +525,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     user.step = 'start_message'
                     user.save()
 
-                    keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application_start_button'}],
+                    keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application_start_button'},
+                                                        {f'{telegram_bot.my_profile_button}': 'my_profile_button'}],
                                               one_time=True)
 
                     user.send_telegram_message(telegram_bot.end_message, keyboard)
@@ -742,7 +747,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             user.step = 'start_message'
                             user.save()
 
-                            keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
+                            keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'},
+                                                                {f'{telegram_bot.my_profile_button}': 'my_profile_button'}],
                                                       one_time=True)
 
                             user.send_telegram_message(telegram_bot.end_message, keyboard)
@@ -848,7 +854,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             user.step = 'start_message'
                             user.save()
 
-                            keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'}],
+                            keyboard = build_keyboard('reply', [{f'{telegram_bot.start_button}': 'create_application'},
+                                                                {f'{telegram_bot.my_profile_button}': 'my_profile_button'}],
                                                       one_time=True)
 
                             user.send_telegram_message(telegram_bot.end_message, keyboard)
