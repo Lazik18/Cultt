@@ -431,6 +431,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             bot_text = telegram_bot.contact_manager
             user.send_telegram_message(bot_text)
 
+            stats = Indicator.objects.filter().last()
+            stats.clicks_manager += 1
+            stats.save()
+
         # Проверяем что еще не заполнено
         # Вариант сотрудничества
         elif application.cooperation_option is None:
@@ -768,6 +772,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
                                 result = amo_crm_session.create_leads_complex(application.id, user)
 
+                                stats = Indicator.objects.filter().last()
+                                stats.applications_sent += 1
+                                stats.save()
+
                                 if json.loads(result).get('title') == 'Unauthorized':
                                     if amo_crm_session.get_access_token('refresh_token'):
                                         amo_crm_session.create_leads_complex(application.id, user)
@@ -874,6 +882,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                                 amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
                                 result = amo_crm_session.create_leads_complex(application.id, user)
+
+                                stats = Indicator.objects.filter().last()
+                                stats.applications_sent += 1
+                                stats.save()
 
                                 if json.loads(result).get('title') == 'Unauthorized':
                                     if amo_crm_session.get_access_token('refresh_token'):
