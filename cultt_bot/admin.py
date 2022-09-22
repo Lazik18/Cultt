@@ -22,3 +22,8 @@ class SellApplicationAdmin(admin.ModelAdmin):
 @admin.register(AmoCRMLog)
 class AmoCRMLogAdmin(admin.ModelAdmin):
     list_display = ('pk', 'date', 'result')
+
+
+@admin.register(Indicator)
+class IndicatorAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'dialogs_started', 'applications_sent', 'clicks_manager', 'date')
