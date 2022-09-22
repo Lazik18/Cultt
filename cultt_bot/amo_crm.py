@@ -187,12 +187,8 @@ class AmoCrmSession:
 
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
-        amo_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id'])
-        user.amocrm_id = amo_id
+        user.amocrm_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id'])
         user.save()
-
-        if user.name == 'test':
-            user.send_telegram_message(f'{user.pk} {user_id}\n{amo_id}')
 
         AmoCRMLog.objects.create(result=str(result.json()))
 
