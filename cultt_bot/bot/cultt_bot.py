@@ -114,6 +114,13 @@ def my_profile(bot_id, chat_id, chat_result, type_message, message_id):
     bot = telepot.Bot(telegram_bot.token)
 
     if type_message == 'data':
+        if 'reset_data' in chat_result:
+            user.name = None
+            user.surname = None
+            user.email = None
+            user.tel = None
+            user.save()
+
         bot.deleteMessage((chat_id, message_id))
         text = 'Чтобы изменить данные нажмите сбросить.\nПри создании новой заявки вы сможете их заполнить.\n'
         text += f'Имя: {user.name}\nФамилия: {user.surname}\nПочта: {user.email}\nТелефон: {user.tel}'
