@@ -60,7 +60,7 @@ class AmoCrmSession:
                     return self.get_access_token('authorization_code', True)
 
     # Создать заявку
-    def create_leads_complex(self, application_id):
+    def create_leads_complex(self, application_id, user_id):
         headers = {
             'authorization': f'Bearer {self.amo_crm_data.access_token}',
             'Content-Type': 'application/json'
@@ -181,6 +181,9 @@ class AmoCrmSession:
         }]
 
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
+
+        user = TelegramUser.objects.get(pk=user_id)
+        user.amocrm_id = result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id']
 
         AmoCRMLog.objects.create(result=str(result.json()))
 

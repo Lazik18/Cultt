@@ -149,6 +149,8 @@ class TelegramUser(models.Model):
     # Текущий шаг
     step = models.TextField(default='start_message', verbose_name='Текущий шаг')
 
+    amocrm_id = models.IntegerField(verbose_name='AmoCRM id', blank=True, null=True)
+
     name = models.CharField(verbose_name='Имя', max_length=64, blank=True, null=True)
     surname = models.CharField(verbose_name='Фамилия', max_length=64, blank=True, null=True)
     tel = models.CharField(verbose_name='Телефон', max_length=32, blank=True, null=True)

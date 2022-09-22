@@ -97,7 +97,6 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
 
                 create_application(bot_id, chat_id, chat_result, type_message, message_id)
             elif 'my_profile_button' in chat_result:
-                user.send_telegram_message(f'В разработке')
                 my_profile(bot_id, chat_id, chat_result, type_message, message_id)
             else:
                 user.send_telegram_message('error start_message №1')
@@ -546,11 +545,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     application.save()
 
                     amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
-                    result = amo_crm_session.create_leads_complex(application.id)
+                    result = amo_crm_session.create_leads_complex(application.id, user.pk)
 
                     if json.loads(result).get('title') == 'Unauthorized':
                         if amo_crm_session.get_access_token('refresh_token'):
-                            amo_crm_session.create_leads_complex(application.id)
+                            amo_crm_session.create_leads_complex(application.id, user.pk)
 
                     user.step = 'start_message'
                     user.save()
@@ -763,11 +762,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 application.save()
 
                                 amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
-                                result = amo_crm_session.create_leads_complex(application.id)
+                                result = amo_crm_session.create_leads_complex(application.id, user.pk)
 
                                 if json.loads(result).get('title') == 'Unauthorized':
                                     if amo_crm_session.get_access_token('refresh_token'):
-                                        amo_crm_session.create_leads_complex(application.id)
+                                        amo_crm_session.create_leads_complex(application.id, user.pk)
                             else:
                                 bot_text = telegram_bot.close_message
                                 user.send_telegram_message(bot_text, ReplyKeyboardRemove())
@@ -870,11 +869,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 application.save()
 
                                 amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
-                                result = amo_crm_session.create_leads_complex(application.id)
+                                result = amo_crm_session.create_leads_complex(application.id, user.pk)
 
                                 if json.loads(result).get('title') == 'Unauthorized':
                                     if amo_crm_session.get_access_token('refresh_token'):
-                                        amo_crm_session.create_leads_complex(application.id)
+                                        amo_crm_session.create_leads_complex(application.id, user.pk)
                             else:
                                 bot_text = telegram_bot.close_message
                                 user.send_telegram_message(bot_text, ReplyKeyboardRemove())
