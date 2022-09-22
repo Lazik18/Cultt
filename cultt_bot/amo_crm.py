@@ -60,7 +60,7 @@ class AmoCrmSession:
                     return self.get_access_token('authorization_code', True)
 
     # Создать заявку
-    def create_leads_complex(self, application_id, user_id):
+    def create_leads_complex(self, application_id, user):
         headers = {
             'authorization': f'Bearer {self.amo_crm_data.access_token}',
             'Content-Type': 'application/json'
@@ -179,8 +179,6 @@ class AmoCrmSession:
                 "referer": "telegram bot"
             }
         }]
-
-        user = TelegramUser.objects.get(pk=user_id)
 
         # if user.amocrm_id is not None:
         #     data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
