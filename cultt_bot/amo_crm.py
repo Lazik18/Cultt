@@ -188,6 +188,7 @@ class AmoCrmSession:
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
         user.amocrm_id = result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id']
+        user.save()
 
         AmoCRMLog.objects.create(result=str(result.json()))
 
