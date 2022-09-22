@@ -684,8 +684,12 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             bot.deleteMessage((chat_id, message_id))
                         except telepot.exception.TelegramError:
                             pass
+                        if 'defect accept' in chat_result:
+                            application.defect_finished = True
+                            application.save()
 
-                        if 'defect' in chat_result and DefectOptions.objects.filter(
+                            waiting_price_message()
+                        elif 'defect' in chat_result and DefectOptions.objects.filter(
                                 id=chat_result.split(' ')[2]).count() == 1:
                             # application.defect = DefectOptions.objects.get(id=chat_result.split(' ')[2])
                             defect = DefectOptions.objects.get(id=chat_result.split(' ')[2])
