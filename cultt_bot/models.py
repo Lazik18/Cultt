@@ -362,3 +362,18 @@ class AmoCRMLog(models.Model):
     class Meta:
         verbose_name = "AmoCRM лог"
         verbose_name_plural = "AmoCRM логи"
+
+
+class Indicator(models.Model):
+    dialogs_started = models.IntegerField(verbose_name='Количество начатых диалогов', default=0)
+    applications_sent = models.IntegerField(verbose_name='Количество отправленных заявок', default=0)
+    clicks_manager = models.IntegerField(verbose_name='Количество переходов на чат с менеджером', default=0)
+
+    date = models.DateTimeField(auto_now=True, verbose_name='Дата создания')
+
+    def __str__(self):
+        return f'{self.pk}'
+
+    class Meta:
+        verbose_name = "Показатель"
+        verbose_name_plural = "Статистика"

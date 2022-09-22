@@ -95,6 +95,10 @@ def start_message(bot_id, chat_id, chat_result, type_message, message_id):
                 user.step = 'create_application'
                 user.save()
 
+                stats = Indicator.objects.filter().first()
+                stats.dialogs_started += 1
+                stats.save()
+
                 create_application(bot_id, chat_id, chat_result, type_message, message_id)
             elif 'my_profile_button' in chat_result:
                 my_profile(bot_id, chat_id, chat_result, type_message, message_id)
