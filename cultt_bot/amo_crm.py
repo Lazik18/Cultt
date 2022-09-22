@@ -187,6 +187,11 @@ class AmoCrmSession:
 
         AmoCRMLog.objects.create(result=str(result.json()))
 
+        if 'Can not found linked entities by id' in str(result.json()):
+            user.amocrm_id = None
+            user.save()
+            return self.create_leads_complex(application_id, user)
+
         user.amocrm_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id'])
         user.save()
 
