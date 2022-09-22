@@ -297,7 +297,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             for defect in DefectOptions.objects.filter(is_visible=True):
                 if len(line_button) < 1:
-                    line_button[defect.name] = f'edit_application defect {defect.id}'
+                    text_data = defect.name
+                    if defect in application.defect.all():
+                        text_data += ' ✅'
+                    line_button[text_data] = f'edit_application defect {defect.id}'
                 else:
                     line_button[defect.name] = f'edit_application defect {defect.id}'
                     button_list.append(line_button)
@@ -305,6 +308,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             if len(line_button) != 0:
                 button_list.append(line_button)
+
+            button_list.append({'Выбрать': 'defect accept'})
 
             keyboard = build_keyboard('inline', button_list)
 
@@ -368,7 +373,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if application.state is not None:
                 bot_text += telegram_bot.applications_state + f': {application.state.name}\n'
 
-            if application.defect is not None:
+            if application.defect_finished is False:
                 bot_text += telegram_bot.applications_defect + f': {application.defect.name}\n'
 
             if application.waiting_price is not None:
@@ -668,7 +673,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                             state_message()
                 # Наличие дефектов
-                elif application.defect is None:
+                elif application.defect_finished is False:
                     if type_message == 'message':
                         state_message()
                     else:
@@ -679,10 +684,12 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                         if 'defect' in chat_result and DefectOptions.objects.filter(
                                 id=chat_result.split(' ')[2]).count() == 1:
-                            application.defect = DefectOptions.objects.get(id=chat_result.split(' ')[2])
+                            # application.defect = DefectOptions.objects.get(id=chat_result.split(' ')[2])
+                            application.defect.add(DefectOptions.objects.get(id=chat_result.split(' ')[2]))
                             application.save()
 
-                            waiting_price_message()
+                            # waiting_price_message()
+                            defect_message()
                         else:
                             defect_message()
                 # Ожидание по цене

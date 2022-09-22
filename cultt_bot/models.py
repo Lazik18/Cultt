@@ -272,7 +272,8 @@ class SellApplication(models.Model):
     # Состояние
     state = models.ForeignKey(StateOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Наличие дефектов
-    defect = models.ForeignKey(DefectOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    defect = models.ManyToManyField(DefectOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    defect_finished = models.BooleanField(default=False)
     # Ожидание по цене
     waiting_price = models.FloatField(default=None, blank=True, null=True)
     # Отправил ли пользователь фото
