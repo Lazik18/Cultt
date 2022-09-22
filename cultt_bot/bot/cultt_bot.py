@@ -302,7 +302,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         text_data += ' ✅'
                     line_button[text_data] = f'edit_application defect {defect.id}'
                 else:
-                    line_button[defect.name] = f'edit_application defect {defect.id}'
+                    text_data = defect.name
+                    if defect in application.defect.all():
+                        text_data += ' ✅'
+                    line_button[text_data] = f'edit_application defect {defect.id}'
                     button_list.append(line_button)
                     line_button = {}
 
