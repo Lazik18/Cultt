@@ -376,9 +376,12 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if application.state is not None:
                 bot_text += telegram_bot.applications_state + f': {application.state.name}\n'
 
-            if application.defect_finished is False:
-                bot_text += telegram_bot.applications_defect + f': {application.defect.name}\n'
-
+            if application.defect_finished is True:
+                bot_text += telegram_bot.applications_defect + ':'
+                for defect in application.defect.all():
+                    bot_text += f' {application.defect.name},'
+                bot_text = bot_text[:-1]
+                bot_text += '\n'
             if application.waiting_price is not None:
                 bot_text += telegram_bot.applications_waiting_price + f': {application.waiting_price}₽\n'
 
