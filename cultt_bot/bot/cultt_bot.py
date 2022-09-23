@@ -263,11 +263,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             user.send_telegram_message(bot_text, keyboard)
 
         # Ввод модели
-        def model_message():
+        def model_message(app):
             button_list = []
             line_button = {}
 
-            models_brand = ModelsOption.objects.filter(brand=application.brand)
+            models_brand = ModelsOption.objects.filter(brand=app.brand)
 
             for model in models_brand:
                 if len(line_button) < 2:
@@ -728,7 +728,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                     application.brand = BrandOptions.objects.get(id=chat_result.split(' ')[3])
                                     application.save()
 
-                                    model_message()
+                                    model_message(application)
                                 else:
                                     brand_message()
                             else:
@@ -759,7 +759,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             except telepot.exception.TelegramError:
                                 pass
 
-                            model_message()
+                            model_message(application)
                 # Состояние
                 elif application.state is None:
                     if type_message == 'message':
