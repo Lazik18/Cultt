@@ -433,6 +433,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 {'Сайт': 'this_urlhttp://cultt.wemd.ru/'}  # TODO: в словарь
             ])
             user.send_telegram_message(bot_text, keyboard)
+        # Ошибка в заявка
+        elif chat_result == 'error_application':
+            pass
 
         # Для связи с менеджером
         elif chat_result == telegram_bot.contact_to_manager:
