@@ -917,7 +917,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 application.waiting_price = chat_result
                                 application.save()
 
-                                photo_message()
+                                # photo_message()
+                                create_application(bot_id, chat_id, chat_result, type_message, message_id)
                             else:
                                 waiting_price_message(incorrect='small')
                         else:
@@ -932,7 +933,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             except telepot.exception.TelegramError:
                                 pass
 
-                            photo_message()
+                            # photo_message()
+                            create_application(bot_id, chat_id, chat_result, type_message, message_id)
                         else:
                             waiting_price_message()
                     else:
