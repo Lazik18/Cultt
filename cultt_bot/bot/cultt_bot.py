@@ -821,9 +821,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 bot.deleteMessage((chat_id, message_id))
                             except telepot.exception.TelegramError:
                                 pass
-
-                            # photo_message()
-                            create_application(bot_id, chat_id, chat_result, type_message, message_id)
+                            if 'error_application' in chat_result:
+                                create_application(bot_id, chat_id, chat_result, type_message, message_id)
+                            else:
+                                photo_message()
                         else:
                             waiting_price_message()
                     else:
@@ -867,11 +868,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         else:
                             photo_message()
                     else:
-                        if 'error_application' in chat_result:
-                            photo_message()
-                        else:
-                            bot_text = telegram_bot.error_photo
-                            user.send_telegram_message(bot_text)
+                        bot_text = telegram_bot.error_photo
+                        user.send_telegram_message(bot_text)
                 # Подтверждение заявки
                 else:
                     if type_message == 'message':
