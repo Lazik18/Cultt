@@ -506,7 +506,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 application.save()
                 type_message = 'message'
             elif 'error_application defect' in chat_result:
-                application.defect.clear()
+                application.defect_finished = False
                 application.save()
             elif 'error_application price' in chat_result:
                 application.waiting_price = None
