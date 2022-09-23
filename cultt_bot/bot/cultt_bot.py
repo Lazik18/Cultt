@@ -390,15 +390,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             keyboard = build_keyboard('inline', [
                 {telegram_bot.send_application_button: 'edit_application end_message send'},
-                # {'Отменить': 'edit_application end_message delete'}
+                {telegram_bot.error_application: 'error_application'}
             ])
 
             user.send_telegram_message(bot_text, keyboard)
-
-            # application.delete()
-
-            # user.step = 'start_message'
-            # user.save()
 
         # Консьерж текст
         def concierge_message():

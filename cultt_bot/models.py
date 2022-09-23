@@ -114,6 +114,8 @@ class TelegramBot(models.Model):
     my_profile_button = models.TextField(default='Мой профиль', verbose_name='Мой профиль')
     # Сбросить данные
     reset_data = models.TextField(default='Сбросить', verbose_name='Сбросить данные')
+    # Ошибка в заявке
+    error_application = models.TextField(default='Ошибка в заявке', verbose_name='Ошибка в заявке')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
