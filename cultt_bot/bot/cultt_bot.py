@@ -277,6 +277,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     button_list.append(line_button)
                     line_button = {}
 
+            if len(line_button) != 0:
+                button_list.append(line_button)
+
             bot_text = telegram_bot.model_message
             button_list.append({'Я не знаю модель': 'not_know_model'})
             keyboard = build_keyboard('inline', button_list)
