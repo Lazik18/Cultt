@@ -770,8 +770,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             application.state = StateOptions.objects.get(id=chat_result.split(' ')[2])
                             application.save()
 
-                            # defect_message()
-                            create_application(bot_id, chat_id, chat_result, type_message, message_id)
+                            if 'error_application' in chat_result:
+                                create_application(bot_id, chat_id, chat_result, type_message, message_id)
+                            else:
+                                defect_message()
+
                         else:
                             try:
                                 bot.deleteMessage((chat_id, message_id))
