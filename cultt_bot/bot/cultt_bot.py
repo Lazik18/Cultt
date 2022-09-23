@@ -717,10 +717,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                     application.brand = BrandOptions.objects.get(id=chat_result.split(' ')[3])
                                     application.save()
 
-                                    if 'error_application' in chat_result:
-                                        create_application(bot_id, chat_id, chat_result, type_message, message_id)
-                                    else:
-                                        model_message()
+                                    # if 'error_application' in chat_result:
+                                    create_application(bot_id, chat_id, chat_result, type_message, message_id)
+                                    # else:
+                                    #     model_message()
                                 else:
                                     brand_message()
                             else:
