@@ -192,7 +192,10 @@ class AmoCrmSession:
             user.save()
             return self.create_leads_complex(application_id, user)
 
-        user.amocrm_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id'])
-        user.save()
+        try:
+            user.amocrm_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id'])
+            user.save()
+        except:
+            pass
 
         return result.text
