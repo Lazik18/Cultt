@@ -402,6 +402,43 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             bot_text = telegram_bot.concierge_message
             user.send_telegram_message(bot_text)
 
+        # Ошибка в заявке
+        def error_application():
+            text = telegram_bot.text_error_application
+            keyboard_b = []
+
+            if application.name is not None:
+                keyboard_b.append({f'{telegram_bot.applications_name}': 'error_application name'})
+
+            if application.surname is not None:
+                keyboard_b.append({f'{telegram_bot.applications_surname}': 'error_application surname'})
+
+            if application.email is not None:
+                keyboard_b.append({f'{telegram_bot.applications_email}': 'error_application email'})
+
+            if application.tel is not None:
+                keyboard_b.append({f'{telegram_bot.applications_tel}': 'error_application tel'})
+
+            if application.category is not None:
+                keyboard_b.append({f'{telegram_bot.applications_category}': 'error_application category'})
+
+            if application.brand is not None:
+                keyboard_b.append({f'{telegram_bot.applications_brand}': 'error_application brand'})
+
+            if application.state is not None:
+                keyboard_b.append({f'{telegram_bot.applications_state}': 'error_application state'})
+
+            if application.defect.count() >= 1:
+                keyboard_b.append({f'{telegram_bot.applications_defect}': 'error_application defect'})
+
+            if application.waiting_price is not None:
+                keyboard_b.append({f'{telegram_bot.applications_waiting_price}': 'error_application price'})
+
+            if application.concierge_count != 0:
+                keyboard_b.append({f'{telegram_bot.applications_concierge_count}': 'error_application concierge_count'})
+
+            build_keyboard('inline', keyboard)
+
         # Если нет заявки то создаем ее
         application_count = SellApplication.objects.filter(user=user, active=True).count()
 
