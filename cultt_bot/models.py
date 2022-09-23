@@ -382,3 +382,15 @@ class Indicator(models.Model):
     class Meta:
         verbose_name = "Показатель"
         verbose_name_plural = "Статистика"
+
+
+class ModelsOption(models.Model):
+    brand = models.ForeignKey(to='BrandOptions', on_delete=models.CASCADE, verbose_name='Бренд')
+    name = models.TextField(verbose_name='Название')
+
+    def __str__(self):
+        return f'{self.pk}'
+
+    class Meta:
+        verbose_name = "Вариант модели"
+        verbose_name_plural = "Варианты моделей"

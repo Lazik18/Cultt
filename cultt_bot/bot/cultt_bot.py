@@ -264,8 +264,22 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Ввод модели
         def model_message():
+            button_list = []
+            line_button = {}
+
+            models = ModelsOption.objects.filter(brand=application.brand)
+
+            for model in models:
+                if len(line_button) < 2:
+                    line_button[model.name] = f'edit_application model {model.pk}'
+                else:
+                    line_button[model.name] = f'edit_application model {model.pk}'
+                    button_list.append(line_button)
+                    line_button = {}
+
             bot_text = telegram_bot.model_message
-            keyboard = build_keyboard('inline', [{'Я не знаю модель': 'not_know_model'}])  # TODO: в словарь
+            button_list.append({'Я не знаю модель': 'not_know_model'})
+            keyboard = build_keyboard('inline', button_list)  # TODO: в словарь
             user.send_telegram_message(bot_text, keyboard)
 
         # Выбор состояние
