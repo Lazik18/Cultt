@@ -520,7 +520,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Ошибка в заявка
         if 'error_application' in chat_result:
-            pass
+            return
 
         if chat_result == 'edit_application site link':
             bot_text = telegram_bot.not_brand
