@@ -314,7 +314,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if len(line_button) != 0:
                 button_list.append(line_button)
 
-            button_list.append({'Выбрать': 'defect accept'})
+            text_defect_accept = 'Выбрать'
+            if application.defect.count() < 1:
+                text_defect_accept = 'Нет дефектов'
+
+            button_list.append({text_defect_accept: 'defect accept'})
 
             keyboard = build_keyboard('inline', button_list)
 
