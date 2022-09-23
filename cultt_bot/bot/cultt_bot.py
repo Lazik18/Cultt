@@ -510,6 +510,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 application.save()
             else:
                 error_application()
+                return
 
         if chat_result == 'edit_application site link':
             bot_text = telegram_bot.not_brand
