@@ -810,8 +810,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 application.waiting_price = chat_result
                                 application.save()
 
-                                # photo_message()
-                                create_application(bot_id, chat_id, chat_result, type_message, message_id)
+                                if 'error_application' in chat_result:
+                                    create_application(bot_id, chat_id, chat_result, type_message, message_id)
+                                else:
+                                    photo_message()
                             else:
                                 waiting_price_message(incorrect='small')
                         else:
