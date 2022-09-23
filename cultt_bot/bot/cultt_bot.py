@@ -271,9 +271,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             for model in models_brand:
                 if len(line_button) < 2:
-                    line_button[model.name] = f'edit_application model {model.pk}'
+                    line_button[model.name] = f'edit_application model {model.name}'
                 else:
-                    line_button[model.name] = f'edit_application model {model.pk}'
+                    line_button[model.name] = f'edit_application model {model.name}'
                     button_list.append(line_button)
                     line_button = {}
 
@@ -753,6 +753,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                         if 'not_know_model' in chat_result:
                             application.model = '-'
+                            application.save()
+
+                            state_message()
+                        elif 'edit_application model' in chat_result:
+                            application.model = chat_result.split()[2]
                             application.save()
 
                             state_message()

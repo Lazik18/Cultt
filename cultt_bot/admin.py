@@ -6,7 +6,6 @@ admin.site.register(TelegramBot)
 admin.site.register(TelegramUser)
 admin.site.register(CategoryOptions)
 admin.site.register(BrandOptions)
-admin.site.register(ModelsOption)
 admin.site.register(StateOptions)
 admin.site.register(DefectOptions)
 admin.site.register(PhotoApplications)
@@ -28,3 +27,8 @@ class AmoCRMLogAdmin(admin.ModelAdmin):
 @admin.register(Indicator)
 class IndicatorAdmin(admin.ModelAdmin):
     list_display = ('pk', 'dialogs_started', 'applications_sent', 'clicks_manager', 'date')
+
+
+@admin.register(ModelsOption)
+class ModelsOptionAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'name', 'brand')
