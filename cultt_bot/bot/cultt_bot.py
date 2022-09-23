@@ -437,7 +437,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if application.concierge_count != 0:
                 keyboard_b.append({f'{telegram_bot.applications_concierge_count}': 'error_application concierge_count'})
 
-            user.send_telegram_message(text, keyboard=build_keyboard('inline', keyboard))
+            user.send_telegram_message(text, keyboard=build_keyboard('inline', keyboard_b))
 
         # Если нет заявки то создаем ее
         application_count = SellApplication.objects.filter(user=user, active=True).count()
