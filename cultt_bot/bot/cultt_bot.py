@@ -50,6 +50,8 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
             elif chat_result == telegram_bot.my_profile_button:
                 chat_result = 'my_profile_button'
                 type_message = 'data'
+            elif chat_result == 'error_application':
+                user.send_telegram_message('В разработке')
 
             # Приветственное сообщение
             if user.step == 'start_message':
