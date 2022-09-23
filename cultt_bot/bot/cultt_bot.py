@@ -500,6 +500,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             #     type_message = 'message'
             elif 'error_application brand' in chat_result:
                 application.brand = None
+                application.model = None
                 application.save()
                 type_message = 'message'
             elif 'error_application state' in chat_result:
