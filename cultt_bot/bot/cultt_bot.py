@@ -786,7 +786,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             waiting_price_message()
                         elif 'defect' in chat_result and DefectOptions.objects.filter(
                                 id=chat_result.split(' ')[2]).count() == 1:
-                            application.defect.add(DefectOptions.objects.get(id=chat_result.split(' ')[2]))
+                            # application.defect = DefectOptions.objects.get(id=chat_result.split(' ')[2])
                             defect = DefectOptions.objects.get(id=chat_result.split(' ')[2])
                             if defect in application.defect.all():
                                 application.defect.remove(defect)
