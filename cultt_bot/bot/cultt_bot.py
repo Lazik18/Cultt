@@ -676,8 +676,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     except telepot.exception.TelegramError:
                         pass
 
-                    if 'category' in chat_result and CategoryOptions.objects.filter(
-                            id=chat_result.split(' ')[2]).count() == 1:
+                    if 'category' in chat_result:  # and CategoryOptions.objects.filter(id=chat_result.split(' ')[2]).count() == 1:
                         try:
                             bot.deleteMessage((chat_id, message_id))
                         except telepot.exception.TelegramError:
