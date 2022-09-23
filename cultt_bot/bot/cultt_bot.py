@@ -557,7 +557,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 user.name = chat_result
                 user.save()
 
-                surname_message()
+                # surname_message()
+                create_application(bot_id, chat_id, chat_result, type_message, message_id)
             else:
                 try:
                     bot.deleteMessage((chat_id, message_id))
@@ -574,7 +575,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                 user.surname = chat_result
                 user.save()
 
-                email_message()
+                # email_message()
+                create_application(bot_id, chat_id, chat_result, type_message, message_id)
             else:
                 try:
                     bot.deleteMessage((chat_id, message_id))
@@ -592,7 +594,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     user.email = chat_result
                     user.save()
 
-                    tel_message()
+                    # tel_message()
+                    create_application(bot_id, chat_id, chat_result, type_message, message_id)
                 else:
                     bot_text = telegram_bot.error_email
                     user.send_telegram_message(bot_text)
@@ -613,10 +616,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                     user.tel = chat_result
                     user.save()
 
-                    if 'консьерж' in application.cooperation_option.name.lower():  # TODO: в словарь
-                        concierge_message()
-                    else:
-                        category_message()
+                    # if 'консьерж' in application.cooperation_option.name.lower():  # TODO: в словарь
+                    #     concierge_message()
+                    # else:
+                    #     category_message()
+                    create_application(bot_id, chat_id, chat_result, type_message, message_id)
                 else:
                     bot_text = telegram_bot.error_phone
                     user.send_telegram_message(bot_text)
@@ -682,10 +686,11 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         application.category = CategoryOptions.objects.get(id=chat_result.split(' ')[2])
                         application.save()
 
-                        if application.category.id in [10, 11]:
-                            brand_message()
-                        else:
-                            waiting_price_message()
+                        # if application.category.id in [10, 11]:
+                        #     brand_message()
+                        # else:
+                        #     waiting_price_message()
+                        create_application(bot_id, chat_id, chat_result, type_message, message_id)
                     else:
                         category_message()
             elif application.category.id in [10, 11]:
@@ -705,7 +710,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                     application.brand = BrandOptions.objects.get(id=chat_result.split(' ')[3])
                                     application.save()
 
-                                    model_message()
+                                    # model_message()
+                                    create_application(bot_id, chat_id, chat_result, type_message, message_id)
                                 else:
                                     brand_message()
                             else:
@@ -718,7 +724,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                         application.model = chat_result
                         application.save()
 
-                        state_message()
+                        # state_message()
+                        create_application(bot_id, chat_id, chat_result, type_message, message_id)
                     else:
                         try:
                             bot.deleteMessage((chat_id, message_id))
@@ -729,7 +736,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             application.model = '-'
                             application.save()
 
-                            state_message()
+                            # state_message()
+                            create_application(bot_id, chat_id, chat_result, type_message, message_id)
                         else:
                             try:
                                 bot.deleteMessage((chat_id, message_id))
@@ -752,7 +760,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             application.state = StateOptions.objects.get(id=chat_result.split(' ')[2])
                             application.save()
 
-                            defect_message()
+                            # defect_message()
+                            create_application(bot_id, chat_id, chat_result, type_message, message_id)
                         else:
                             try:
                                 bot.deleteMessage((chat_id, message_id))
@@ -796,7 +805,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                                 application.waiting_price = chat_result
                                 application.save()
 
-                                photo_message()
+                                # photo_message()
+                                create_application(bot_id, chat_id, chat_result, type_message, message_id)
                             else:
                                 waiting_price_message(incorrect='small')
                         else:
@@ -811,7 +821,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
                             except telepot.exception.TelegramError:
                                 pass
 
-                            photo_message()
+                            # photo_message()
+                            create_application(bot_id, chat_id, chat_result, type_message, message_id)
                         else:
                             waiting_price_message()
                     else:
