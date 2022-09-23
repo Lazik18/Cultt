@@ -490,10 +490,10 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                 user.tel = None
                 user.save()
-            elif 'error_application category' in chat_result:
-                application.category = None
-                application.save()
-                type_message = 'message'
+            # elif 'error_application category' in chat_result:
+            #     application.category = None
+            #     application.save()
+            #     type_message = 'message'
             elif 'error_application brand' in chat_result:
                 application.brand = None
                 application.save()
