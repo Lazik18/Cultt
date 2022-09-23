@@ -500,6 +500,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             elif 'error_application state' in chat_result:
                 application.state = None
                 application.save()
+                type_message = 'message'
             elif 'error_application defect' in chat_result:
                 application.defect.clear()
                 application.save()
@@ -1021,6 +1022,6 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
                             user.send_telegram_message(telegram_bot.end_message, keyboard)
                         else:
-                            end_message()
+                            cooperation_option_message()
     except Exception as ex:
         bug_trap(additional_parameter=traceback.format_exc())
