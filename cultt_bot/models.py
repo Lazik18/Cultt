@@ -300,7 +300,7 @@ class SellApplication(models.Model):
 
     def defect_name(self):
         try:
-            return self.defect.all().values_list(flat=True) or 'не указано'
+            return str(self.defect.all().values_list(flat=True)) or 'не указано'
         except AttributeError:
             return 'не указано'
 
