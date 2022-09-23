@@ -466,46 +466,46 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
         # Ошибка в заявка
         if 'error_application' in chat_result:
-            if 'name' in chat_result:
+            if 'error_application name' in chat_result:
                 application.name = None
                 application.save()
 
                 user.name = None
                 user.save()
-            elif 'surname' in chat_result:
+            elif 'error_application surname' in chat_result:
                 application.surname = None
                 application.save()
 
                 user.surname = None
                 user.save()
-            elif 'email' in chat_result:
+            elif 'error_application email' in chat_result:
                 application.email = None
                 application.save()
 
                 user.email = None
                 user.save()
-            elif 'tel' in chat_result:
+            elif 'error_application tel' in chat_result:
                 application.tel = None
                 application.save()
 
                 user.tel = None
                 user.save()
-            elif 'category' in chat_result:
+            elif 'error_application category' in chat_result:
                 application.category = None
                 application.save()
-            elif 'brand' in chat_result:
+            elif 'error_application brand' in chat_result:
                 application.brand = None
                 application.save()
-            elif 'state' in chat_result:
+            elif 'error_application state' in chat_result:
                 application.state = None
                 application.save()
-            elif 'defect' in chat_result:
+            elif 'error_application defect' in chat_result:
                 application.defect.clear()
                 application.save()
-            elif 'price' in chat_result:
+            elif 'error_application price' in chat_result:
                 application.waiting_price = None
                 application.save()
-            elif 'concierge_count' in chat_result:
+            elif 'error_application concierge_count' in chat_result:
                 application.concierge_count = 0
                 application.save()
             else:
