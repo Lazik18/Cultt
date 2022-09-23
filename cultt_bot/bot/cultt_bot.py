@@ -437,7 +437,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if application.concierge_count != 0:
                 keyboard_b.append({f'{telegram_bot.applications_concierge_count}': 'error_application concierge_count'})
 
-            build_keyboard('inline', keyboard)
+            user.send_telegram_message(text, keyboard=build_keyboard('inline', keyboard))
 
         # Если нет заявки то создаем ее
         application_count = SellApplication.objects.filter(user=user, active=True).count()
@@ -464,15 +464,59 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
         # Получаем заявку пользователя
         application = SellApplication.objects.get(user=user, active=True)
 
+        # Ошибка в заявка
+        if 'error_application' in chat_result:
+            if 'name' in chat_result:
+                application.name = None
+                application.save()
+
+                user.name = None
+                user.save()
+            elif 'surname' in chat_result:
+                application.surname = None
+                application.save()
+
+                user.surname = None
+                user.save()
+            elif 'email' in chat_result:
+                application.email = None
+                application.save()
+
+                user.email = None
+                user.save()
+            elif 'tel' in chat_result:
+                application.tel = None
+                application.save()
+
+                user.tel = None
+                user.save()
+            elif 'category' in chat_result:
+                application.category = None
+                application.save()
+            elif 'brand' in chat_result:
+                application.brand = None
+                application.save()
+            elif 'state' in chat_result:
+                application.state = None
+                application.save()
+            elif 'defect' in chat_result:
+                application.defect.clear()
+                application.save()
+            elif 'price' in chat_result:
+                application.waiting_price = None
+                application.save()
+            elif 'concierge_count' in chat_result:
+                application.concierge_count = 0
+                application.save()
+            else:
+                error_application()
+
         if chat_result == 'edit_application site link':
             bot_text = telegram_bot.not_brand
             keyboard = build_keyboard('inline', [
                 {'Сайт': 'this_urlhttp://cultt.wemd.ru/'}  # TODO: в словарь
             ])
             user.send_telegram_message(bot_text, keyboard)
-        # Ошибка в заявка
-        elif chat_result == 'error_application':
-            pass
 
         # Для связи с менеджером
         elif chat_result == telegram_bot.contact_to_manager:
