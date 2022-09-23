@@ -419,8 +419,8 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             if application.tel is not None:
                 keyboard_b.append({f'{telegram_bot.applications_tel}': 'error_application tel'})
 
-            if application.category is not None:
-                keyboard_b.append({f'{telegram_bot.applications_category}': 'error_application category'})
+            # if application.category is not None:
+            #     keyboard_b.append({f'{telegram_bot.applications_category}': 'error_application category'})
 
             if application.brand is not None:
                 keyboard_b.append({f'{telegram_bot.applications_brand}': 'error_application brand'})
