@@ -279,7 +279,7 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
 
             bot_text = telegram_bot.model_message
             button_list.append({'Я не знаю модель': 'not_know_model'})
-            keyboard = build_keyboard('inline', button_list)  # TODO: в словарь
+            keyboard = build_keyboard('inline', button_list)
             user.send_telegram_message(bot_text, keyboard)
 
         # Выбор состояние
