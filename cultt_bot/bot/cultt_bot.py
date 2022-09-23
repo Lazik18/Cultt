@@ -267,9 +267,9 @@ def create_application(bot_id, chat_id, chat_result, type_message, message_id):
             button_list = []
             line_button = {}
 
-            models = ModelsOption.objects.filter(brand=application.brand)
+            models_brand = ModelsOption.objects.filter(brand=application.brand)
 
-            for model in models:
+            for model in models_brand:
                 if len(line_button) < 2:
                     line_button[model.name] = f'edit_application model {model.pk}'
                 else:
