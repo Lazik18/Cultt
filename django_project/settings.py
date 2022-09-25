@@ -6,7 +6,12 @@ SECRET_KEY = 'yB2fiyem2Hi4gjYRaHL7FXOSgwzOTmJkcILf0FxkyOAyBtdkNLhOQZAKH1T01y9Z'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    '194.67.109.104',
+    '2a00:f940:2:4:2::2809',
+    '194-67-109-104.cloudvps.regruhosting.ru',
+    'culttbot.ru',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
