@@ -6,10 +6,7 @@ SECRET_KEY = 'yB2fiyem2Hi4gjYRaHL7FXOSgwzOTmJkcILf0FxkyOAyBtdkNLhOQZAKH1T01y9Z'
 
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '185.20.226.231'
-    'dev.culttbot.ru',
-]
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
