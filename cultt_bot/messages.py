@@ -268,6 +268,29 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
             bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.photo_message_2, reply_markup=keyboard)
         return
+    elif application.name is None:
+        if user.name is not None:
+            application.name = user.name
+            create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
+            return
+
+        keyboard = []
+
+        if last_step is not None:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        keyboard.append(manager_keyboard)
+        keyboard.append(cancel_keyboard)
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.name_message, reply_markup=keyboard)
+        return
+    elif application.surname is None:
+        pass
+    elif application.email is None:
+        pass
+    elif application.tel is None:
+        pass
     else:
         bot_text = bot_settings.applications_main_text + '\n\n'
 
@@ -453,7 +476,13 @@ def handler_photo(data):
     photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
 
     if user.step == 'Photo':
-        application = SellApplication.objects.get(user=user, active=True)
+        application = SellApplication.objects.filter(user=user, active=True)
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            return
+
+        application = application.first()
 
         path = Path(f'application_image/{photo_id}.jpg')
 
