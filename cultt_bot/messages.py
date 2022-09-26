@@ -173,7 +173,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         line_keyboard = []
 
         for state in StateOptions.objects.filter(is_visible=True):
-            if len(line_keyboard) < 0:
+            if len(line_keyboard) < 1:
                 line_keyboard.append(InlineKeyboardButton(text=state.name, callback_data=f'CreateApp State {state.pk}'))
             else:
                 line_keyboard.append(InlineKeyboardButton(text=state.name, callback_data=f'CreateApp State {state.pk}'))
@@ -333,7 +333,7 @@ def main_menu(user_telegram_id):
     line_keyboard = []
 
     for option in coop_options:
-        if len(line_keyboard) < 2:
+        if len(line_keyboard) < 1:
             line_keyboard.append(InlineKeyboardButton(text=option.name, callback_data=f'CreateApp {option.pk}'))
         else:
             line_keyboard.append(InlineKeyboardButton(text=option.name, callback_data=f'CreateApp {option.pk}'))
