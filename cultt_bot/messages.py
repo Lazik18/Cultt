@@ -408,7 +408,6 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         bot.sendMessage(chat_id=user_telegram_id, text=bot_text, reply_markup=keyboard)
 
 
-
 @debug_dec
 def main_menu(user_telegram_id):
     bot_settings = TelegramBot.objects.filter().first()
