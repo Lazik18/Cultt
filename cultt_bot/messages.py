@@ -126,7 +126,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
                 keyboard.append(line_keyboard)
 
             keyboard.append([InlineKeyboardButton(text=bot_settings.brand_back_button,
-                                                  callback_data=f'CreateApp')])
+                                                  callback_data=f'CreateApp {coop_option_id}')])
 
             keyboard.append([InlineKeyboardButton(text=bot_settings.brand_not_found,
                                                   callback_data=f'BrandNotFound')])
@@ -767,7 +767,7 @@ def handler_call_back(data):
             if amo_crm_session.get_access_token('refresh_token'):
                 amo_crm_session.create_leads_complex(application.id, user)
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='CreateApp')],
+        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='CreateApp')],  # TODO: Rename
                     [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
