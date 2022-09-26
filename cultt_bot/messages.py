@@ -146,7 +146,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         keyboard = []
         line_keyboard = []
 
-        user.step = 'Model'
+        user.step = f'Model {coop_option_id}'
         user.save()
 
         models_brand = ModelsOption.objects.filter(brand=application.brand)
