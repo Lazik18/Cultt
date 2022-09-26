@@ -400,7 +400,8 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             bot_text += bot_settings.applications_concierge_count + f': {application.concierge_count}\n'
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp')],
-                    [InlineKeyboardButton(text=bot_settings.error_application, callback_data='EditApp')]]
+                    [InlineKeyboardButton(text=bot_settings.error_application, callback_data='EditApp')],
+                    cancel_keyboard]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -669,7 +670,7 @@ def handler_call_back(data):
                     [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message)
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
         return
     elif 'BackApp' in button_press:
         try:
