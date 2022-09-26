@@ -940,3 +940,26 @@ def handler_call_back(data):
 
         create_applications(user_telegram_id, option_id, last_step='MainMenu')
         return
+    elif 'MyProfile' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+        if 'Reset' in button_press:
+            user.name = None
+            user.surname = None
+            user.email = None
+            user.tel = None
+            user.save()
+
+        text = 'Чтобы изменить данные нажмите сбросить.\nПри создании новой заявки вы сможете их заполнить.\n'
+        text += f'Имя: {user.name or "не задано"}\nФамилия: {user.surname or "не задано"}' \
+                f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
+                    [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+
