@@ -807,6 +807,7 @@ def handler_call_back(data):
             user.save()
 
             bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.other_model)
+            return
         else:
             application.model = ModelsOption.objects.get(pk=model_id).name
             application.save()
