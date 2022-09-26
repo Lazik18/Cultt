@@ -660,7 +660,9 @@ def handler_call_back(data):
         stats.clicks_manager += 1
         stats.save()
     elif 'CancelApp' in button_press:
-        pass
+        application.delete()
+        main_menu()
+        return
     elif 'BackApp' in button_press:
         try:
             bot.deleteMessage(current_message)
