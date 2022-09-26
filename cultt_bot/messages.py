@@ -132,8 +132,6 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             keyboard.append([InlineKeyboardButton(text=bot_settings.brand_not_found,
                                                   callback_data=f'BrandNotFound')])
 
-        if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
         keyboard.append(manager_keyboard)
         keyboard.append(cancel_keyboard)
 
@@ -656,7 +654,11 @@ def handler_call_back(data):
             pass
         main_menu(user_telegram_id)
     elif 'ConnectManager' in button_press:
-        pass
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.contact_manager)
+
+        stats = Indicator.objects.filter().last()
+        stats.clicks_manager += 1
+        stats.save()
     elif 'CancelApp' in button_press:
         pass
     elif 'BackApp' in button_press:
