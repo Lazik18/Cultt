@@ -974,12 +974,20 @@ def handler_call_back(data):
 
         if len(button_press.split()) >= 2:
             if 'Name' in button_press:
+                user.name = None
+                user.save()
                 application.name = None
             if 'Surname' in button_press:
+                user.surname = None
+                user.save()
                 application.surname = None
             if 'Email' in button_press:
+                user.email = None
+                user.save()
                 application.email = None
             if 'Tel' in button_press:
+                user.tel = None
+                user.save()
                 application.tel = None
             if 'Category' in button_press:
                 application.category = None
