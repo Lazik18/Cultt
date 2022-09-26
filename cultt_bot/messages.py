@@ -489,13 +489,13 @@ def handler_message(data):
         handler_command(data)
         return
 
-    application = SellApplication.objects.filter(user=user, active=True)
+    application = SellApplication.objects.filter(user=user, active=True).first()
 
     if application is None:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
         return
 
-    application = application.first()
+    # application = application.first()
 
     if 'CountAccessory' in user.step:
         option_od = user.step.split()[1]
