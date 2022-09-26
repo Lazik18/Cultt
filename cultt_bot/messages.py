@@ -363,6 +363,9 @@ def handler_command(data):
     if command == '/start':
         text = bot_settings.start_message
 
+        user.step = ''
+        user.save()
+
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -594,8 +597,6 @@ def handler_call_back(data):
 
         application.category = CategoryOptions.objects.get(pk=category_id)
         application.save()
-
-        bot.sendMessage(chat_id=user_telegram_id, text=str(application.cooperation_option.pk))
 
         create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Category')
         return
