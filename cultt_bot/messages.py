@@ -1026,3 +1026,5 @@ def handler_call_back(data):
 
         if application.cooperation_option.count_accessory:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_concierge_count, callback_data='EditApp CountA')])
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
