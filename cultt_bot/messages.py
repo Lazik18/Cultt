@@ -661,7 +661,7 @@ def handler_call_back(data):
         stats.save()
     elif 'CancelApp' in button_press:
         application.delete()
-        main_menu()
+        main_menu(user_telegram_id)
         return
     elif 'BackApp' in button_press:
         try:
