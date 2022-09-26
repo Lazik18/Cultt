@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from cultt_bot.messages import handler_call_back, handler_photo, handler_message
 from cultt_bot.models import *
 from cultt_bot.bot.cultt_bot import bot_logic
 from cultt_bot.general_functions import *
@@ -35,8 +36,10 @@ def web_hook_bot(request, bot_url):
                 chat_data = data['callback_query']['data']
                 message_id = data['callback_query']['message']['message_id']
 
-                bot_logic(telegram_bot.id, chat_id, chat_data, 'data', message_id)
-
+                if str(chat_id) == '673616491':
+                    handler_call_back(data)
+                else:
+                    bot_logic(telegram_bot.id, chat_id, chat_data, 'data', message_id)
             # Если пользователь написал что-то
             if 'message' in data:
                 if 'text' in data['message'].keys():
@@ -44,13 +47,20 @@ def web_hook_bot(request, bot_url):
                     chat_msg = data['message']['text']
                     message_id = data['message']['message_id']
 
-                    bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
+                    if str(chat_id) == '673616491':
+                        handler_message(data)
+                    else:
+                        bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
+
                 elif 'photo' in data['message'].keys():
                     chat_id = data['message']['chat']['id']
                     photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
                     message_id = data['message']['message_id']
 
-                    bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
+                    if str(chat_id) == '673616491':
+                        handler_photo(data)
+                    else:
+                        bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
                 elif 'document' in data['message'].keys():
                     chat_id = data['message']['chat']['id']
 

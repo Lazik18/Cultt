@@ -118,6 +118,8 @@ class TelegramBot(models.Model):
     error_application = models.TextField(default='Ошибка в заявке', verbose_name='Ошибка в заявке')
     # Выберете, что хотите исправить
     text_error_application = models.TextField(default='Выберете, что хотите исправить', verbose_name='Выберете, что хотите исправить')
+    # Назад - заполнение заявки
+    back_button = models.TextField(default='Назад', verbose_name='Назад - заполнение заявки')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
@@ -183,6 +185,8 @@ class CategoryOptions(models.Model):
     name = models.TextField(verbose_name='Название')
     # Отображать в боте
     is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
+    # Имеет ли бренд?
+    have_brand = models.BooleanField(default=False, verbose_name='Имеет ли бренд?')
 
     def __str__(self):
         return self.name
@@ -243,6 +247,16 @@ class CooperationOption(models.Model):
     name = models.TextField(verbose_name='Название')
     # Отображать в боте
     is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
+
+    count_accessory = models.BooleanField(default=False, verbose_name='Количество аксессуаров')
+    category = models.BooleanField(default=False, verbose_name='Категория')
+    brand = models.BooleanField(default=False, verbose_name='Бренд')
+    model = models.BooleanField(default=False, verbose_name='Модель')
+    state = models.BooleanField(default=False, verbose_name='Состояние')
+    defect = models.BooleanField(default=False, verbose_name='Дефекты')
+    price = models.BooleanField(default=False, verbose_name='Цена')
+    photo = models.BooleanField(default=False, verbose_name='Фото')
+
 
     def __str__(self):
         return self.name
