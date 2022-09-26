@@ -511,8 +511,6 @@ def handler_call_back(data):
 
     application = SellApplication.objects.filter(user=user, active=True)
 
-    bot.sendMessage(chat_id=user_telegram_id, text=str(application.cooperation_option.pk))
-
     if 'MainMenu' in button_press:
         try:
             bot.deleteMessage(current_message)
@@ -594,6 +592,8 @@ def handler_call_back(data):
             return
 
         application = application.first()
+
+        bot.sendMessage(chat_id=user_telegram_id, text=str(application.cooperation_option.pk))
 
         category_id = button_press.split()[2]
 
