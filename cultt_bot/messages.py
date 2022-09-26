@@ -835,7 +835,11 @@ def handler_call_back(data):
             create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Defect')
             return
         else:
-            application.defect.add(DefectOptions.objects.get(pk=defect_id))
+            defect = DefectOptions.objects.get(pk=defect_id)
+            if defect in application.defect.all():
+                application.defect.remove(defect)
+            else:
+                application.defect.add(defect)
             application.save()
 
             create_applications(user_telegram_id, application.cooperation_option.pk, last_step='State')
