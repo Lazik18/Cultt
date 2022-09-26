@@ -581,7 +581,7 @@ def handler_call_back(data):
             return
 
         return
-    elif 'CrateApp Category' in button_press:
+    elif 'CreateApp Category' in button_press:
         try:
             bot.deleteMessage(current_message)
         except telepot.exception.TelegramError:
