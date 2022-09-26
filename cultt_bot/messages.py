@@ -1009,16 +1009,16 @@ def handler_call_back(data):
         if application.cooperation_option.category:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_category, callback_data='EditApp Category')])
 
-        if application.cooperation_option.brand:
+        if application.cooperation_option.brand and application.category.have_brand:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_brand, callback_data='EditApp Brand')])
 
-        if application.cooperation_option.state:
+        if application.cooperation_option.state and application.category.have_brand:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_state, callback_data='EditApp State')])
 
-        if application.cooperation_option.model:
+        if application.cooperation_option.model and application.category.have_brand:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_model, callback_data='EditApp Model')])
 
-        if application.cooperation_option.defect:
+        if application.cooperation_option.defect and application.category.have_brand:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_defect, callback_data='EditApp Defect')])
 
         if application.cooperation_option.price:
