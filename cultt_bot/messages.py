@@ -216,8 +216,8 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
                 keyboard.append(line_keyboard)
                 line_keyboard = []
 
-            if len(line_keyboard) != 0:
-                keyboard.append(line_keyboard)
+        if len(line_keyboard) != 0:
+            keyboard.append(line_keyboard)
 
         text_defect_accept = 'Выбрать'
         if application.defect.count() < 1:
