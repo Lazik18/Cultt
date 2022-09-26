@@ -779,5 +779,7 @@ def handler_call_back(data):
         except telepot.exception.TelegramError:
             pass
 
-        create_applications(user_telegram_id, application.cooperation_option.pk)
+        option_id = button_press.split()[1]
+
+        create_applications(user_telegram_id, option_id)
         return
