@@ -612,6 +612,8 @@ def handler_photo(data):
 
             if PhotoApplications.objects.filter(application=application, date__gte=date_start,
                                                 date__lte=date_end).count() < 2:
+                user.step = ''
+                user.save()
                 create_applications(user_telegram_id, application.cooperation_option.pk, finish_photo=True)
 
 
