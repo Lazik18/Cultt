@@ -275,6 +275,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
     elif application.name is None:
         if user.name is not None:
             application.name = user.name
+            application.save()
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
@@ -295,6 +296,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
     elif application.surname is None:
         if user.surname is not None:
             application.surname = user.surname
+            application.save()
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
@@ -315,6 +317,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
     elif application.email is None:
         if user.email is not None:
             application.email = user.email
+            application.save()
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
@@ -335,6 +338,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
     elif application.tel is None:
         if user.tel is not None:
             application.tel = user.tel
+            application.save()
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
@@ -612,8 +616,6 @@ def handler_photo(data):
 
             if PhotoApplications.objects.filter(application=application, date__gte=date_start,
                                                 date__lte=date_end).count() < 2:
-                user.step = ''
-                user.save()
                 create_applications(user_telegram_id, application.cooperation_option.pk, finish_photo=True)
 
 
