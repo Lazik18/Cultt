@@ -400,7 +400,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             bot_text += bot_settings.applications_concierge_count + f': {application.concierge_count}\n'
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp')],
-                    [InlineKeyboardButton(text=bot_settings.error_application, callback_data='EditApp')],
+                    [InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp')],
                     cancel_keyboard]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
@@ -494,8 +494,6 @@ def handler_message(data):
     if application is None:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
         return
-
-    # application = application.first()
 
     if 'CountAccessory' in user.step:
         option_od = user.step.split()[1]
@@ -962,4 +960,69 @@ def handler_call_back(data):
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+    elif 'EditApp' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
 
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            return
+
+        application = application.first()
+
+        if len(button_press.split()) >= 2:
+            if 'Name' in button_press:
+                application.name = None
+            if 'Surname' in button_press:
+                application.surname = None
+            if 'Email' in button_press:
+                application.email = None
+            if 'Tel' in button_press:
+                application.tel = None
+            if 'Category' in button_press:
+                application.category = None
+            if 'Brand' in button_press:
+                application.brand = None
+            if 'State' in button_press:
+                application.state = None
+            if 'Model' in button_press:
+                application.model = None
+            if 'Defect' in button_press:
+                application.defect_finished = False
+            if 'Price' in button_press:
+                application.waiting_price = None
+            if 'CountA' in button_press:
+                application.concierge_count = 0
+
+            application.save()
+            create_applications(user_telegram_id, application.cooperation_option.pk)
+
+        text = 'Выберите, что бы вы хотели изменить'
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.applications_name, callback_data='EditApp Name')],
+                    [InlineKeyboardButton(text=bot_settings.applications_surname, callback_data='EditApp Surname')],
+                    [InlineKeyboardButton(text=bot_settings.applications_email, callback_data='EditApp Email')],
+                    [InlineKeyboardButton(text=bot_settings.applications_tel, callback_data='EditApp Tel')]]
+
+        if application.cooperation_option.category:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.applications_category, callback_data='EditApp Category')])
+
+        if application.cooperation_option.brand:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.applications_brand, callback_data='EditApp Brand')])
+
+        if application.cooperation_option.state:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.applications_state, callback_data='EditApp State')])
+
+        if application.cooperation_option.model:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.applications_model, callback_data='EditApp Model')])
+
+        if application.cooperation_option.defect:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.applications_defect, callback_data='EditApp Defect')])
+
+        if application.cooperation_option.price:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.applications_waiting_price, callback_data='EditApp Price')])
+
+        if application.count_accessory:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.applications_concierge_count, callback_data='EditApp CountA')])
