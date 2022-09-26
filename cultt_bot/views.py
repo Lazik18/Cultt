@@ -32,35 +32,40 @@ def web_hook_bot(request, bot_url):
 
             # Если пользователь нажал кнопку
             if 'callback_query' in data:
-                chat_id = data['callback_query']['from']['id']
-                chat_data = data['callback_query']['data']
-                message_id = data['callback_query']['message']['message_id']
-
-                if str(chat_id) in ['673616491', '350436882', '5604116591']:
-                    handler_call_back(data)
-                else:
-                    bot_logic(telegram_bot.id, chat_id, chat_data, 'data', message_id)
+                # chat_id = data['callback_query']['from']['id']
+                # chat_data = data['callback_query']['data']
+                # message_id = data['callback_query']['message']['message_id']
+                #
+                # if str(chat_id) in ['673616491', '350436882', '5604116591']:
+                #     handler_call_back(data)
+                # else:
+                #     bot_logic(telegram_bot.id, chat_id, chat_data, 'data', message_id)
+                handler_call_back(data)
             # Если пользователь написал что-то
             if 'message' in data:
                 if 'text' in data['message'].keys():
-                    chat_id = data['message']['chat']['id']
-                    chat_msg = data['message']['text']
-                    message_id = data['message']['message_id']
+                    # chat_id = data['message']['chat']['id']
+                    # chat_msg = data['message']['text']
+                    # message_id = data['message']['message_id']
+                    #
+                    # if str(chat_id) in ['673616491', '350436882', '5604116591']:
+                    #     handler_message(data)
+                    # else:
+                    #     bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
 
-                    if str(chat_id) in ['673616491', '350436882', '5604116591']:
-                        handler_message(data)
-                    else:
-                        bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
+                    handler_message(data)
 
                 elif 'photo' in data['message'].keys():
-                    chat_id = data['message']['chat']['id']
-                    photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
-                    message_id = data['message']['message_id']
+                    # chat_id = data['message']['chat']['id']
+                    # photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
+                    # message_id = data['message']['message_id']
+                    #
+                    # if str(chat_id) in ['673616491', '350436882', '5604116591']:
+                    #     handler_photo(data)
+                    # else:
+                    #     bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
 
-                    if str(chat_id) in ['673616491', '350436882', '5604116591']:
-                        handler_photo(data)
-                    else:
-                        bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
+                    handler_photo(data)
                 elif 'document' in data['message'].keys():
                     chat_id = data['message']['chat']['id']
 
