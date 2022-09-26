@@ -40,6 +40,9 @@ def bot_logic(bot_id, chat_id, chat_result, type_message, message_id):
                 user.save()
 
                 SellApplication.objects.filter(user=user, active=True).delete()
+            elif chat_result == '/id':
+                user.send_telegram_message(user.pk)
+                return
             elif chat_result == telegram_bot.cancel_applications:
                 user.step = 'cancel_application'
                 user.save()
