@@ -595,7 +595,7 @@ def handler_call_back(data):
         application.category = CategoryOptions.objects.get(pk=category_id)
         application.save()
 
-        bot.sendMessage()
+        bot.sendMessage(chat_id=user_telegram_id, text=application.cooperation_option.pk)
 
         create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Category')
         return
