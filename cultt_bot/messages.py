@@ -39,7 +39,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
     coop_option = CooperationOption.objects.filter(is_visible=True, pk=coop_option_id)
 
     if coop_option_id is None:
-        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
         return
 
     coop_option = coop_option.first()
@@ -595,7 +595,7 @@ def handler_photo(data):
         application = SellApplication.objects.filter(user=user, active=True)
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -629,7 +629,7 @@ def handler_call_back(data):
     user = TelegramUser.objects.filter(chat_id=user_telegram_id)
 
     if user is None:
-        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
         return
     else:
         user = user.first()
@@ -676,7 +676,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -736,7 +736,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -755,7 +755,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -771,7 +771,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -795,7 +795,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -817,7 +817,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -835,7 +835,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -865,7 +865,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -884,7 +884,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -904,7 +904,7 @@ def handler_call_back(data):
             pass
 
         if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
         application = application.first()
@@ -1039,3 +1039,5 @@ def handler_call_back(data):
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+    else:
+        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
