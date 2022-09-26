@@ -7,7 +7,7 @@ from pathlib import Path
 import telepot
 from django.core.files import File
 
-from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup
+from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove
 
 from cultt_bot.amo_crm import AmoCrmSession
 from cultt_bot.general_functions import phone_number_validator, email_validation
@@ -492,7 +492,7 @@ def handler_message(data):
     application = SellApplication.objects.filter(user=user, active=True).first()
 
     if application is None:
-        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
+        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove)
         return
 
     if 'CountAccessory' in user.step:
