@@ -806,7 +806,7 @@ def handler_call_back(data):
             user.step = f'Model {application.cooperation_option.pk}'
             user.save()
 
-            bot.sendMessage()
+            bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.other_model)
         else:
             application.model = ModelsOption.objects.get(pk=model_id).name
             application.save()
