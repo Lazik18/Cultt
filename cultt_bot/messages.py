@@ -447,7 +447,7 @@ def handler_photo(data):
     bot_settings = TelegramBot.objects.filter().first()
     bot = telepot.Bot(token=bot_settings.token)
 
-    user_telegram_id = data['callback_query']['message']['chat']['id']
+    user_telegram_id = data['message']['chat']['id']
     user = TelegramUser.objects.filter(chat_id=user_telegram_id)
 
     photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
@@ -592,8 +592,6 @@ def handler_call_back(data):
             return
 
         application = application.first()
-
-        bot.sendMessage(chat_id=user_telegram_id, text=str(application.cooperation_option.pk))
 
         category_id = button_press.split()[2]
 
