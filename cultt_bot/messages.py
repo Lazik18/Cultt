@@ -1024,5 +1024,5 @@ def handler_call_back(data):
         if application.cooperation_option.price:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_waiting_price, callback_data='EditApp Price')])
 
-        if application.count_accessory:
+        if application.cooperation_option.count_accessory:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_concierge_count, callback_data='EditApp CountA')])
