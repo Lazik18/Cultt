@@ -10,6 +10,7 @@ from django.core.files import File
 from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup
 
 from cultt_bot.amo_crm import AmoCrmSession
+from cultt_bot.general_functions import phone_number_validator, email_validation
 from cultt_bot.models import TelegramBot, TelegramUser, SellApplication, CooperationOption, CategoryOptions, \
     BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator
 
@@ -274,6 +275,9 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
+        user.step = 'Name'
+        user.save()
+
         keyboard = []
 
         if last_step is not None:
@@ -286,11 +290,65 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.name_message, reply_markup=keyboard)
         return
     elif application.surname is None:
-        pass
+        if user.surname is not None:
+            application.surname = user.surname
+            create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
+            return
+
+        user.step = 'Surname'
+        user.save()
+
+        keyboard = []
+
+        if last_step is not None:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        keyboard.append(manager_keyboard)
+        keyboard.append(cancel_keyboard)
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.name_message, reply_markup=keyboard)
+        return
     elif application.email is None:
-        pass
+        if user.email is not None:
+            application.email = user.email
+            create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
+            return
+
+        user.step = 'Email'
+        user.save()
+
+        keyboard = []
+
+        if last_step is not None:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        keyboard.append(manager_keyboard)
+        keyboard.append(cancel_keyboard)
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.name_message, reply_markup=keyboard)
+        return
     elif application.tel is None:
-        pass
+        if user.tel is not None:
+            application.tel = user.tel
+            create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
+            return
+
+        user.step = 'Tel'
+        user.save()
+
+        keyboard = []
+
+        if last_step is not None:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        keyboard.append(manager_keyboard)
+        keyboard.append(cancel_keyboard)
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.name_message, reply_markup=keyboard)
+        return
     else:
         bot_text = bot_settings.applications_main_text + '\n\n'
 
@@ -432,6 +490,8 @@ def handler_message(data):
     application = application.first()
 
     if 'CountAccessory' in user.step:
+        option_od = user.step.split()[1]
+
         try:
             if int(message_text) <= 0:
                 raise ValueError('A small number')
@@ -444,9 +504,11 @@ def handler_message(data):
         except:
             bot.sendMessage(chat_id=user_telegram_id, text='Некорректный ввод')
 
-        create_applications(user_telegram_id, message_text.split()[1], last_step='Count')
+        create_applications(user_telegram_id, option_od, last_step='Count')
         return
     elif 'WaitingPrice' in user.step:
+        option_od = user.step.split()[1]
+
         try:
             if int(message_text) < 1000:
                 raise SyntaxError
@@ -461,7 +523,46 @@ def handler_message(data):
         except SyntaxError:
             bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.waiting_price_message_incorrect_small)
 
-        create_applications(user_telegram_id, message_text.split()[1], last_step='Price')
+        create_applications(user_telegram_id, option_od, last_step='Price')
+        return
+    elif 'Name' in user.step:
+        option_od = user.step.split()[1]
+
+        user.step = ''
+        user.name = message_text
+        user.save()
+
+        create_applications(user_telegram_id, option_od, last_step='Price')
+    elif 'Surname' in user.step:
+        option_od = user.step.split()[1]
+
+        user.step = ''
+        user.surname = message_text
+        user.save()
+
+        create_applications(user_telegram_id, option_od, last_step='Name')
+    elif 'Email' in user.step:
+        option_od = user.step.split()[1]
+
+        if email_validation(message_text):
+            user.step = ''
+            user.email = message_text
+            user.save()
+            create_applications(user_telegram_id, option_od, last_step='Surname')
+        else:
+            bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.error_email)
+
+    elif 'Tel' in user.step:
+        option_od = user.step.split()[1]
+
+        if phone_number_validator(message_text):
+            user.step = ''
+            user.tel = message_text
+            user.save()
+            create_applications(user_telegram_id, option_od, last_step='Email')
+        else:
+            bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.error_phone)
+
         return
 
 
