@@ -998,6 +998,7 @@ def handler_call_back(data):
 
             application.save()
             create_applications(user_telegram_id, application.cooperation_option.pk)
+            return
 
         text = 'Выберите, что бы вы хотели изменить'
 
