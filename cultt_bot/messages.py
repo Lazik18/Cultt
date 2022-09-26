@@ -59,6 +59,9 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         keyboard = [manager_keyboard, cancel_keyboard]
 
+        if last_step is not None:
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.concierge_message, reply_markup=keyboard)
