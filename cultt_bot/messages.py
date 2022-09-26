@@ -455,12 +455,6 @@ def handler_photo(data):
     if user.step == 'Photo':
         application = SellApplication.objects.get(user=user, active=True)
 
-        if application is None:
-            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start')
-            return
-
-        application = application.first()
-
         path = Path(f'application_image/{photo_id}.jpg')
 
         bot.download_file(photo_id, path)
