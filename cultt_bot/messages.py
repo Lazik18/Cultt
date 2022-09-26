@@ -220,7 +220,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if application.defect.count() < 1:
             text_defect_accept = 'Нет дефектов'
 
-        keyboard.append(InlineKeyboardButton(text=text_defect_accept, callback_data='CreateApp Defect Accept'))
+        keyboard.append([InlineKeyboardButton(text=text_defect_accept, callback_data='CreateApp Defect Accept')])
 
         if last_step is not None:
             keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
