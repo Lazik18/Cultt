@@ -68,7 +68,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         line_keyboard = []
 
         for category in CategoryOptions.objects.filter(is_visible=True):
-            if len(line_keyboard) < 2:
+            if len(line_keyboard) < 1:
                 line_keyboard.append(InlineKeyboardButton(text=category.name,
                                                           callback_data=f'CreateApp Category {category.pk}'))
             else:
