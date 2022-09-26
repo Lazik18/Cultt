@@ -158,7 +158,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if len(line_keyboard) != 0:
             keyboard.append(line_keyboard)
 
-        keyboard.append(InlineKeyboardButton(text='Я не знаю модель', callback_data=f'CreateApp Model NotKnow'))
+        keyboard.append([InlineKeyboardButton(text='Я не знаю модель', callback_data=f'CreateApp Model NotKnow')])
 
         if last_step is not None:
             keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
