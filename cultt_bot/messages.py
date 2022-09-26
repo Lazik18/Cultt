@@ -280,7 +280,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
-        user.step = 'Name'
+        user.step = f'Name {coop_option_id}'
         user.save()
 
         keyboard = []
@@ -301,7 +301,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
-        user.step = 'Surname'
+        user.step = f'Surname {coop_option_id}'
         user.save()
 
         keyboard = []
@@ -322,7 +322,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
-        user.step = 'Email'
+        user.step = f'Email {coop_option_id}'
         user.save()
 
         keyboard = []
@@ -343,7 +343,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
-        user.step = 'Tel'
+        user.step = f'Tel {coop_option_id}'
         user.save()
 
         keyboard = []
