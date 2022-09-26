@@ -665,6 +665,11 @@ def handler_call_back(data):
     elif 'CancelApp' in button_press:
         application.delete()
 
+        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+                    [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message)
         return
     elif 'BackApp' in button_press:
         try:
@@ -919,7 +924,7 @@ def handler_call_back(data):
             if amo_crm_session.get_access_token('refresh_token'):
                 amo_crm_session.create_leads_complex(application.id, user)
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='CreateApp')],  # TODO: Rename
+        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
                     [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
