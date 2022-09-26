@@ -615,8 +615,6 @@ def handler_photo(data):
                 create_applications(user_telegram_id, application.cooperation_option.pk, finish_photo=True)
 
 
-
-
 @debug_dec
 def handler_call_back(data):
     bot_settings = TelegramBot.objects.filter().first()
