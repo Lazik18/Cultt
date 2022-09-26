@@ -448,7 +448,7 @@ def handler_photo(data):
     bot = telepot.Bot(token=bot_settings.token)
 
     user_telegram_id = data['message']['chat']['id']
-    user = TelegramUser.objects.filter(chat_id=user_telegram_id)
+    user = TelegramUser.objects.filter(chat_id=user_telegram_id).first()
 
     photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
 
