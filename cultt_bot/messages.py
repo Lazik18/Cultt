@@ -145,6 +145,9 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         keyboard = []
         line_keyboard = []
 
+        user.step = 'Model'
+        user.save()
+
         models_brand = ModelsOption.objects.filter(brand=application.brand)
 
         for model in models_brand:
@@ -551,7 +554,6 @@ def handler_message(data):
             create_applications(user_telegram_id, option_od, last_step='Surname')
         else:
             bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.error_email)
-
     elif 'Tel' in user.step:
         option_od = user.step.split()[1]
 
@@ -564,6 +566,16 @@ def handler_message(data):
             bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.error_phone)
 
         return
+    elif 'Model' in user.step:
+        option_od = user.step.split()[1]
+
+        user.step = ''
+        user.save()
+
+        application.model = message_text
+        application.save()
+
+        create_applications(user_telegram_id, option_od, last_step='Brand')
 
 
 @debug_dec
