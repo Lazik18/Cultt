@@ -146,9 +146,6 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         keyboard = []
         line_keyboard = []
 
-        user.step = f'Model {coop_option_id}'
-        user.save()
-
         models_brand = ModelsOption.objects.filter(brand=application.brand)
 
         for model in models_brand:
@@ -162,6 +159,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if len(line_keyboard) != 0:
             keyboard.append(line_keyboard)
 
+        keyboard.append([InlineKeyboardButton(text='Другая модель', callback_data=f'CreateApp Model Other')])
         keyboard.append([InlineKeyboardButton(text='Я не знаю модель', callback_data=f'CreateApp Model NotKnow')])
 
         if last_step is not None:
@@ -804,6 +802,11 @@ def handler_call_back(data):
         if model_id == 'NotKnow':
             application.model = '-'
             application.save()
+        elif model_id == 'Other':
+            user.step = f'Model {application.cooperation_option.pk}'
+            user.save()
+
+            bot.sendMessage()
         else:
             application.model = ModelsOption.objects.get(pk=model_id).name
             application.save()

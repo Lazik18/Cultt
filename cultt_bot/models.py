@@ -120,6 +120,8 @@ class TelegramBot(models.Model):
     text_error_application = models.TextField(default='Выберете, что хотите исправить', verbose_name='Выберете, что хотите исправить')
     # Назад - заполнение заявки
     back_button = models.TextField(default='Назад', verbose_name='Назад - заполнение заявки')
+    # Другая модель - текст
+    other_model = models.TextField(default='Введите название модели', verbose_name='Другая модель - текст')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
