@@ -806,7 +806,7 @@ def handler_call_back(data):
             user.step = f'Model {application.cooperation_option.pk}'
             user.save()
 
-            keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')]]
+            keyboard = [[InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
             bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.other_model, reply_markup=keyboard)
