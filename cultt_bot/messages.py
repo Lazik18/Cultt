@@ -652,6 +652,9 @@ def handler_call_back(data):
         except telepot.exception.TelegramError:
             pass
         main_menu(user_telegram_id)
+        stats = Indicator.objects.filter().last()
+        stats.dialogs_started += 1
+        stats.save()
     elif 'ConnectManager' in button_press:
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.contact_manager)
 
