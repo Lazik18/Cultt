@@ -36,7 +36,7 @@ def web_hook_bot(request, bot_url):
                 chat_data = data['callback_query']['data']
                 message_id = data['callback_query']['message']['message_id']
 
-                if str(chat_id) == '673616491':
+                if str(chat_id) in ['673616491', '350436882']:
                     handler_call_back(data)
                 else:
                     bot_logic(telegram_bot.id, chat_id, chat_data, 'data', message_id)
@@ -47,7 +47,7 @@ def web_hook_bot(request, bot_url):
                     chat_msg = data['message']['text']
                     message_id = data['message']['message_id']
 
-                    if str(chat_id) == '673616491':
+                    if str(chat_id) in ['673616491', '350436882']:
                         handler_message(data)
                     else:
                         bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
@@ -57,7 +57,7 @@ def web_hook_bot(request, bot_url):
                     photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
                     message_id = data['message']['message_id']
 
-                    if str(chat_id) == '673616491':
+                    if str(chat_id) in ['673616491', '350436882']:
                         handler_photo(data)
                     else:
                         bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
