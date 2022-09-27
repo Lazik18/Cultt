@@ -451,7 +451,7 @@ def main_menu(user_telegram_id):
         keyboard.append(line_keyboard)
 
     keyboard.append([InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')])
-    keyboard.append([InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')])
+    # keyboard.append([InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')])
     keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.cooperation_option_message, reply_markup=keyboard)
