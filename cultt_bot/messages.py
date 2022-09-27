@@ -401,13 +401,13 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if application.concierge_count != 0:
             bot_text += bot_settings.applications_concierge_count + f': {application.concierge_count}\n'
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp')],
-                    [InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp')],
-                    cancel_keyboard]
+        # keyboard = [[InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp')],
+        #             [InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp')],
+        #             cancel_keyboard]
 
-        # keyboard = [[InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp'),
-        #             InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp'),
-        #             InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')]]
+        keyboard = [[InlineKeyboardButton(text='Отправить', callback_data='SendApp'),
+                    InlineKeyboardButton(text='Ошибка', callback_data=f'EditApp'),
+                    InlineKeyboardButton(text='Отменить', callback_data='CancelApp')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
