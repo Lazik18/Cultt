@@ -791,7 +791,7 @@ def handler_call_back(data):
         create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Brand')
         return
     elif 'BrandNotFound' in button_press:
-        keyboard = [[InlineKeyboardButton(text='Ссылка', url='http://cultt.wemd.ru/')]]
+        keyboard = [[InlineKeyboardButton(text='Ссылка', url='https://thecultt.com/sell')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.not_brand, reply_markup=keyboard)
