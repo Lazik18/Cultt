@@ -343,7 +343,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         line_keyboard = []
 
         if last_step is not None:
-            line_keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+            line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
         line_keyboard.append(cancel_keyboard)
 
         keyboard.append(line_keyboard)
@@ -366,7 +366,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         line_keyboard = []
 
         if last_step is not None:
-            line_keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+            line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
         line_keyboard.append(cancel_keyboard)
 
         keyboard.append(line_keyboard)
