@@ -1,3 +1,5 @@
+import traceback
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -88,8 +90,8 @@ def web_hook_bot(request, bot_url):
             req_text = requests.get(f'https://api.telegram.org/bot{telegram_bot.token}/getWebhookInfo').text
 
             return HttpResponse(req_text)
-    except Exception:
-        bug_trap()
+    except Exception as ex:
+        bug_trap(additional_parameter=repr(ex) + '\n' + traceback.format_exc())
 
         return HttpResponse('ok', content_type="text/plain", status=200)
 
