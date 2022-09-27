@@ -685,6 +685,11 @@ def handler_call_back(data):
         stats.clicks_manager += 1
         stats.save()
     elif 'CancelApp' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
         application.delete()
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
