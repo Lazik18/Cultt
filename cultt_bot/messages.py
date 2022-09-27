@@ -229,7 +229,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         keyboard.append([InlineKeyboardButton(text=text_defect_accept, callback_data='CreateApp Defect Accept')])
 
         if last_step is not None:
-            line_keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+            line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
         line_keyboard.append(cancel_keyboard)
 
         keyboard.append(line_keyboard)
