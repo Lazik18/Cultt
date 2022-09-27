@@ -555,9 +555,12 @@ def handler_message(data):
     elif 'Name' in user.step:
         option_od = user.step.split()[1]
 
-        user.step = ''
-        user.name = message_text
-        user.save()
+        if len(message_text.split()) == 1:
+            user.step = ''
+            user.name = message_text
+            user.save()
+        else:
+            bot.sendMessage(chat_id=user_telegram_id, text='Имя должно быть одним словом')
 
         create_applications(user_telegram_id, option_od, last_step='Price')
     elif 'Surname' in user.step:
