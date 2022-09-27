@@ -464,6 +464,9 @@ def handler_command(data):
         SellApplication.objects.filter(user=user, active=True).delete()
 
         return
+    if command == '/id':
+        bot.sendMessage(chat_id=user_telegram_id, text=user_telegram_id)
+        return
 
 
 @debug_dec
