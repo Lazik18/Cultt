@@ -311,7 +311,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.name_message, reply_markup=keyboard)
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.surname_message, reply_markup=keyboard)
         return
     elif application.email is None:
         if user.email is not None:
@@ -332,7 +332,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.name_message, reply_markup=keyboard)
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.email_message, reply_markup=keyboard)
         return
     elif application.tel is None:
         if user.tel is not None:
@@ -347,7 +347,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         keyboard = []
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+            keyboard.append([InlineKeyboardButton(text=bot_settings.tel_message, callback_data=f'BackApp {last_step}')])
         keyboard.append(manager_keyboard)
         keyboard.append(cancel_keyboard)
 
