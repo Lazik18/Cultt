@@ -122,6 +122,8 @@ class TelegramBot(models.Model):
     back_button = models.TextField(default='Назад', verbose_name='Назад - заполнение заявки')
     # Другая модель - текст
     other_model = models.TextField(default='Введите название модели', verbose_name='Другая модель - текст')
+    # Фото
+    photo_img = models.ImageField(verbose_name='Референс для загрузки фото', blank=True, null=True)
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
@@ -410,3 +412,16 @@ class ModelsOption(models.Model):
     class Meta:
         verbose_name = "Вариант модели"
         verbose_name_plural = "Варианты моделей"
+
+
+class StageLog(models.Model):
+    stage = models.TextField(verbose_name='Этап')
+    user_id = models.CharField(max_length=64, verbose_name='ID пользователя')
+    date_create = models.DateTimeField(auto_now=True, verbose_name='Дата')
+
+    def __str__(self):
+        return f'{self.pk}'
+
+    class Meta:
+        verbose_name = "Лог этапа"
+        verbose_name_plural = "Логи этапов"

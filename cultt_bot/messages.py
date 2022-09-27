@@ -262,7 +262,11 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
             keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-            bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.photo_message_1, reply_markup=keyboard)
+            if bot_settings.photo_img != '':
+                bot.sendPhoto(chat_id=user_telegram_id, caption=bot_settings.photo_message_1, photo=bot_settings.photo_img, reply_markup=keyboard)
+            else:
+                bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.photo_message_1, reply_markup=keyboard)
+
         else:
             keyboard = [[InlineKeyboardButton(text=bot_settings.end_photo_message, callback_data='CreateApp Photo')],
                         manager_keyboard, cancel_keyboard]
