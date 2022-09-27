@@ -983,7 +983,13 @@ def handler_call_back(data):
             user.tel = None
             user.save()
 
-            main_menu(user_telegram_id)
+            application.delete()
+
+            keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+                        [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
+            keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+            bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
             return
 
         text = 'Чтобы изменить данные нажмите сбросить.\nПри создании новой заявки вы сможете их заполнить.\n'
