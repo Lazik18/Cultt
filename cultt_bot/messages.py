@@ -277,7 +277,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         else:
             keyboard = [[InlineKeyboardButton(text=bot_settings.end_photo_message, callback_data='CreateApp Photo')],
-                        cancel_keyboard]
+                        [cancel_keyboard]]
 
             keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
