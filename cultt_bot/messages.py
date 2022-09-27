@@ -560,7 +560,7 @@ def handler_message(data):
             user.name = message_text
             user.save()
         else:
-            bot.sendMessage(chat_id=user_telegram_id, text='Имя должно быть одним словом')
+            bot.sendMessage(chat_id=user_telegram_id, text='Некорректный ввод, имя должно быть одним словом')
 
         create_applications(user_telegram_id, option_od, last_step='Price')
     elif 'Surname' in user.step:
