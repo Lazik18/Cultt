@@ -50,18 +50,18 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
     if is_create:
         pass
 
-    manager_keyboard = [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]
-    cancel_keyboard = [InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')]
+    cancel_keyboard = InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')
 
     if coop_option.count_accessory and application.concierge_count == 0:
         user.step = f'CountAccessory {coop_option_id}'
         user.save()
 
-        keyboard = [manager_keyboard, cancel_keyboard]
+        line_keyboard = [cancel_keyboard]
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+            line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
 
+        keyboard = [line_keyboard]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.concierge_message, reply_markup=keyboard)
@@ -83,11 +83,13 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         if len(line_keyboard) != 0:
             keyboard.append(line_keyboard)
+            line_keyboard = []
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+            line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+        line_keyboard.append(cancel_keyboard)
+
+        keyboard.append(line_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -135,8 +137,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             keyboard.append([InlineKeyboardButton(text=bot_settings.brand_not_found,
                                                   callback_data=f'BrandNotFound')])
 
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+        keyboard.append([cancel_keyboard])
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -158,14 +159,16 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         if len(line_keyboard) != 0:
             keyboard.append(line_keyboard)
+            line_keyboard = []
 
         keyboard.append([InlineKeyboardButton(text='Другая модель', callback_data=f'CreateApp Model Other')])
         keyboard.append([InlineKeyboardButton(text='Я не знаю модель', callback_data=f'CreateApp Model NotKnow')])
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+            line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+        line_keyboard.append(cancel_keyboard)
+
+        keyboard.append(line_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -185,11 +188,11 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         if len(line_keyboard) != 0:
             keyboard.append(line_keyboard)
+            line_keyboard = []
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+            line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+        line_keyboard.append(cancel_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -217,6 +220,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         if len(line_keyboard) != 0:
             keyboard.append(line_keyboard)
+            line_keyboard = []
 
         text_defect_accept = 'Выбрать'
         if application.defect.count() < 1:
@@ -225,24 +229,27 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         keyboard.append([InlineKeyboardButton(text=text_defect_accept, callback_data='CreateApp Defect Accept')])
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+            line_keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        line_keyboard.append(cancel_keyboard)
+
+        keyboard.append(line_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.defect_message, reply_markup=keyboard)
         return
     elif coop_option.price and application.waiting_price is None:
-        keyboard = [[InlineKeyboardButton(text=bot_settings.help_to_evaluate, callback_data=f'CreateApp Price Help')]]
-
+        # keyboard = [[InlineKeyboardButton(text=bot_settings.help_to_evaluate, callback_data=f'CreateApp Price Help')]]
+        keyboard = []
+        line_keyboard = []
         user.step = f'WaitingPrice {coop_option_id}'
         user.save()
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+            line_keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        line_keyboard.append(cancel_keyboard)
+
+        keyboard.append(line_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -254,11 +261,13 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             user.save()
 
             keyboard = []
+            line_keyboard = []
             if last_step is not None:
-                keyboard.append(
-                    [InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-            keyboard.append(manager_keyboard)
-            keyboard.append(cancel_keyboard)
+                keyboard.line_keyboard([InlineKeyboardButton(text=bot_settings.back_button,
+                                                             callback_data=f'BackApp {last_step}')])
+            line_keyboard.append(cancel_keyboard)
+
+            keyboard = line_keyboard
 
             keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -269,7 +278,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         else:
             keyboard = [[InlineKeyboardButton(text=bot_settings.end_photo_message, callback_data='CreateApp Photo')],
-                        manager_keyboard, cancel_keyboard]
+                        cancel_keyboard]
 
             keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -286,11 +295,13 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         user.save()
 
         keyboard = []
+        line_keyboard = []
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+            line_keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        line_keyboard.append(cancel_keyboard)
+
+        keyboard.append(line_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -307,11 +318,13 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         user.save()
 
         keyboard = []
+        line_keyboard = []
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+            line_keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        line_keyboard.append(cancel_keyboard)
+
+        keyboard.append(line_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -328,11 +341,13 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         user.save()
 
         keyboard = []
+        line_keyboard = []
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+            line_keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        line_keyboard.append(cancel_keyboard)
+
+        keyboard.append(line_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -349,11 +364,13 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         user.save()
 
         keyboard = []
+        line_keyboard = []
 
         if last_step is not None:
-            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
-        keyboard.append(manager_keyboard)
-        keyboard.append(cancel_keyboard)
+            line_keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
+        line_keyboard.append(cancel_keyboard)
+
+        keyboard.append(line_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -401,13 +418,9 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if application.concierge_count != 0:
             bot_text += bot_settings.applications_concierge_count + f': {application.concierge_count}\n'
 
-        # keyboard = [[InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp')],
-        #             [InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp')],
-        #             cancel_keyboard]
-
-        keyboard = [[InlineKeyboardButton(text='Отменить', callback_data='CancelApp'),
-                     InlineKeyboardButton(text='Редактировать', callback_data=f'EditApp'),
-                     InlineKeyboardButton(text='Отправить', callback_data='SendApp')]]
+        keyboard = [[InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp'),
+                     InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp'),
+                     InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -676,6 +689,7 @@ def handler_call_back(data):
         application.delete()
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+                    []
                     [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -976,6 +990,7 @@ def handler_call_back(data):
                 f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
+                    [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
                     [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
