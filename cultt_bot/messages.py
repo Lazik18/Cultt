@@ -983,6 +983,9 @@ def handler_call_back(data):
             user.tel = None
             user.save()
 
+            main_menu(user_telegram_id)
+            return
+
         text = 'Чтобы изменить данные нажмите сбросить.\nПри создании новой заявки вы сможете их заполнить.\n'
         text += f'Имя: {user.name or "не задано"}\nФамилия: {user.surname or "не задано"}' \
                 f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
