@@ -992,7 +992,7 @@ def handler_call_back(data):
                 f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
-                    [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
+                    # [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
                     [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
