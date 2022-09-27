@@ -405,9 +405,9 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         #             [InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp')],
         #             cancel_keyboard]
 
-        keyboard = [[InlineKeyboardButton(text='Отправить', callback_data='SendApp'),
-                    InlineKeyboardButton(text='Ошибка', callback_data=f'EditApp'),
-                    InlineKeyboardButton(text='Отменить', callback_data='CancelApp')]]
+        keyboard = [[InlineKeyboardButton(text='Отменить', callback_data='CancelApp'),
+                     InlineKeyboardButton(text='Редактировать', callback_data=f'EditApp'),
+                     InlineKeyboardButton(text='Отправить', callback_data='SendApp')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
