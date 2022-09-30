@@ -27,7 +27,7 @@ def debug_dec(func):
         except Exception as ex:
             bot.sendMessage(chat_id='673616491', text=repr(ex) + '\n' + traceback.format_exc())
 
-    return wrapper #  test
+    return wrapper
 
 
 @debug_dec
