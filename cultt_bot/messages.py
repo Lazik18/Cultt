@@ -613,6 +613,10 @@ def handler_photo(data):
     user_telegram_id = data['message']['chat']['id']
     user = TelegramUser.objects.filter(chat_id=user_telegram_id).first()
 
+    if user is None:
+        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+        return
+
     photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
 
     if user.step == 'Photo':
@@ -639,6 +643,8 @@ def handler_photo(data):
 
             if PhotoApplications.objects.filter(application=application, date__gte=date_start,
                                                 date__lte=date_end).count() < 2:
+                user.step = ''
+                user.save()
                 create_applications(user_telegram_id, application.cooperation_option.pk, finish_photo=True)
 
 
