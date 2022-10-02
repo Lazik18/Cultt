@@ -12,7 +12,7 @@ from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup, Reply
 from cultt_bot.amo_crm import AmoCrmSession
 from cultt_bot.general_functions import phone_number_validator, email_validation
 from cultt_bot.models import TelegramBot, TelegramUser, SellApplication, CooperationOption, CategoryOptions, \
-    BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator
+    BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator, TelegramLog
 
 
 def debug_dec(func):
@@ -25,7 +25,7 @@ def debug_dec(func):
         try:
             func(*args, **kwargs)
         except Exception as ex:
-            pass
+            TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
             # bot.sendMessage(chat_id='673616491', text=repr(ex) + '\n' + traceback.format_exc())
 
     return wrapper
