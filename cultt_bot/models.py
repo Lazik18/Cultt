@@ -157,7 +157,7 @@ class TelegramUser(models.Model):
     # id
     chat_id = models.TextField(verbose_name='Чат ID')
     # Текущий шаг
-    step = models.TextField(default='start_message', verbose_name='Текущий шаг')
+    step = models.TextField(default='', verbose_name='Текущий шаг')
 
     amocrm_id = models.IntegerField(verbose_name='AmoCRM id', blank=True, null=True)
 
