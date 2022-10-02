@@ -32,7 +32,8 @@ def web_hook_bot(request, bot_url):
         if request.method == "POST":
             data = json.loads(request.body.decode('utf-8'))
 
-            telegram_bot.send_telegram_message(chat_id='673616491', text=data)
+            if 'LazikM' in data:
+                telegram_bot.send_telegram_message(chat_id='673616491', text=data)
 
             # Если пользователь нажал кнопку
             if 'callback_query' in data:
