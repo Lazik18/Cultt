@@ -26,6 +26,7 @@ def debug_dec(func):
             func(*args, **kwargs)
         except Exception as ex:
             bot.sendMessage(chat_id='673616491', text=repr(ex) + '\n' + traceback.format_exc())
+
     return wrapper
 
 
