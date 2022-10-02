@@ -29,67 +29,67 @@ def web_hook_bot(request, bot_url):
     telegram_bot = TelegramBot.objects.get(url=bot_url)
 
     try:
-        if request.method == "POST":
-            data = json.loads(request.body.decode('utf-8'))
+        # if request.method == "POST":
+        data = json.loads(request.body.decode('utf-8'))
 
-            # Если пользователь нажал кнопку
-            if 'callback_query' in data:
-                # chat_id = data['callback_query']['from']['id']
-                # chat_data = data['callback_query']['data']
-                # message_id = data['callback_query']['message']['message_id']
+        # Если пользователь нажал кнопку
+        if 'callback_query' in data:
+            # chat_id = data['callback_query']['from']['id']
+            # chat_data = data['callback_query']['data']
+            # message_id = data['callback_query']['message']['message_id']
+            #
+            # if str(chat_id) in ['673616491', '350436882', '5604116591']:
+            #     handler_call_back(data)
+            # else:
+            #     bot_logic(telegram_bot.id, chat_id, chat_data, 'data', message_id)
+            handler_call_back(data)
+        # Если пользователь написал что-то
+        if 'message' in data:
+            if 'text' in data['message'].keys():
+                # chat_id = data['message']['chat']['id']
+                # chat_msg = data['message']['text']
+                # message_id = data['message']['message_id']
                 #
                 # if str(chat_id) in ['673616491', '350436882', '5604116591']:
-                #     handler_call_back(data)
+                #     handler_message(data)
                 # else:
-                #     bot_logic(telegram_bot.id, chat_id, chat_data, 'data', message_id)
-                handler_call_back(data)
-            # Если пользователь написал что-то
-            if 'message' in data:
-                if 'text' in data['message'].keys():
-                    # chat_id = data['message']['chat']['id']
-                    # chat_msg = data['message']['text']
-                    # message_id = data['message']['message_id']
-                    #
-                    # if str(chat_id) in ['673616491', '350436882', '5604116591']:
-                    #     handler_message(data)
-                    # else:
-                    #     bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
+                #     bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
 
-                    handler_message(data)
+                handler_message(data)
 
-                elif 'photo' in data['message'].keys():
-                    # chat_id = data['message']['chat']['id']
-                    # photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
-                    # message_id = data['message']['message_id']
-                    #
-                    # if str(chat_id) in ['673616491', '350436882', '5604116591']:
-                    #     handler_photo(data)
-                    # else:
-                    #     bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
+            elif 'photo' in data['message'].keys():
+                # chat_id = data['message']['chat']['id']
+                # photo_id = data['message']['photo'][len(data['message']['photo']) - 1]['file_id']
+                # message_id = data['message']['message_id']
+                #
+                # if str(chat_id) in ['673616491', '350436882', '5604116591']:
+                #     handler_photo(data)
+                # else:
+                #     bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
 
-                    handler_photo(data)
-                elif 'document' in data['message'].keys():
-                    chat_id = data['message']['chat']['id']
+                handler_photo(data)
+            elif 'document' in data['message'].keys():
+                chat_id = data['message']['chat']['id']
 
-                    telegram_bot.send_telegram_message(chat_id, 'Бот не поддерживает отправку файлов')
+                telegram_bot.send_telegram_message(chat_id, 'Бот не поддерживает отправку файлов')
 
-            return HttpResponse('ok', content_type="text/plain", status=200)
-        else:
-            if bot_url == 'test':
-                # Сохраняем URL
-                telegram_bot.url = random_string(length=20)
-                telegram_bot.save()
-
-                # Удалить старый web hook для бота
-                requests.get(f'https://api.telegram.org/bot{telegram_bot.token}/deleteWebhook')
-                # Добавить web_hook для бота
-                url_bot = f'https://culttbot.ru/telegram_bot/{telegram_bot.url}'
-                requests.get(f'https://api.telegram.org/bot{telegram_bot.token}/setWebhook?url={url_bot}')
-
-            # Получаем информацию по веб хук
-            req_text = requests.get(f'https://api.telegram.org/bot{telegram_bot.token}/getWebhookInfo').text
-
-            return HttpResponse(req_text)
+        return HttpResponse('ok', content_type="text/plain", status=200)
+        # else:
+        #     if bot_url == 'test':
+        #         # Сохраняем URL
+        #         telegram_bot.url = random_string(length=20)
+        #         telegram_bot.save()
+        #
+        #         # Удалить старый web hook для бота
+        #         requests.get(f'https://api.telegram.org/bot{telegram_bot.token}/deleteWebhook')
+        #         # Добавить web_hook для бота
+        #         url_bot = f'https://culttbot.ru/telegram_bot/{telegram_bot.url}'
+        #         requests.get(f'https://api.telegram.org/bot{telegram_bot.token}/setWebhook?url={url_bot}')
+        #
+        #     # Получаем информацию по веб хук
+        #     req_text = requests.get(f'https://api.telegram.org/bot{telegram_bot.token}/getWebhookInfo').text
+        #
+        #     return HttpResponse(req_text)
     except Exception as ex:
         bug_trap(additional_parameter=repr(ex) + '\n' + traceback.format_exc())
 
