@@ -425,3 +425,8 @@ class StageLog(models.Model):
     class Meta:
         verbose_name = "Лог этапа"
         verbose_name_plural = "Логи этапов"
+
+
+class TelegramLog(models.Model):
+    text = models.TextField()
+    date_create = models.DateTimeField(auto_now=True, verbose_name='Дата')

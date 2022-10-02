@@ -32,3 +32,8 @@ class IndicatorAdmin(admin.ModelAdmin):
 @admin.register(ModelsOption)
 class ModelsOptionAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'brand')
+
+
+@admin.register(TelegramLog)
+class TelegramLogAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'text', 'date_create')
