@@ -499,7 +499,7 @@ def handler_message(data):
     except KeyError:
         user_telegram_username = None
 
-    user, is_create = TelegramUser.objects.get_or_create(chat_id=user_telegram_id)
+    user, is_create = TelegramUser.objects.get_or_create(chat_id=user_telegram_id, bot=bot_settings)
 
     user.username = user_telegram_username
     user.save()
