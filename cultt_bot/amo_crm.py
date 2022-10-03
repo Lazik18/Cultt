@@ -188,8 +188,11 @@ class AmoCrmSession:
         if user.amocrm_id is not None:
             data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
 
-        # if user.username is not None:
-        #     data[0]['_embedded']['leads'][0]['custom_fields_values'][0]
+        if user.username is not None:
+            data[0]['_embedded']['leads'][0]['custom_fields_values'].append({
+                            "field_id": 904993,
+                            "values": [{"value": user.username}, ]
+                        })
 
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
