@@ -447,6 +447,7 @@ def main_menu(user_telegram_id):
             line_keyboard.append(InlineKeyboardButton(text=option.name, callback_data=f'CreateApp {option.pk}'))
             keyboard.append(line_keyboard)
             line_keyboard = []
+            first_button = False
             continue
 
         if len(line_keyboard) < 1:
