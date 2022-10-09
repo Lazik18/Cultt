@@ -415,7 +415,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             bot_text += '\n'
 
         if application.waiting_price is not None:
-            text_price = application.waiting_price + '₽'
+            text_price = str(application.waiting_price) + '₽'
             if int(application.waiting_price) == 0:
                 text_price = 'нужна помощь'
             bot_text += bot_settings.applications_waiting_price + f': {text_price}\n'
