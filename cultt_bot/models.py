@@ -206,7 +206,7 @@ class CategoryOptions(models.Model):
 class BrandOptions(models.Model):
     # Название
     name = models.TextField(verbose_name='Название')
-    category = models.ForeignKey(to='CategoryOptions', on_delete=models.CASCADE)
+    category = models.ForeignKey(to='CategoryOptions', on_delete=models.CASCADE, null=True, blank=True)
     # Отображать в боте
     is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
 
