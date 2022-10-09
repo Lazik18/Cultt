@@ -42,3 +42,4 @@ class TelegramLogAdmin(admin.ModelAdmin):
 class BrandOptionsAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'category', 'is_visible')
     list_display_links = ('pk', 'name', 'category')
+    list_filter = ('category', )
