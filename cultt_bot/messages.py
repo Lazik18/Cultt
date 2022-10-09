@@ -413,8 +413,12 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
                 bot_text += f' {defect_obj.name.lower()},'
             bot_text = bot_text[:-1]
             bot_text += '\n'
+
         if application.waiting_price is not None:
-            bot_text += bot_settings.applications_waiting_price + f': {application.waiting_price}₽\n'
+            text_price = application.waiting_price + '₽'
+            if int(application.waiting_price) == 0:
+                text_price = 'нужна помощь'
+            bot_text += bot_settings.applications_waiting_price + f': {text_price}\n'
 
         if application.concierge_count != 0:
             bot_text += bot_settings.applications_concierge_count + f': {application.concierge_count}\n'
