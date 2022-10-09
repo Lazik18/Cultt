@@ -105,7 +105,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if letter is None:
             letter_list = []
 
-            for brand in BrandOptions.objects.filter(is_visible=True):
+            for brand in BrandOptions.objects.filter(is_visible=True, category=application.category):
                 if brand.name[0].upper() not in letter_list:
                     letter_list.append(brand.name[0].upper())
 
