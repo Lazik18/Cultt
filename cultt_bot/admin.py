@@ -5,7 +5,6 @@ from cultt_bot.models import *
 admin.site.register(TelegramBot)
 admin.site.register(TelegramUser)
 admin.site.register(CategoryOptions)
-admin.site.register(BrandOptions)
 admin.site.register(StateOptions)
 admin.site.register(DefectOptions)
 admin.site.register(PhotoApplications)
@@ -37,3 +36,9 @@ class ModelsOptionAdmin(admin.ModelAdmin):
 @admin.register(TelegramLog)
 class TelegramLogAdmin(admin.ModelAdmin):
     list_display = ('pk', 'text', 'date_create')
+
+
+@admin.register(BrandOptions)
+class BrandOptionsAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'name', 'category', 'is_visible')
+    list_display_links = ('pk', 'name', 'category')
