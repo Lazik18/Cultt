@@ -145,7 +145,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.brand_message, reply_markup=keyboard)
         return
-    elif coop_option.model and application.model is None and application.category.have_brand:
+    elif coop_option.model and application.model is None and application.category.have_model:
         keyboard = []
         line_keyboard = []
 
@@ -176,7 +176,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.model_message, reply_markup=keyboard)
         return
-    elif coop_option.state and application.state is None and application.category.have_brand:
+    elif coop_option.state and application.state is None and application.category.have_model:
         keyboard = []
         line_keyboard = []
 
@@ -200,7 +200,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.state_message, reply_markup=keyboard)
         return
-    elif coop_option.defect and application.defect_finished is False and application.category.have_brand:
+    elif coop_option.defect and application.defect_finished is False and application.category.have_model:
         keyboard = []
         line_keyboard = []
 
@@ -1089,13 +1089,13 @@ def handler_call_back(data):
         if application.cooperation_option.brand and application.category.have_brand:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_brand, callback_data='EditApp Brand')])
 
-        if application.cooperation_option.state and application.category.have_brand:
+        if application.cooperation_option.state and application.category.have_model:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_state, callback_data='EditApp State')])
 
-        if application.cooperation_option.model and application.category.have_brand:
+        if application.cooperation_option.model and application.category.have_model:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_model, callback_data='EditApp Model')])
 
-        if application.cooperation_option.defect and application.category.have_brand:
+        if application.cooperation_option.defect and application.category.have_model:
             keyboard.append([InlineKeyboardButton(text=bot_settings.applications_defect, callback_data='EditApp Defect')])
 
         if application.cooperation_option.price:
