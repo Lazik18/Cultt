@@ -57,10 +57,11 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         user.step = f'CountAccessory {coop_option_id}'
         user.save()
 
-        line_keyboard = [cancel_keyboard]
+        line_keyboard = []
 
         if last_step is not None:
             line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+        line_keyboard.append(cancel_keyboard)
 
         keyboard = [line_keyboard]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
@@ -439,8 +440,15 @@ def main_menu(user_telegram_id):
     coop_options = CooperationOption.objects.filter(is_visible=True)
     keyboard = []
     line_keyboard = []
+    first_button = True
 
     for option in coop_options:
+        if first_button:
+            line_keyboard.append(InlineKeyboardButton(text=option.name, callback_data=f'CreateApp {option.pk}'))
+            keyboard.append(line_keyboard)
+            line_keyboard = []
+            continue
+
         if len(line_keyboard) < 1:
             line_keyboard.append(InlineKeyboardButton(text=option.name, callback_data=f'CreateApp {option.pk}'))
         else:
@@ -538,7 +546,9 @@ def handler_message(data):
         option_od = user.step.split()[1]
 
         try:
-            if int(message_text) < 1000:
+            if message_text == '-':
+                message_text = 0
+            elif int(message_text) < 1000:
                 raise SyntaxError
 
             application.waiting_price = int(message_text)
@@ -1061,7 +1071,7 @@ def handler_call_back(data):
             create_applications(user_telegram_id, application.cooperation_option.pk)
             return
 
-        text = 'Выберите, что бы вы хотели изменить'
+        text = bot_settings.text_edit_app
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.applications_name, callback_data='EditApp Name')],
                     [InlineKeyboardButton(text=bot_settings.applications_surname, callback_data='EditApp Surname')],

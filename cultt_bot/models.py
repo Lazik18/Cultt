@@ -122,6 +122,8 @@ class TelegramBot(models.Model):
     back_button = models.TextField(default='Назад', verbose_name='Назад - заполнение заявки')
     # Другая модель - текст
     other_model = models.TextField(default='Введите название модели', verbose_name='Другая модель - текст')
+    # Текст при редактировании заявки
+    text_edit_app = models.TextField(default='Выберите, что бы вы хотели изменить', verbose_name='Текст при редактировании заявки')
     # Фото
     photo_img = models.ImageField(verbose_name='Референс для загрузки фото', blank=True, null=True)
 
