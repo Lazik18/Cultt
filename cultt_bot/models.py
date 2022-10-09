@@ -193,6 +193,8 @@ class CategoryOptions(models.Model):
     is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
     # Имеет ли бренд?
     have_brand = models.BooleanField(default=False, verbose_name='Имеет ли бренд?')
+    # Имеет ли модель?
+    have_model = models.BooleanField(default=False, verbose_name='Имеет ли модель?')
 
     def __str__(self):
         return self.name
