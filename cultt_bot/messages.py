@@ -533,7 +533,8 @@ def handler_message(data):
     application = SellApplication.objects.filter(user=user, active=True).first()
 
     if bot_settings.cancel_applications in message_text:
-        application.delete()
+        if application is not None:
+            application.delete()
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
                     [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
