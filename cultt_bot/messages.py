@@ -532,7 +532,7 @@ def handler_message(data):
 
     application = SellApplication.objects.filter(user=user, active=True).first()
 
-    if bot_settings.close_button in message_text:
+    if bot_settings.close_button == message_text:
         application.delete()
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
