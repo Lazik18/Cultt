@@ -470,7 +470,7 @@ def main_menu(user_telegram_id):
 
     keyboard_r = KeyboardButton(text=bot_settings.cancel_applications)
 
-    keyboard_r = ReplyKeyboardMarkup(inline_keyboard=keyboard_r, resize_keyboard=True)
+    keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
 
     bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_button, reply_markup=keyboard_r)
 
