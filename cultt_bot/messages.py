@@ -532,10 +532,6 @@ def handler_message(data):
 
     application = SellApplication.objects.filter(user=user, active=True).first()
 
-    if application is None:
-        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
-        return
-
     if bot_settings.close_button in message_text:
         application.delete()
 
@@ -545,6 +541,10 @@ def handler_message(data):
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
+        return
+
+    if application is None:
+        bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
         return
 
     if 'CountAccessory' in user.step:
