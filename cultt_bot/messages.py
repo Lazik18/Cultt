@@ -537,11 +537,29 @@ def handler_message(data):
             application.delete()
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
-                    [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
-                    [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
+                    [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
+        keyboard_r = [[KeyboardButton(text=bot_settings.my_profile_button)]]
+
+        keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
+
+        bot.sendMessage(chat_id=user_telegram_id, text='Заявка отменена', reply_markup=keyboard_r)
+
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
+        return
+    elif bot_settings.my_profile_button:
+        text = 'Чтобы изменить данные нажмите сбросить.\nПри создании новой заявки вы сможете их заполнить.\n'
+        text += f'Имя: {user.name or "не задано"}\nФамилия: {user.surname or "не задано"}' \
+                f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
+                    # [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
+                    [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
         return
 
     if application is None:
