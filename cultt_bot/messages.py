@@ -536,6 +536,17 @@ def handler_message(data):
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
         return
 
+    if bot_settings.close_button in message_text:
+        application.delete()
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+                    [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
+                    [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
+        return
+
     if 'CountAccessory' in user.step:
         option_od = user.step.split()[1]
 
