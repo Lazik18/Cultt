@@ -92,7 +92,7 @@ def web_hook_bot(request, bot_url):
             return HttpResponse(req_text)
     except Exception as ex:
         TelegramLog.objects.create(text=traceback.format_exc())
-        bug_trap(additional_parameter=repr(ex) + '\n' + traceback.format_exc())
+        # bug_trap(additional_parameter=repr(ex) + '\n' + traceback.format_exc())
 
         return HttpResponse('ok', content_type="text/plain", status=200)
 
