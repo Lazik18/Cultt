@@ -7,7 +7,7 @@ from pathlib import Path
 import telepot
 from django.core.files import File
 
-from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton
 
 from cultt_bot.amo_crm import AmoCrmSession
 from cultt_bot.general_functions import phone_number_validator, email_validation
@@ -464,9 +464,15 @@ def main_menu(user_telegram_id):
     if len(line_keyboard) != 0:
         keyboard.append(line_keyboard)
 
-    keyboard.append([InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')])
+    # keyboard.append([InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')])
     # keyboard.append([InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')])
     keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    keyboard_r = KeyboardButton(text=bot_settings.cancel_applications)
+
+    keyboard_r = ReplyKeyboardMarkup(inline_keyboard=keyboard_r, resize_keyboard=True)
+
+    bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_button, reply_markup=keyboard_r)
 
     bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.cooperation_option_message, reply_markup=keyboard)
 
