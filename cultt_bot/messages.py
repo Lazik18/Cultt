@@ -496,7 +496,7 @@ def handler_command(data):
         return
     if command == '/id':
         bot.sendMessage(chat_id=user_telegram_id, text=user_telegram_id)
-        return # test
+        return
 
 
 @debug_dec
