@@ -401,7 +401,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if application.brand is not None:
             bot_text += bot_settings.applications_brand + f': {application.brand.name}\n'
 
-        if application.brand is not None:
+        if application.model is not None:
             bot_text += bot_settings.applications_model + f': {application.model}\n'
 
         if application.state is not None:
