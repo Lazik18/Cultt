@@ -638,7 +638,7 @@ def handler_photo(data):
     if user.step == 'Photo':
         application = SellApplication.objects.filter(user=user, active=True)
 
-        if application is None:
+        if application is None: #test
             bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
