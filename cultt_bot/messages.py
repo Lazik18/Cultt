@@ -420,7 +420,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if application.concierge_count != 0:
             bot_text += bot_settings.applications_concierge_count + f': {application.concierge_count}\n'
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp'),
+        keyboard = [[#InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp'),
                      InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp'),
                      InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp')]]
 
@@ -550,7 +550,7 @@ def handler_message(data):
         text += f'Имя: {user.name or "не задано"}\nФамилия: {user.surname or "не задано"}' \
                 f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
+        keyboard = [#[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
                     # [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
                     [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
 
