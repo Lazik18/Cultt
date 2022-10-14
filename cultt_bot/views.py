@@ -83,7 +83,7 @@ def web_hook_bot(request, bot_url):
                 # Удалить старый web hook для бота
                 requests.get(f'https://api.telegram.org/bot{telegram_bot.token}/deleteWebhook')
                 # Добавить web_hook для бота
-                url_bot = f'https://culttbot.ru/telegram_bot/{telegram_bot.url}'
+                url_bot = f'https://culttbotdev.ru/telegram_bot/{telegram_bot.url}'
                 requests.get(f'https://api.telegram.org/bot{telegram_bot.token}/setWebhook?url={url_bot}')
 
             # Получаем информацию по веб хук
@@ -92,7 +92,7 @@ def web_hook_bot(request, bot_url):
             return HttpResponse(req_text)
     except Exception as ex:
         TelegramLog.objects.create(text=traceback.format_exc())
-        bug_trap(additional_parameter=repr(ex) + '\n' + traceback.format_exc())
+        # bug_trap(additional_parameter=repr(ex) + '\n' + traceback.format_exc())
 
         return HttpResponse('ok', content_type="text/plain", status=200)
 
