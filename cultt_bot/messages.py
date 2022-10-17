@@ -550,7 +550,7 @@ def handler_message(data):
         text += f'Имя: {user.name or "не задано"}\nФамилия: {user.surname or "не задано"}' \
                 f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')], # test
                     [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
