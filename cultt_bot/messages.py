@@ -550,7 +550,7 @@ def handler_message(data):
         text += f'Имя: {user.name or "не задано"}\nФамилия: {user.surname or "не задано"}' \
                 f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')], # test
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
                     [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
@@ -691,8 +691,6 @@ def handler_photo(data):
 
             if PhotoApplications.objects.filter(application=application, date__gte=date_start,
                                                 date__lte=date_end).count() < 2:
-                user.step = ''
-                user.save()
                 create_applications(user_telegram_id, application.cooperation_option.pk, finish_photo=True)
 
 
