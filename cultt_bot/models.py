@@ -126,6 +126,8 @@ class TelegramBot(models.Model):
     text_edit_app = models.TextField(default='Выберите, что бы вы хотели изменить', verbose_name='Текст при редактировании заявки')
     # Фото
     photo_img = models.ImageField(verbose_name='Референс для загрузки фото', blank=True, null=True)
+    # Сообщение трекинг
+    track_message = models.TextField(verbose_name='Сообщение про отслеживание', default='Сообщение про отслеживание')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
@@ -309,6 +311,10 @@ class SellApplication(models.Model):
     concierge_count = models.IntegerField(default=0)
     # Дата создания
     date_create = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Дата создания')
+    # Уведомления
+    notifications = models.BooleanField(default=False, verbose_name='Уведомления')
+    # Статус
+    status = models.TextField(blank=True, null=True, verbose_name='Статус')
 
     def cooperation_option_name(self):
         return self.cooperation_option.name

@@ -545,7 +545,7 @@ def handler_message(data):
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
         return
-    elif bot_settings.my_profile_button:
+    elif bot_settings.my_profile_button in message_text:
         text = 'Чтобы изменить данные нажмите сбросить.\nПри создании новой заявки вы сможете их заполнить.\n'
         text += f'Имя: {user.name or "не задано"}\nФамилия: {user.surname or "не задано"}' \
                 f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
@@ -1023,7 +1023,9 @@ def handler_call_back(data):
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.end_message, reply_markup=keyboard)
+        text = bot_settings.end_message + str(application.id) + "\nХотите получать уведомления?"
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
     elif 'CreateApp' in button_press:
         try:
             bot.deleteMessage(current_message)
