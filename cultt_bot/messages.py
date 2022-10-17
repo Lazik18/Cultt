@@ -730,13 +730,13 @@ def handler_call_back(data):
         except telepot.exception.TelegramError:
             pass
         main_menu(user_telegram_id)
-        stats = Indicator.objects.filter().last()
+        stats = Indicator.objects.get_or_create(date__day=datetime.datetime.now().day)
         stats.dialogs_started += 1
         stats.save()
     elif 'ConnectManager' in button_press:
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.contact_manager)
 
-        stats = Indicator.objects.filter().last()
+        stats = Indicator.objects.get_or_create(date__day=datetime.datetime.now().day)
         stats.clicks_manager += 1
         stats.save()
     elif 'CancelApp' in button_press:
@@ -1007,7 +1007,7 @@ def handler_call_back(data):
         amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
         result = amo_crm_session.create_leads_complex(application.id, user)
 
-        stats = Indicator.objects.filter().last()
+        stats = Indicator.objects.get_or_create(date__day=datetime.datetime.now().day)
         stats.applications_sent += 1
         stats.save()
 
