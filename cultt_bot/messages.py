@@ -537,7 +537,8 @@ def handler_message(data):
                     [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        keyboard_r = [[KeyboardButton(text=bot_settings.my_profile_button)]]
+        keyboard_r = [[KeyboardButton(text=bot_settings.my_profile_button)],
+                      [KeyboardButton(text=bot_settings.track_application)]]
 
         keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
 
@@ -552,6 +553,31 @@ def handler_message(data):
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
                     [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+        return
+    elif bot_settings.track_application in message_text:
+        text = bot_settings.track_application_msg
+
+        user.step = 'TrackApp'
+        user.save()
+
+        keyboard = []
+
+        applications = SellApplication.objects.filter(notifications=True)
+
+        line_keyboard = []
+
+        for app in applications:
+            line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'TrackApp {app.pk}'))
+
+            if len(line_keyboard) >= 3:
+                keyboard.append(line_keyboard)
+
+        if len(line_keyboard) != 0:
+            keyboard.append(line_keyboard)
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -651,6 +677,20 @@ def handler_message(data):
         application.save()
 
         create_applications(user_telegram_id, option_od, last_step='Brand')
+    elif 'TrackApp' in user.step:
+        try:
+            app_id = int(message_text)
+
+            app = SellApplication.objects.get(pk=app_id)
+
+            bot.sendMessage(chat_id=user_telegram_id, text=app.status)
+
+            user.step = ''
+            user.save()
+        except ValueError:
+            bot.sendMessage(chat_id=user_telegram_id, text='Некорректный ввод')
+        except:
+            bot.sendMessage(chat_id=user_telegram_id, text='Заявка с таким номером не найдена')
 
 
 @debug_dec
@@ -1152,5 +1192,11 @@ def handler_call_back(data):
             app.save()
 
             bot.sendMessage(chat_id=user_telegram_id, text='Уведомления отключены', reply_markup=ReplyKeyboardRemove())
+    elif 'TrackApp' in button_press:
+        app_id = button_press.split()[1]
+
+        app = SellApplication.objects.get(pk=app_id)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=app.status)
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())

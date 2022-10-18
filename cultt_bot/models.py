@@ -130,6 +130,10 @@ class TelegramBot(models.Model):
     photo_img = models.ImageField(verbose_name='Референс для загрузки фото', blank=True, null=True)
     # Сообщение трекинг
     track_message = models.TextField(verbose_name='Сообщение про отслеживание', default='Сообщение про отслеживание')
+    # Отслеживать заявку
+    track_application = models.TextField(verbose_name='Отслеживать заявку', default='Отслеживать заявку')
+    # Текст отслеживать заявку
+    track_application_msg = models.TextField(verbose_name='Текст отслеживать заявку', default='Текст отслеживать заявку')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
