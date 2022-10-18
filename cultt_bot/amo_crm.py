@@ -211,6 +211,7 @@ class AmoCrmSession:
 
         try:
             application.amocrm_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['leads'][0]['id'])
+            application.save()
         except:
             pass
 
