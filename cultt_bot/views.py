@@ -129,7 +129,7 @@ def web_hook_amocrm(request):
 
         application = SellApplication.objects.get(pk=id_app)
 
-        if application.status:
+        if application.notifications:
             telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=info)
 
         return HttpResponse('ok', content_type="text/plain", status=200)
