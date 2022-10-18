@@ -121,13 +121,13 @@ def web_hook_amocrm(request):
 
     if request.method == 'GET':
         auth = request.GET.get('auth')
-        id = request.GET.get('id')
+        id_app = request.GET.get('id')
         info = request.GET.get('status')
 
         if telegram_bot.status_token != auth:
             return HttpResponse('Bad token', content_type="text/plain", status=500)
 
-        application = SellApplication.objects.get(pk=id)
+        application = SellApplication.objects.get(pk=id_app)
 
         if application.status:
             telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=info)
