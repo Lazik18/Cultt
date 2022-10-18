@@ -579,6 +579,8 @@ def handler_message(data):
         if len(line_keyboard) != 0:
             keyboard.append(line_keyboard)
 
+        keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
+
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
