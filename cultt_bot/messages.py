@@ -571,9 +571,9 @@ def handler_message(data):
         line_keyboard = []
 
         for app in applications:
-            line_keyboard.append(InlineKeyboardButton(text=app.pk, callback_data=f'TrackApp {app.pk}'))
+            line_keyboard.append(InlineKeyboardButton(text=app.amocrm_id, callback_data=f'TrackApp {app.amocrm_id}'))
 
-            if len(line_keyboard) >= 3:
+            if len(line_keyboard) >= 2:
                 keyboard.append(line_keyboard)
 
         if len(line_keyboard) != 0:
@@ -1197,7 +1197,7 @@ def handler_call_back(data):
     elif 'TrackApp' in button_press:
         app_id = button_press.split()[1]
 
-        app = SellApplication.objects.get(pk=app_id)
+        app = SellApplication.objects.get(amocrm_id=app_id)
 
         bot.sendMessage(chat_id=user_telegram_id, text=app.status)
     else:

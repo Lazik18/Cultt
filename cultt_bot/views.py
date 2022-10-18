@@ -127,7 +127,7 @@ def web_hook_amocrm(request):
         if telegram_bot.status_token != auth:
             return HttpResponse('Bad token', content_type="text/plain", status=500)
 
-        application = SellApplication.objects.get(pk=id_app)
+        application = SellApplication.objects.get(amocrm_id=id_app)
         application.status = info
         application.save()
 

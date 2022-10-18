@@ -321,6 +321,8 @@ class SellApplication(models.Model):
     notifications = models.BooleanField(default=False, verbose_name='Уведомления')
     # Статус
     status = models.TextField(blank=True, null=True, verbose_name='Статус')
+    # AmoCRM id
+    amocrm_id = models.IntegerField(blank=True, null=True, verbose_name='AmoCRM id')
 
     def cooperation_option_name(self):
         return self.cooperation_option.name
