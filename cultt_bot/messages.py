@@ -566,7 +566,7 @@ def handler_message(data):
 
         keyboard = []
 
-        applications = SellApplication.objects.filter(active=False)
+        applications = SellApplication.objects.filter(active=False, user=user)
 
         line_keyboard = []
 
