@@ -120,4 +120,4 @@ def web_hook_amocrm(request):
 
     if request.method == 'GET':
 
-        return HttpResponse(request.GET, content_type="text/plain", status=200)
+        return HttpResponse(request.GET.get('test'), content_type="text/plain", status=200)
