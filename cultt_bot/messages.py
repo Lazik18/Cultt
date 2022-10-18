@@ -1020,7 +1020,7 @@ def handler_call_back(data):
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        text = bot_settings.end_message + str(application.id) + "\nХотите получать уведомления?"
+        text = bot_settings.end_message + f' {application.id}\nХотите получать уведомления?'
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
     elif 'CreateApp' in button_press:
