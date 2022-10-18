@@ -12,6 +12,8 @@ class TelegramBot(models.Model):
     url = models.TextField(verbose_name='URL для бота')
     # Токен бота
     token = models.TextField(verbose_name='Токен бота')
+    # Токен для статуса заказа
+    status_token = models.TextField(verbose_name='Токен для статуса заказа')
 
     # Текст бота
     # Приветственное сообщение

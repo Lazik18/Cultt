@@ -114,3 +114,11 @@ def test(request):
     result = amo_crm_session.create_leads_complex(10)
     return HttpResponse(result, content_type="text/plain", status=200)
 
+
+@csrf_exempt
+def web_hook_amocrm(request):
+
+    if request.method == 'GET':
+        data = json.loads(request.body.decode('utf-8'))
+
+        return HttpResponse(data, content_type="text/plain", status=200)

@@ -1015,7 +1015,9 @@ def handler_call_back(data):
             if amo_crm_session.get_access_token('refresh_token'):
                 amo_crm_session.create_leads_complex(application.id, user)
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+        keyboard = [[InlineKeyboardButton(text='Да', callback_data=f'Notification yes {application.pk}'),
+                     InlineKeyboardButton(text='Нет', callback_data=f'Notification no {application.pk}')],
+                    [InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
                     [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
@@ -1137,5 +1139,12 @@ def handler_call_back(data):
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+    elif 'Notification' in button_press:
+        if 'yes' in button_press:
+            app = SellApplication.objects.get(pk=button_press.split()[2])
+            app.notifications = True
+            app.save()
+        elif 'no' in button_press:
+            pass
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
