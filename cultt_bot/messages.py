@@ -571,7 +571,7 @@ def handler_message(data):
         line_keyboard = []
 
         for app in applications:
-            line_keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'TrackApp {app.pk}'))
+            line_keyboard.append(InlineKeyboardButton(text=app.pk, callback_data=f'TrackApp {app.pk}'))
 
             if len(line_keyboard) >= 3:
                 keyboard.append(line_keyboard)
