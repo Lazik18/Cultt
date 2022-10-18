@@ -122,7 +122,7 @@ def web_hook_amocrm(request):
     if request.method == 'GET':
         auth = request.GET.get('auth')
         id_app = request.GET.get('id')
-        info = request.GET.get('status')
+        info = request.GET.get('info')
 
         if telegram_bot.status_token != auth:
             return HttpResponse('Bad token', content_type="text/plain", status=500)
