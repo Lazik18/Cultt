@@ -117,7 +117,19 @@ def test(request):
 
 @csrf_exempt
 def web_hook_amocrm(request):
+    telegram_bot = TelegramBot.objects.filter().first()
 
     if request.method == 'GET':
+        auth = request.GET.get('auth')
+        id = request.GET.get('id')
+        info = request.GET.get('status')
 
-        return HttpResponse(request.GET.get('test'), content_type="text/plain", status=200)
+        if telegram_bot.status_token != auth:
+            return HttpResponse('Bad token', content_type="text/plain", status=500)
+
+        application = SellApplication.objects.get(pk=id)
+
+        if application.status:
+            telegram_bot.send_telegram_message(chat_id=application.user.pk, text=info)
+
+        return HttpResponse('ok', content_type="text/plain", status=200)
