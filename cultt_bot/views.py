@@ -125,7 +125,9 @@ def web_hook_amocrm(request):
         info = request.GET.get('info')
 
         if telegram_bot.status_token != auth:
-            return HttpResponse('Bad token', content_type="text/plain", status=500)
+            response = {"status": "error",
+                        "message": "Bad token"}
+            return HttpResponse(response, content_type="text/plain", status=500)
 
         application = SellApplication.objects.get(amocrm_id=id_app)
         application.status = info
@@ -134,4 +136,7 @@ def web_hook_amocrm(request):
         if application.notifications:
             telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=info)
 
-        return HttpResponse('ok', content_type="text/plain", status=200)
+        response = {"status": "success",
+                    "message": "ok"}
+
+        return HttpResponse(response, content_type="text/plain", status=200)
