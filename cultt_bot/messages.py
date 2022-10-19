@@ -47,7 +47,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
                                                                    cooperation_option=coop_option)
 
     if is_create:
-        pass
+        application.status = bot_settings.default_status
 
     cancel_keyboard = InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')
 

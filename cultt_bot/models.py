@@ -134,6 +134,8 @@ class TelegramBot(models.Model):
     track_application = models.TextField(verbose_name='Отслеживать заявку', default='Отслеживать заявку')
     # Текст отслеживать заявку
     track_application_msg = models.TextField(verbose_name='Текст отслеживать заявку', default='Текст отслеживать заявку')
+    # Статус заявки по умолчанию
+    default_status = models.TextField(default='Статус', verbose_name='Статус заявки по умолчанию')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
