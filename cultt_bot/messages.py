@@ -595,7 +595,7 @@ def handler_message(data):
 
         i = 1
         for question in questions:
-            text += f'{i}. {question.question}'
+            text += f'\n{i}. {question.question}'
             line_keyboard.append(InlineKeyboardButton(text=f'{i}', callback_data=f'QuestionFirst {question.pk}'))
             i += 1
 
