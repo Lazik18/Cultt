@@ -10,6 +10,8 @@ admin.site.register(DefectOptions)
 admin.site.register(PhotoApplications)
 admin.site.register(AmoCRMData)
 admin.site.register(CooperationOption)
+admin.site.register(FAQFirstLevel)
+admin.site.register(FAQSecondLevel)
 
 
 @admin.register(SellApplication)

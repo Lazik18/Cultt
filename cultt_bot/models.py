@@ -453,3 +453,29 @@ class StageLog(models.Model):
 class TelegramLog(models.Model):
     text = models.TextField()
     date_create = models.DateTimeField(auto_now=True, verbose_name='Дата')
+
+
+class FAQFirstLevel(models.Model):
+    question = models.TextField(verbose_name='Вопрос')
+    answer = models.TextField(verbose_name='Ответ')
+
+    def __str__(self):
+        return f'Вопрос - {self.question}'
+
+    class Meta:
+        verbose_name = "Вопрос"
+        verbose_name_plural = "Вопросы первого уровня"
+
+
+class FAQSecondLevel(models.Model):
+    question = models.TextField(verbose_name='Вопрос')
+    answer = models.TextField(verbose_name='Ответ')
+    main_question = models.ForeignKey(verbose_name='Основной вопрос', on_delete=models.PROTECT)
+
+    def __str__(self):
+        return f'Вопрос - {self.question}'
+
+    class Meta:
+        verbose_name = "Вопрос"
+        verbose_name_plural = "Вопросы второго уровня"
+
