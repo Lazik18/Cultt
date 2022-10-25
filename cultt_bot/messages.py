@@ -12,7 +12,7 @@ from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup, Reply
 from cultt_bot.amo_crm import AmoCrmSession
 from cultt_bot.general_functions import phone_number_validator, email_validation
 from cultt_bot.models import TelegramBot, TelegramUser, SellApplication, CooperationOption, CategoryOptions, \
-    BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator, TelegramLog
+    BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator, TelegramLog, FAQFirstLevel
 
 
 def debug_dec(func):
@@ -576,12 +576,37 @@ def handler_message(data):
 
             if len(line_keyboard) >= 2:
                 keyboard.append(line_keyboard)
+                line_keyboard = []
 
         if len(line_keyboard) != 0:
             keyboard.append(line_keyboard)
 
         keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+        return
+    elif bot_settings.faq in message_text:
+        text = bot_settings.text_faq
+        keyboard = []
+        line_keyboard = []
+
+        questions = FAQFirstLevel.objects.all()
+
+        i = 1
+        for question in questions:
+            text += f'{i}. {question.question}'
+            line_keyboard.append(InlineKeyboardButton(text=f'{i}', callback_data=f'QuestionFirst {question.pk}'))
+            i += 1
+
+            if len(line_keyboard) >= 2:
+                keyboard.append(line_keyboard)
+                line_keyboard = []
+
+        if len(line_keyboard) != 0:
+            keyboard.append(line_keyboard)
+
+        keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)

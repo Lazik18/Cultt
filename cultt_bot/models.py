@@ -138,6 +138,8 @@ class TelegramBot(models.Model):
     default_status = models.TextField(default='Статус', verbose_name='Статус заявки по умолчанию')
     # F.A.Q.
     faq = models.TextField(default='F.A.Q.', verbose_name='F.A.Q.')
+    # Текст F.A.Q.
+    text_faq = models.TextField(default='Текст F.A.Q.', verbose_name='Текст F.A.Q.')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
