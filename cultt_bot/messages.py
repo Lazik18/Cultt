@@ -1244,5 +1244,16 @@ def handler_call_back(data):
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=question.answer, reply_markup=keyboard)
+    elif 'QuestionSecond' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+        question = FAQSecondLevel.objects.get(pk=button_press.split()[1])
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=question.answer, reply_markup=keyboard)
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
