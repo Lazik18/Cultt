@@ -12,7 +12,8 @@ from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup, Reply
 from cultt_bot.amo_crm import AmoCrmSession
 from cultt_bot.general_functions import phone_number_validator, email_validation
 from cultt_bot.models import TelegramBot, TelegramUser, SellApplication, CooperationOption, CategoryOptions, \
-    BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator, TelegramLog, FAQFirstLevel
+    BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator, TelegramLog, FAQFirstLevel, \
+    FAQSecondLevel
 
 
 def debug_dec(func):
@@ -1226,5 +1227,22 @@ def handler_call_back(data):
         app = SellApplication.objects.get(amocrm_id=app_id)
 
         bot.sendMessage(chat_id=user_telegram_id, text=app.status)
+    elif 'QuestionFirst' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+        question = FAQFirstLevel.objects.get(pk=button_press.split()[1])
+        questions_second = FAQSecondLevel.objects.filter(main_question=question)
+
+        keyboard = []
+
+        for que in questions_second:
+            keyboard.append([InlineKeyboardButton(text=f'{que.question}', callback_data=f'QuestionSecond {que.pk}')])
+
+        keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=question.answer, reply_markup=keyboard)
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
