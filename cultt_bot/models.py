@@ -475,7 +475,7 @@ class FAQSecondLevel(models.Model):
     main_question = models.ForeignKey(verbose_name='Основной вопрос', to='FAQFirstLevel', on_delete=models.PROTECT)
 
     def __str__(self):
-        return f'Вопрос - {self.question}'
+        return f'{self.main_question} - {self.question}'
 
     class Meta:
         verbose_name = "Вопрос"
