@@ -470,7 +470,7 @@ class FAQFirstLevel(models.Model):
 class FAQSecondLevel(models.Model):
     question = models.TextField(verbose_name='Вопрос')
     answer = models.TextField(verbose_name='Ответ')
-    main_question = models.ForeignKey(verbose_name='Основной вопрос', on_delete=models.PROTECT)
+    main_question = models.ForeignKey(verbose_name='Основной вопрос', to='FAQFirstLevel', on_delete=models.PROTECT)
 
     def __str__(self):
         return f'Вопрос - {self.question}'
