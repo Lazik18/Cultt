@@ -431,6 +431,35 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
 
 @debug_dec
+def faq_menu(user_telegram_id):
+    bot_settings = TelegramBot.objects.filter().first()
+    bot = telepot.Bot(token=bot_settings.token)
+
+    text = bot_settings.text_faq
+    keyboard = []
+    line_keyboard = []
+
+    questions = FAQFirstLevel.objects.all()
+
+    i = 1
+    for question in questions:
+        text += f'\n{i}. {question.question}'
+        line_keyboard.append(InlineKeyboardButton(text=f'{i}', callback_data=f'QuestionFirst {question.pk}'))
+        i += 1
+
+        if len(line_keyboard) >= 2:
+            keyboard.append(line_keyboard)
+            line_keyboard = []
+
+    if len(line_keyboard) != 0:
+        keyboard.append(line_keyboard)
+
+    keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
+    keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+
+@debug_dec
 def main_menu(user_telegram_id):
     bot_settings = TelegramBot.objects.filter().first()
     bot = telepot.Bot(token=bot_settings.token)
@@ -588,29 +617,7 @@ def handler_message(data):
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
         return
     elif bot_settings.faq in message_text:
-        text = bot_settings.text_faq
-        keyboard = []
-        line_keyboard = []
-
-        questions = FAQFirstLevel.objects.all()
-
-        i = 1
-        for question in questions:
-            text += f'\n{i}. {question.question}'
-            line_keyboard.append(InlineKeyboardButton(text=f'{i}', callback_data=f'QuestionFirst {question.pk}'))
-            i += 1
-
-            if len(line_keyboard) >= 2:
-                keyboard.append(line_keyboard)
-                line_keyboard = []
-
-        if len(line_keyboard) != 0:
-            keyboard.append(line_keyboard)
-
-        keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
-        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
-
-        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+        faq_menu(user_telegram_id)
         return
 
     if application is None:
@@ -1251,9 +1258,17 @@ def handler_call_back(data):
             pass
         question = FAQSecondLevel.objects.get(pk=button_press.split()[1])
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')]]
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='FAQ')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=question.answer, reply_markup=keyboard)
+    elif 'FAQ' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        faq_menu(user_telegram_id)
+        return
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
