@@ -495,7 +495,8 @@ def main_menu(user_telegram_id):
     # keyboard.append([InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')])
     keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-    keyboard_r = [[KeyboardButton(text=bot_settings.cancel_applications)]]
+    keyboard_r = [[KeyboardButton(text=bot_settings.cancel_applications)],
+                  [KeyboardButton(text=bot_settings.faq)]]
 
     keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
 
