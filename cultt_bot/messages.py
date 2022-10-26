@@ -1247,7 +1247,7 @@ def handler_call_back(data):
         for que in questions_second:
             keyboard.append([InlineKeyboardButton(text=f'{que.question}', callback_data=f'QuestionSecond {que.pk}')])
 
-        keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
+        keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='FAQ')])
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=question.answer, reply_markup=keyboard)
@@ -1258,7 +1258,7 @@ def handler_call_back(data):
             pass
         question = FAQSecondLevel.objects.get(pk=button_press.split()[1])
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='FAQ')]]
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'QuestionFirst {question.main_question.pk}')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=question.answer, reply_markup=keyboard)
@@ -1269,6 +1269,7 @@ def handler_call_back(data):
             pass
 
         faq_menu(user_telegram_id)
+
         return
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
