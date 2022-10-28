@@ -136,4 +136,4 @@ def web_hook_amocrm(request):
         response = {"status": "success",
                     "message": "ok"}
 
-        return HttpResponse(response, content_type="text/plain", status=200)
+        return HttpResponse(str(response), content_type="text/plain", status=200)
