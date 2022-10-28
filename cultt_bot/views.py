@@ -123,7 +123,7 @@ def web_hook_amocrm(request):
         data = json.loads(request.body.decode('utf-8'))
 
         id_app = data['leads']['status'][0]['id']
-        status_id = data['leads']['status'][0]['id']
+        status_id = data['leads']['status'][0]['status_id']
 
         application = SellApplication.objects.get(amocrm_id=id_app)
         status = CRMStatusID.objects.get(status_id=status_id).status_text
