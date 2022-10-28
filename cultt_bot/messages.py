@@ -1222,13 +1222,13 @@ def handler_call_back(data):
             app.notifications = True
             app.save()
 
-            bot.sendMessage(chat_id=user_telegram_id, text='Уведомления включены', reply_markup=ReplyKeyboardRemove())
+            bot.sendMessage(chat_id=user_telegram_id, text='Уведомления включены')
         elif 'no' in button_press:
             app = SellApplication.objects.get(pk=button_press.split()[2])
             app.notifications = False
             app.save()
 
-            bot.sendMessage(chat_id=user_telegram_id, text='Уведомления отключены', reply_markup=ReplyKeyboardRemove())
+            bot.sendMessage(chat_id=user_telegram_id, text='Уведомления отключены')
     elif 'TrackApp' in button_press:
         app_id = button_press.split()[1]
 
