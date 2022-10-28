@@ -119,22 +119,19 @@ def test(request):
 def web_hook_amocrm(request):
     telegram_bot = TelegramBot.objects.filter().first()
 
-    if request.method == 'GET':
-        auth = request.GET.get('auth')
-        id_app = request.GET.get('id')
-        info = request.GET.get('info')
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
 
-        if telegram_bot.status_token != auth:
-            response = {"status": "error",
-                        "message": "Bad token"}
-            return HttpResponse(response, content_type="text/plain", status=500)
+        id_app = data['leads']['status'][0]['id']
+        status_id = data['leads']['status'][0]['id']
 
         application = SellApplication.objects.get(amocrm_id=id_app)
-        application.status = info
+        status = CRMStatusID.objects.get(status_id=status_id).status_text
+        application.status = status
         application.save()
 
         if application.notifications:
-            telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=info)
+            telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=status)
 
         response = {"status": "success",
                     "message": "ok"}

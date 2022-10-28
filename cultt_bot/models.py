@@ -481,3 +481,15 @@ class FAQSecondLevel(models.Model):
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы второго уровня"
 
+
+class CRMStatusID(models.Model):
+    status_id = models.IntegerField(verbose_name='id статуса')
+    name = models.TextField(verbose_name='Название статуса')
+    status_text = models.TextField(verbose_name='Текст статуса')
+
+    def __str__(self):
+        return f'{self.status_id} - {self.name} - {self.status_text}'
+
+    class Meta:
+        verbose_name = "Статус заявки"
+        verbose_name_plural = "Статусы заявок"
