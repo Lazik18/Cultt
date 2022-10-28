@@ -598,7 +598,7 @@ def handler_message(data):
 
         keyboard = []
 
-        applications = SellApplication.objects.filter(active=False, user=user)
+        applications = SellApplication.objects.filter(active=False, user=user).exclude(amocrm_id=None)
 
         line_keyboard = []
 
@@ -807,7 +807,7 @@ def handler_call_back(data):
         except telepot.exception.TelegramError:
             pass
         main_menu(user_telegram_id)
-        stats, create = Indicator.objects.get_or_create(date=datetime.date.today())
+        stats, create = Indicator.objects.get_or_create(date__day=datetime.datetime.now().day)
         stats.dialogs_started += 1
         stats.save()
     elif 'ConnectManager' in button_press:
