@@ -81,7 +81,7 @@ class AmoCrmSession:
                         "created_by": 0,
                         "custom_fields_values": [
                             {
-                                "field_id": 904315,
+                                "field_id": 905517,
                                 "values": [{"value": application.cooperation_option_name()}, ]
                             },
                             {
@@ -128,7 +128,7 @@ class AmoCrmSession:
                     "created_by": 0,
                     "custom_fields_values": [
                         {
-                            "field_id": 904315,
+                            "field_id": 905517,
                             "values": [{"value": application.cooperation_option_name()}, ]
                         },
                         {
