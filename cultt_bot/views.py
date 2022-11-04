@@ -122,8 +122,14 @@ def web_hook_amocrm(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
 
-        id_app = data['leads']['status'][0]['id']
-        status_id = data['leads']['status'][0]['status_id']
+        try:
+            id_app = data['leads']['status'][0]['id']
+            status_id = data['leads']['status'][0]['status_id']
+        except:
+            response = {"status": "error",
+                        "message": "no required fields"}
+
+            return HttpResponse(str(response), content_type="text/plain", status=200)
 
         application = SellApplication.objects.get(amocrm_id=id_app)
         status = CRMStatusID.objects.get(status_id=status_id).status_text
