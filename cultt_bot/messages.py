@@ -495,8 +495,7 @@ def main_menu(user_telegram_id):
     # keyboard.append([InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')])
     keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-    keyboard_r = [[KeyboardButton(text=bot_settings.cancel_applications)],
-                  [KeyboardButton(text=bot_settings.faq)]]
+    keyboard_r = [[KeyboardButton(text=bot_settings.cancel_applications)]]
 
     keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
 
@@ -566,16 +565,18 @@ def handler_message(data):
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
                     [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')],
+                    [InlineKeyboardButton(text=bot_settings.track_application, callback_data='MyProfile')],
+                    [InlineKeyboardButton(text=bot_settings.faq, callback_data='FAQ')],
                     [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        keyboard_r = [#[KeyboardButton(text=bot_settings.my_profile_button)],
-                      [KeyboardButton(text=bot_settings.track_application)],
-                      [KeyboardButton(text=bot_settings.faq)]]
-
-        keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
-
-        bot.sendMessage(chat_id=user_telegram_id, text='Заявка отменена', reply_markup=keyboard_r)
+        # keyboard_r = [#[KeyboardButton(text=bot_settings.my_profile_button)],
+        #               [KeyboardButton(text=bot_settings.track_application)],
+        #               [KeyboardButton(text=bot_settings.faq)]]
+        #
+        # keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
+        #
+        # bot.sendMessage(chat_id=user_telegram_id, text='Заявка отменена', reply_markup=keyboard_r)
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
         return
