@@ -20,4 +20,7 @@ class Command(BaseCommand):
 
             for brand in brands:
                 print(brand)
-                print(data[data['Тип аксессуара'] == category][data['Бренд'] == brand]['Модель'].tolist())
+                model = data[data['Тип аксессуара'] == category][data['Бренд'] == brand]['Модель'].tolist()
+
+                if model == 'nan':
+                    print('pass')
