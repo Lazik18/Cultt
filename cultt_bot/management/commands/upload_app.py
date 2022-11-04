@@ -10,5 +10,5 @@ class Command(BaseCommand):
 
         data1 = data[1].to_dict()
 
-        for value in data1.items():
+        for value in list(data1.values()):
             print(value)
