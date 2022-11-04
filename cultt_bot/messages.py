@@ -565,7 +565,7 @@ def handler_message(data):
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
                     [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')],
-                    [InlineKeyboardButton(text=bot_settings.track_application, callback_data='MyProfile')],
+                    [InlineKeyboardButton(text=bot_settings.track_application, callback_data='TrackApp None')],
                     [InlineKeyboardButton(text=bot_settings.faq, callback_data='FAQ')],
                     [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
@@ -575,8 +575,8 @@ def handler_message(data):
         #               [KeyboardButton(text=bot_settings.faq)]]
         #
         # keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
-        #
-        # bot.sendMessage(chat_id=user_telegram_id, text='Заявка отменена', reply_markup=keyboard_r)
+
+        bot.sendMessage(chat_id=user_telegram_id, text='Заявка отменена', reply_markup=ReplyKeyboardRemove())
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
         return
@@ -1234,9 +1234,39 @@ def handler_call_back(data):
     elif 'TrackApp' in button_press:
         app_id = button_press.split()[1]
 
+        if app_id == 'None':
+            text = bot_settings.track_application_msg
+
+            user.step = 'TrackApp'
+            user.save()
+
+            keyboard = []
+
+            applications = SellApplication.objects.filter(active=False, user=user).exclude(amocrm_id=None)
+
+            line_keyboard = []
+
+            for app in applications:
+                line_keyboard.append(
+                    InlineKeyboardButton(text=f'#{app.amocrm_id}', callback_data=f'TrackApp {app.amocrm_id}'))
+
+                if len(line_keyboard) >= 2:
+                    keyboard.append(line_keyboard)
+                    line_keyboard = []
+
+            if len(line_keyboard) != 0:
+                keyboard.append(line_keyboard)
+
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
+            keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+            bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+            return
+
         app = SellApplication.objects.get(amocrm_id=app_id)
 
         bot.sendMessage(chat_id=user_telegram_id, text=app.status)
+        return
     elif 'QuestionFirst' in button_press:
         try:
             bot.deleteMessage(current_message)
