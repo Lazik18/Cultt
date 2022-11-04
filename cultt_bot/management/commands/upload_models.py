@@ -35,7 +35,7 @@ class Command(BaseCommand):
                     print(f'Создан бренд - {brand}')
 
                 for model in models:
-                    if model is not str:
+                    if type(model) is not str:
                         continue
 
                     if ModelsOption.objects.exists(brand=brand_option, name__in=model):
