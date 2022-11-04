@@ -16,4 +16,8 @@ class Command(BaseCommand):
 
         for category in categories:
             print(category)
-            print(list(set(data[data['Тип аксессуара'] == category]['Бренд'].tolist())))
+            brands = list(set(data[data['Тип аксессуара'] == category]['Бренд'].tolist()))
+
+            for brand in brands:
+                print(brand)
+                print(data[data['Тип аксессуара'] == category][data['Бренд'] == brand]['Модель'].tolist())
