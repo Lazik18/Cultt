@@ -38,7 +38,7 @@ class Command(BaseCommand):
                     if type(model) is not str:
                         continue
 
-                    if ModelsOption.objects.exists(brand=brand_option, name__in=model):
+                    if ModelsOption.objects.filter(brand=brand_option, name__in=model).exists():
                         print(f'Модель уже существует - {model}')
                         continue
 
