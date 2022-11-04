@@ -15,12 +15,12 @@ class Command(BaseCommand):
         categories = list(set(data['Тип аксессуара'].tolist()))
 
         for category in categories:
-            print(category)
+            print(f'{category}')
             brands = list(set(data[data['Тип аксессуара'] == category]['Бренд'].tolist()))
 
             for brand in brands:
-                print(brand)
-                model = data[data['Тип аксессуара'] == category][data['Бренд'] == brand]['Модель'].tolist()
+                print(f'-{brand}')
+                models = data[data['Тип аксессуара'] == category][data['Бренд'] == brand]['Модель'].tolist()
 
-                if model == 'nan':
-                    print('pass')
+                for model in models:
+                    print(f'--{model}')
