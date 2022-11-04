@@ -1300,6 +1300,8 @@ def handler_call_back(data):
         keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'QuestionFirst {question.main_question.pk}')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
+        text = f'- {question.main_question.question}\n-- {question.question}\n{question.answer}'
+
         bot.sendMessage(chat_id=user_telegram_id, text=question.answer, reply_markup=keyboard)
     elif 'FAQ' in button_press:
         try:
