@@ -12,4 +12,8 @@ class Command(BaseCommand):
 
         print(data)
 
-        print(list(set(data['Тип аксессуара'].tolist())))
+        categories = list(set(data['Тип аксессуара'].tolist()))
+
+        for category in categories:
+            print(category)
+            print(data[data['Тип аксессуара'] == category].tolist())
