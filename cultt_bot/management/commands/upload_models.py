@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 print(f'-{brand}')
                 models = data[data['Тип аксессуара'] == category][data['Бренд'] == brand]['Модель'].tolist()
 
-                brand_option = BrandOptions.objects.filter(category=category_option, name__in=brand).first()
+                brand_option = BrandOptions.objects.filter(category=category_option, name__istartswith=brand).first()
 
                 if brand_option is None:
                     brand_option = BrandOptions.objects.create(category=category_option, name=brand)
@@ -38,7 +38,7 @@ class Command(BaseCommand):
                     if type(model) is not str:
                         continue
 
-                    if ModelsOption.objects.filter(brand=brand_option, name__in=model).exists():
+                    if ModelsOption.objects.filter(brand=brand_option, name__istartswith=model).exists():
                         print(f'Модель уже существует - {model}')
                         continue
 
