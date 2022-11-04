@@ -1302,7 +1302,7 @@ def handler_call_back(data):
 
         text = f'- {question.main_question.question}\n-- {question.question}\n{question.answer}'
 
-        bot.sendMessage(chat_id=user_telegram_id, text=question.answer, reply_markup=keyboard)
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
     elif 'FAQ' in button_press:
         try:
             bot.deleteMessage(current_message)
