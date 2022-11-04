@@ -12,4 +12,4 @@ class Command(BaseCommand):
 
         print(data)
 
-        print(data['Тип аксессуара'].tolist())
+        print(list(set(data['Тип аксессуара'].tolist())))
