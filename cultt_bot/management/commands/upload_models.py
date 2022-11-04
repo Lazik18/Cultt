@@ -12,4 +12,4 @@ class Command(BaseCommand):
 
         print(data)
 
-        print(data.count())
+        print(data['Тип аксессуара'].count())
