@@ -23,4 +23,7 @@ class Command(BaseCommand):
                 models = data[data['Тип аксессуара'] == category][data['Бренд'] == brand]['Модель'].tolist()
 
                 for model in models:
-                    print(f'--{model} {type(model)}')
+                    if model <= 0:
+                        print('passsssss')
+                    else:
+                        print(f'--{model} {type(model)}')
