@@ -8,7 +8,9 @@ class Command(BaseCommand):
 
         print(data)
 
-        data1 = data[2].to_dict()
+        data1 = data['2'].to_dict()
+
+        print(data1)
 
         for i in data1:
             print(i)
