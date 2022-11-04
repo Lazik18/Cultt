@@ -1286,7 +1286,10 @@ def handler_call_back(data):
         keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='FAQ')])
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=question.answer, reply_markup=keyboard)
+        text = f'{question.question}\n{question.answer}'
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+        return
     elif 'QuestionSecond' in button_press:
         try:
             bot.deleteMessage(current_message)
