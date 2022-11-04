@@ -136,4 +136,6 @@ def web_hook_amocrm(request):
         response = {"status": "success",
                     "message": "ok"}
 
+        AmoCRMLog.objects.create(result=str(request))
+
         return HttpResponse(str(response), content_type="text/plain", status=200)
