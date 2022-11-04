@@ -827,6 +827,9 @@ def handler_call_back(data):
         application.delete()
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+                    [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')],
+                    [InlineKeyboardButton(text=bot_settings.track_application, callback_data='TrackApp None')],
+                    [InlineKeyboardButton(text=bot_settings.faq, callback_data='FAQ')],
                     [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
