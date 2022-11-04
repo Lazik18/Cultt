@@ -16,4 +16,4 @@ class Command(BaseCommand):
 
         for category in categories:
             print(category)
-            print(data[data['Тип аксессуара'] == category].tolist())
+            print(data[data['Тип аксессуара'] == category])
