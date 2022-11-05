@@ -119,6 +119,8 @@ def test(request):
 def web_hook_amocrm(request):
     telegram_bot = TelegramBot.objects.filter().first()
 
+    AmoCRMLog.objects.create(result=str(request))
+
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
 
@@ -141,7 +143,5 @@ def web_hook_amocrm(request):
 
         response = {"status": "success",
                     "message": "ok"}
-
-        AmoCRMLog.objects.create(result=str(request))
 
         return HttpResponse(str(response), content_type="text/plain", status=200)
