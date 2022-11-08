@@ -119,10 +119,9 @@ def test(request):
 def web_hook_amocrm(request):
     telegram_bot = TelegramBot.objects.filter().first()
 
-    AmoCRMLog.objects.create(result=str(request))
-
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
+        AmoCRMLog.objects.create(result=str(data))
 
         try:
             id_app = data['leads']['status'][0]['id']
