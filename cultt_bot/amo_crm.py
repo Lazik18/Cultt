@@ -1,3 +1,5 @@
+import traceback
+
 from cultt_bot.models import *
 from cultt_bot.conf import cultt_telegram_bot_token
 
@@ -212,7 +214,7 @@ class AmoCrmSession:
         try:
             application.amocrm_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['leads'][0]['id'])
             application.save()
-        except:
-            pass
+        except Exception as ex:
+            TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
 
         return result.text
