@@ -95,7 +95,14 @@ class AmoCrmSession:
                                 "values": [{"value": str(user.username)}, ]
                             }
 
-                        ]
+                        ],
+                        "_embedded": {
+                            "tags": [
+                                {
+                                    "name": "бот"
+                                }
+                            ]
+                        }
                     }],
                     "contacts": [{
                         "first_name": application.name,
@@ -161,7 +168,14 @@ class AmoCrmSession:
                             "field_id": 904333,
                             "values": [{"value": f"https://culttbot.ru/views/application/{application.id}"}, ]
                         }
-                    ]
+                    ],
+                    "_embedded": {
+                        "tags": [
+                            {
+                                "name": "бот"
+                            }
+                        ]
+                    }
                 }],
                 "contacts": [{
                     "first_name": application.name,
