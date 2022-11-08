@@ -1086,6 +1086,8 @@ def handler_call_back(data):
             bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
+        bot.sendMessage(chat_id=user_telegram_id, text='Заявка отправлена', reply_markup=ReplyKeyboardRemove())
+
         application = application.first()
         application.active = False
         application.save()
