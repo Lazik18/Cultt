@@ -3,28 +3,44 @@ import json
 import pandas as pd
 from django.core.management import BaseCommand
 
-from cultt_bot.amo_crm import AmoCrmSession
-from cultt_bot.models import SellApplication
+from cultt_bot.models import CategoryOptions, BrandOptions, ModelsOption
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        data = pd.read_excel('static/app.xlsx', sheet_name='Лист1')
+        data = pd.read_excel('static/new_model.xlsx', sheet_name='list 1')
 
         print(data)
 
-        data1 = data[1].to_dict()
+        categories = list(set(data['Тип аксессуара'].tolist()))
 
-        for value in list(data1.values()):
-            app = SellApplication.objects.get(pk=value)
+        for category in categories:
+            print(f'=== Категория {category} ===')
+            brands = list(set(data[data['Тип аксессуара'] == category]['Бренд'].tolist()))
 
-            amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
-            result = amo_crm_session.create_leads_complex(value, app.user)
+            category_option = CategoryOptions.objects.filter(name=category).first()
 
-            if json.loads(result).get('title') == 'Unauthorized':
-                if amo_crm_session.get_access_token('refresh_token'):
-                    amo_crm_session.create_leads_complex(value, app.user)
+            if category_option is None:
+                print(f'Нет категории - {category}')
+                continue
 
-            print(f'{value} OK\n')
+            for brand in brands:
+                print(f'-{brand}')
+                models = data[data['Тип аксессуара'] == category][data['Бренд'] == brand]['Модель'].tolist()
 
-        print('OK')
+                brand_option = BrandOptions.objects.filter(category=category_option, name__istartswith=brand).first()
+
+                if brand_option is None:
+                    brand_option = BrandOptions.objects.create(category=category_option, name=brand)
+                    print(f'Создан бренд - {brand}')
+
+                for model in models:
+                    if type(model) is not str:
+                        continue
+
+                    if ModelsOption.objects.filter(brand=brand_option, name__istartswith=model).exists():
+                        print(f'Модель уже существует - {model}')
+                        continue
+
+                    ModelsOption.objects.create(brand=brand_option, name=model)
+                    print(f'Модель создана - {model}')
