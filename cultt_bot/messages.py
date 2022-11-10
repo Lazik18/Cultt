@@ -103,7 +103,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if letter is None:
             letter_list = []
 
-            for brand in BrandOptions.objects.filter(is_visible=True, category=application.category):
+            for brand in BrandOptions.objects.filter(is_visible=True, category=application.category).order_by('name'):
                 if brand.name[0].upper() not in letter_list:
                     letter_list.append(brand.name[0].upper())
 
@@ -118,7 +118,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             if len(line_keyboard) != 0:
                 keyboard.append(line_keyboard)
         else:
-            for brand in BrandOptions.objects.filter(name__iregex=fr'^{letter}\w+', category=application.category):
+            for brand in BrandOptions.objects.filter(name__iregex=fr'^{letter}\w+', category=application.category).order_by('name'):
                 if len(line_keyboard) < 2:
                     line_keyboard.append(InlineKeyboardButton(text=brand.name,
                                                               callback_data=f'CreateApp Brand {brand.id}'))
