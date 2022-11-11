@@ -24,7 +24,8 @@ class Command(BaseCommand):
                 print(f'Нет категории - {category}')
                 continue
 
-            BrandOptions.objects.filter(category=category_option).update(is_visible=False)
+            res = BrandOptions.objects.filter(category=category_option).update(is_visible=False)
+            print(f'Отключено: {res}')
 
             for brand in brands:
                 print(f'-{brand}')
@@ -37,6 +38,7 @@ class Command(BaseCommand):
                     print(f'Создан бренд - {brand}')
                 else:
                     brand_option.is_visible = True
+                    brand_option.save()
                     print(f'Бренд уже создан - {brand}')
 
                 for model in models:
