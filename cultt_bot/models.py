@@ -280,6 +280,9 @@ class CooperationOption(models.Model):
     price = models.BooleanField(default=False, verbose_name='Цена')
     photo = models.BooleanField(default=False, verbose_name='Фото')
 
+    amocrm_pipeline_id = models.IntegerField(default=0, verbose_name='ID воронки в амосрм')
+    amocrm_tag = models.TextField(default='бот', verbose_name='Тег в амосрм')
+
 
     def __str__(self):
         return self.name
