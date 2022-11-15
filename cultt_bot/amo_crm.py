@@ -174,7 +174,7 @@ class AmoCrmSession:
                     "_embedded": {
                         "tags": [
                             {
-                                "name": "бот"
+                                "name": application.cooperation_option.amocrm_tag
                             }
                         ]
                     }
@@ -191,14 +191,7 @@ class AmoCrmSession:
                             "field_id": 67727,
                             "values": [{"value": application.email}, ]
                         }
-                    ],
-                    "_embedded": {
-                        "tags": [
-                            {
-                                "name": application.cooperation_option.amocrm_tag
-                            }
-                        ]
-                    }
+                    ]
                 }]
             },
             "metadata": {
