@@ -101,6 +101,9 @@ class AmoCrmSession:
                             "tags": [
                                 {
                                     "name": application.cooperation_option.amocrm_tag
+                                },
+                                {
+                                    "name": "Чат-бот"
                                 }
                             ]
                         }
@@ -175,6 +178,9 @@ class AmoCrmSession:
                         "tags": [
                             {
                                 "name": application.cooperation_option.amocrm_tag
+                            },
+                            {
+                                "name": "Чат-бот"
                             }
                         ]
                     }
