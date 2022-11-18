@@ -124,15 +124,22 @@ def web_hook_amocrm(request):
         AmoCRMLog.objects.create(result=str(data))
 
         try:
-            id_app = data['leads']['status'][0]['id']
-            status_id = data['leads']['status'][0]['status_id']
+            id_leads = data['_embedded']['unsorted'][0]['_embedded']['leads'][0]['id']
         except:
-            response = {"status": "error",
-                        "message": "no required fields"}
+            resp = {"status": "error",
+                    "message": "no required fields"}
+            return HttpResponse(str(resp), content_type="text/plain", status=200)
 
-            return HttpResponse(str(response), content_type="text/plain", status=200)
+        response = requests.get(f'https://thecultt.amocrm.ru/api/v4/leads/{id_leads}')
 
-        application = SellApplication.objects.get(amocrm_id=id_app)
+        try:
+            status_id = response.json()['status_id']
+        except:
+            resp = {"status": "error",
+                    "message": "no leads"}
+            return HttpResponse(str(resp), content_type="text/plain", status=200)
+
+        application = SellApplication.objects.get(amocrm_id=id_leads)
         status = CRMStatusID.objects.get(status_id=status_id)
         application.status = status.status_text
         application.save()
@@ -140,7 +147,6 @@ def web_hook_amocrm(request):
         if application.notifications:
             telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=status.status_text)
 
-        response = {"status": "success",
-                    "message": "ok"}
-
-        return HttpResponse(str(response), content_type="text/plain", status=200)
+        resp = {"status": "success",
+                "message": "ok"}
+        return HttpResponse(str(resp), content_type="text/plain", status=200)
