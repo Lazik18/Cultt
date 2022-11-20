@@ -53,7 +53,7 @@ class AmoCrmSession:
 
             return True
         else:
-            # send_telegram_error_message(result)
+            send_telegram_error_message(result)
 
             if not double:
                 if grant_type == 'authorization_code':
