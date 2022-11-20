@@ -43,7 +43,6 @@ class AmoCrmSession:
             data['refresh_token'] = self.refresh_token
 
         result = requests.post('https://thecultt.amocrm.ru/oauth2/access_token', data).text
-        return result
 
         if 'access_token' in result:
             result = json.loads(result)
