@@ -136,17 +136,19 @@ def web_hook_amocrm(request):
         data = unquote(request.body.decode('utf-8'))
         AmoCRMLog.objects.create(result=str(data))
 
+        data = data.split('&')
+
         try:
-            id_leads = data['_embedded']['unsorted'][0]['_embedded']['leads'][0]['id']
+            id_leads = data[0].split('=')[1]
         except:
             resp = {"status": "error",
                     "message": "no required fields"}
             return HttpResponse(str(resp), content_type="text/plain", status=200)
 
-        response = requests.get(f'https://thecultt.amocrm.ru/api/v4/leads/{id_leads}')
+        # response = requests.get(f'https://thecultt.amocrm.ru/api/v4/leads/{id_leads}')
 
         try:
-            status_id = response.json()['status_id']
+            status_id = data[1].split('=')[1]
         except:
             resp = {"status": "error",
                     "message": "no leads"}
