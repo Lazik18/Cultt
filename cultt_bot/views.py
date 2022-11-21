@@ -133,7 +133,7 @@ def web_hook_amocrm(request):
     telegram_bot = TelegramBot.objects.filter().first()
 
     if request.method == 'POST':
-        data = json.loads(unquote(request.body.decode('utf-8')))
+        data = unquote(request.body.decode('utf-8'))
         AmoCRMLog.objects.create(result=str(data))
 
         try:
