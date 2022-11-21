@@ -118,6 +118,7 @@ def test(request):
 @csrf_exempt
 def web_hook_amocrm(request):
     telegram_bot = TelegramBot.objects.filter().first()
+    AmoCRMLog.objects.create(result=request)
 
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
