@@ -18,6 +18,17 @@ import pwd, grp
 from cultt_bot.amo_crm import AmoCrmSession
 
 
+def debug_dec(func):
+    def wrapper(*args, **kwargs):
+        bot_settings = TelegramBot.objects.filter().first()
+        bot = telepot.Bot(token=bot_settings.token)
+        try:
+            func(*args, **kwargs)
+        except Exception as ex:
+            TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
+    return wrapper
+
+
 # Редирект в админку
 def admin_redirect(request):
     return redirect('/admin/')
@@ -116,9 +127,9 @@ def test(request):
 
 
 @csrf_exempt
+@debug_dec
 def web_hook_amocrm(request):
     telegram_bot = TelegramBot.objects.filter().first()
-    AmoCRMLog.objects.create(result=request.headers)
 
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
