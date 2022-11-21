@@ -3,6 +3,7 @@ import traceback
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from urllib.parse import unquote
 
 from cultt_bot.messages import handler_call_back, handler_photo, handler_message
 from cultt_bot.models import *
@@ -132,7 +133,7 @@ def web_hook_amocrm(request):
     telegram_bot = TelegramBot.objects.filter().first()
 
     if request.method == 'POST':
-        data = request.body.decode('url')
+        data = json.loads(unquote(request.body))
         AmoCRMLog.objects.create(result=str(data))
 
         try:
