@@ -209,6 +209,10 @@ class AmoCrmSession:
             }
         }]
 
+        resp = requests.get(f'https://thecultt.amocrm.ru/api/v4/contacts?filter[custom_fields_values][67727]=buzzina@rambler.ru', headers=headers)
+        if len(resp.json()['_embedded']['contacts']) != 0:
+            send_telegram_error_message(resp.json()['_embedded']['contacts'][0]['account_id'])
+
         if user.amocrm_id is not None:
             data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
 
