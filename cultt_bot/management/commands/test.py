@@ -12,3 +12,4 @@ class Command(BaseCommand):
         resp = requests.request("GET", f'https://thecultt.amocrm.ru/api/v4/contacts?filter[custom_fields_values][67727]=test@test.com', headers=headers)
         print(resp.status_code)
         print(resp.json())
+        print(int(resp.json()['_embedded']['contacts'][0]['account_id']))
