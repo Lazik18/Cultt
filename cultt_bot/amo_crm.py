@@ -218,7 +218,7 @@ class AmoCrmSession:
             data[0]['_embedded']['contacts'][0]['_embedded'] = {'tags': [{'name': "Новая регистрация"}]}
         elif resp.status_code == 200 and user.amocrm_id is None:
             try:
-                user.amocrm_id = int(resp.json()['_embedded']['contacts'][0]['account_id'])
+                user.amocrm_id = int(resp.json()['_embedded']['contacts'][0]['id'])
                 user.save()
             except Exception as ex:
                 TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
@@ -234,7 +234,7 @@ class AmoCrmSession:
 
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
-        AmoCRMLog.objects.create(result=str(result.json()) + f'\n{data}')
+        AmoCRMLog.objects.create(result=str(result.json()))
 
         if 'Can not found linked entities by id' in str(result.json()):
             user.amocrm_id = None
