@@ -234,7 +234,7 @@ class AmoCrmSession:
 
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
-        AmoCRMLog.objects.create(result=str(result.json() + f'\n{data}'))
+        AmoCRMLog.objects.create(result=str(result.json()) + f'\n{data}')
 
         if 'Can not found linked entities by id' in str(result.json()):
             user.amocrm_id = None
