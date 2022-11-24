@@ -10,5 +10,5 @@ class Command(BaseCommand):
         }
 
         resp = requests.get(f'https://thecultt.amocrm.ru/api/v4/contacts?filter[custom_fields_values][67727]=test@test.com', headers)
-        print(resp)
+        print(resp.status_code)
         print(resp.json())
