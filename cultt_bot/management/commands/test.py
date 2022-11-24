@@ -9,6 +9,6 @@ class Command(BaseCommand):
             'Cookie': 'session_id=f85m25akinl8059ek3k1rjjr7i; user_lang=ru'
         }
 
-        resp = requests.get(f'https://thecultt.amocrm.ru/api/v4/contacts?filter[custom_fields_values][67727]=test@test.com', headers)
+        resp = requests.request("GET", f'https://thecultt.amocrm.ru/api/v4/contacts?filter[custom_fields_values][67727]=test@test.com', headers)
         print(resp.status_code)
         print(resp.json())
