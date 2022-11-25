@@ -215,13 +215,15 @@ class AmoCrmSession:
         }
         resp = requests.request('GET', f'https://thecultt.amocrm.ru/api/v4/contacts?filter[custom_fields_values][67727]={application.email}', headers=get_headers)
         if resp.status_code == 204:
-            data[0]['_embedded']['contacts'][0]['_embedded'] = {'tags': [{'name': "Новая регистрация"}]}
+            pass
         elif resp.status_code == 200 and user.amocrm_id is None:
             try:
                 user.amocrm_id = int(resp.json()['_embedded']['contacts'][0]['id'])
                 user.save()
             except Exception as ex:
                 TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
+
+        data[0]['_embedded']['contacts'][0]['_embedded'] = {'tags': [{'name': "Новая регистрация"}]}
 
         if user.amocrm_id is not None:
             data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
