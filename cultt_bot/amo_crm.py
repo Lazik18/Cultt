@@ -212,7 +212,7 @@ class AmoCrmSession:
         if user.amocrm_id is not None:
             data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
 
-        data[0]['_embedded']['contacts'][0]['_embedded'] = {'tags': [{'name': "Новая регистрация"}]}
+        # data[0]['_embedded']['contacts'][0]['_embedded'] = {'tags': [{'name': "Новая регистрация"}]}
 
         if user.username is not None:
             data[0]['_embedded']['leads'][0]['custom_fields_values'].append({
