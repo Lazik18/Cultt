@@ -313,6 +313,8 @@ class SellApplication(models.Model):
     concierge_count = models.IntegerField(default=0)
     # Дата создания
     date_create = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Дата создания')
+    # AmoCRM id
+    amocrm_id = models.IntegerField(blank=True, null=True, verbose_name='AmoCRM id')
 
     def cooperation_option_name(self):
         return self.cooperation_option.name
