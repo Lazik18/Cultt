@@ -75,6 +75,7 @@ class AmoCrmSession:
             data = [{
                 "source_uid": "telegram bot",
                 "source_name": "Заявка из TelegramBot",
+                "pipeline_id": application.cooperation_option.amocrm_pipeline_id,
                 "_embedded": {
                     "leads": [{
                         "name": "Заявка из TelegramBot",
@@ -97,7 +98,10 @@ class AmoCrmSession:
                         "_embedded": {
                             "tags": [
                                 {
-                                    "name": "бот"
+                                    "name": application.cooperation_option.amocrm_tag
+                                },
+                                {
+                                    "name": "Чат-бот"
                                 }
                             ]
                         }
@@ -127,77 +131,81 @@ class AmoCrmSession:
             }]
         else:
             data = [{
-            "source_uid": "telegram bot",
-            "source_name": "Заявка из TelegramBot",
-            "_embedded": {
-                "leads": [{
-                    "name": "Заявка из TelegramBot",
-                    "created_by": 0,
-                    "custom_fields_values": [
-                        {
-                            "field_id": 905517,
-                            "values": [{"value": application.cooperation_option_name()}, ]
-                        },
-                        {
-                            "field_id": 904321,
-                            "values": [{"value": application.category.name}, ]
-                        },
-                        {
-                            "field_id": 904323,
-                            "values": [{"value": application.brand_name()}, ]
-                        },
-                        {
-                            "field_id": 904325,
-                            "values": [{"value": application.model}, ]
-                        },
-                        {
-                            "field_id": 904327,
-                            "values": [{"value": application.state_name()}, ]
-                        },
-                        {
-                            "field_id": 904329,
-                            "values": [{"value": application.defect_name()}, ]
-                        },
-                        {
-                            "field_id": 904331,
-                            "values": [{"value": str(application.waiting_price)}, ]
-                        },
-                        {
-                            "field_id": 904333,
-                            "values": [{"value": f"https://culttbot.ru/views/application/{application.id}"}, ]
-                        }
-                    ],
-                    "_embedded": {
-                        "tags": [
+                "source_uid": "telegram bot",
+                "source_name": "Заявка из TelegramBot",
+                "pipeline_id": application.cooperation_option.amocrm_pipeline_id,
+                "_embedded": {
+                    "leads": [{
+                        "name": "Заявка из TelegramBot",
+                        "created_by": 0,
+                        "custom_fields_values": [
                             {
-                                "name": "бот"
+                                "field_id": 905517,
+                                "values": [{"value": application.cooperation_option_name()}, ]
+                            },
+                            {
+                                "field_id": 904321,
+                                "values": [{"value": application.category.name}, ]
+                            },
+                            {
+                                "field_id": 904323,
+                                "values": [{"value": application.brand_name()}, ]
+                            },
+                            {
+                                "field_id": 904325,
+                                "values": [{"value": application.model}, ]
+                            },
+                            {
+                                "field_id": 904327,
+                                "values": [{"value": application.state_name()}, ]
+                            },
+                            {
+                                "field_id": 904329,
+                                "values": [{"value": application.defect_name()}, ]
+                            },
+                            {
+                                "field_id": 904331,
+                                "values": [{"value": str(application.waiting_price)}, ]
+                            },
+                            {
+                                "field_id": 904333,
+                                "values": [{"value": f"https://culttbot.ru/views/application/{application.id}"}, ]
+                            }
+                        ],
+                        "_embedded": {
+                            "tags": [
+                                {
+                                    "name": application.cooperation_option.amocrm_tag
+                                },
+                                {
+                                    "name": "Чат-бот"
+                                }
+                            ]
+                        }
+                    }],
+                    "contacts": [{
+                        "first_name": application.name,
+                        "last_name": application.surname,
+                        "custom_fields_values": [
+                            {
+                                "field_id": 67725,
+                                "values": [{"value": application.tel}, ]
+                            },
+                            {
+                                "field_id": 67727,
+                                "values": [{"value": application.email}, ]
                             }
                         ]
-                    }
-                }],
-                "contacts": [{
-                    "first_name": application.name,
-                    "last_name": application.surname,
-                    "custom_fields_values": [
-                        {
-                            "field_id": 67725,
-                            "values": [{"value": application.tel}, ]
-                        },
-                        {
-                            "field_id": 67727,
-                            "values": [{"value": application.email}, ]
-                        }
-                    ]
-                }]
-            },
-            "metadata": {
-                "form_id": "telegram bot",
-                "form_name": "telegram bot",
-                "form_page": "telegram bot",
-                "form_sent_at": int(unix_timestamp),
-                "referer": "telegram bot"
-            }
-        }]
+                    }]
+                },
+                "metadata": {
+                    "form_id": "telegram bot",
+                    "form_name": "telegram bot",
+                    "form_page": "telegram bot",
+                    "form_sent_at": int(unix_timestamp),
+                    "referer": "telegram bot"
+                }
+            }]
 
         if user.amocrm_id is not None:
             data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
@@ -216,6 +224,10 @@ class AmoCrmSession:
             user.amocrm_id = None
             user.save()
             return self.create_leads_complex(application_id, user)
+
+        # status_data = []
+        #
+        # result_status = requests.post(f'https://{self.sub_domain}/api/v4/leads/{application.}', headers=headers, json=status_data)
 
         try:
             user.amocrm_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id'])
