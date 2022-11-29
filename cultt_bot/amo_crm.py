@@ -1,3 +1,5 @@
+import traceback
+
 from cultt_bot.models import *
 from cultt_bot.conf import cultt_telegram_bot_token
 
@@ -225,14 +227,20 @@ class AmoCrmSession:
             user.save()
             return self.create_leads_complex(application_id, user)
 
-        # status_data = []
-        #
-        # result_status = requests.post(f'https://{self.sub_domain}/api/v4/leads/{application.}', headers=headers, json=status_data)
-
         try:
             user.amocrm_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['contacts'][0]['id'])
             user.save()
         except:
             pass
+
+        try:
+            application.amocrm_id = int(result.json()['_embedded']['unsorted'][0]['_embedded']['leads'][0]['id'])
+            application.save()
+        except Exception as ex:
+            TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
+
+        status_data = {'status_id': application.cooperation_option.amocrm_status_id}
+
+        result_status = requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers, params=status_data)
 
         return result.text
