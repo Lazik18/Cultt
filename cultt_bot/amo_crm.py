@@ -255,4 +255,8 @@ class AmoCrmSession:
         except Exception as ex:
             TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
 
+        status_data = {'status_id': application.cooperation_option.}
+
+        result_status = requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers, params=status_data)
+
         return result.text
