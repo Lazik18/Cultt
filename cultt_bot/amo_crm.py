@@ -257,16 +257,16 @@ class AmoCrmSession:
         except Exception as ex:
             TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
 
+        status_data = {'status_id': application.cooperation_option.amocrm_status_id}
+        requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}',
+                       headers=headers,
+                       params=status_data)
+
         tags_contact_data = {'_embedded': {'tags': [{'name': "Новая регистрация"}]}}
         res_tag = requests.patch(f'https://{self.sub_domain}/api/v4/contacts/{user.amocrm_id}',
                                  headers=headers,
                                  params=tags_contact_data)
 
-        AmoCRMLog.objects.create(result=str(res_tag.json())+f'\n{res_tag.status_code}')
-
-        status_data = {'status_id': application.cooperation_option.amocrm_status_id}
-        requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}',
-                       headers=headers,
-                       params=status_data)
+        AmoCRMLog.objects.create(result=str(res_tag.json()) + f'\n{res_tag.status_code}')
 
         return result.text
