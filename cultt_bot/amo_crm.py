@@ -267,6 +267,6 @@ class AmoCrmSession:
                                  headers=headers,
                                  params=tags_contact_data)
 
-        AmoCRMLog.objects.create(result=str(res_tag.json()) + f'\n{res_tag.status_code}')
+        AmoCRMLog.objects.create(result=str(res_tag.json()) + f'\n{res_tag.status_code}\n{res_tag.request}')
 
         return result.text
