@@ -258,13 +258,12 @@ class AmoCrmSession:
             TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
 
         status_data = {'status_id': application.cooperation_option.amocrm_status_id}
-        requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers, params=status_data)
+        requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers,
+                       params=status_data)
 
         tags_contact_data = json.dumps({'_embedded': {'tags': [{'name': "Новая регистрация"}]}})
-        res_tag = requests.patch(f'https://{self.sub_domain}/api/v4/contacts/{user.amocrm_id}',
-                                 headers=headers,
-                                 params=tags_contact_data)
-
-        AmoCRMLog.objects.create(result=str(res_tag.json()) + f'\n{res_tag.request.hooks}')
+        res_tag = requests.request("PATCH", f'https://{self.sub_domain}/api/v4/contacts/{user.amocrm_id}',
+                                   headers=headers,
+                                   data=tags_contact_data)
 
         return result.text
