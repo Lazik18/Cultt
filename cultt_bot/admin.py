@@ -48,4 +48,3 @@ class BrandOptionsAdmin(admin.ModelAdmin):
 class PhotoApplicationsAdmin(admin.ModelAdmin):
     list_display = ('pk', 'application', 'date')
     list_display_links = ('pk', 'application', 'date')
-    search_fields = ('application__pk',)
