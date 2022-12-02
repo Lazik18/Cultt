@@ -338,7 +338,7 @@ class SellApplication(models.Model):
             return 'не указано'
 
     def __str__(self):
-        return self.pk
+        return self.user.chat_id
 
     class Meta:
         verbose_name = "Заяка продажи вещи"
