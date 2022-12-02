@@ -7,7 +7,6 @@ admin.site.register(TelegramUser)
 admin.site.register(CategoryOptions)
 admin.site.register(StateOptions)
 admin.site.register(DefectOptions)
-admin.site.register(PhotoApplications)
 admin.site.register(AmoCRMData)
 admin.site.register(CooperationOption)
 
@@ -43,3 +42,10 @@ class BrandOptionsAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'category', 'is_visible')
     list_display_links = ('pk', 'name', 'category')
     list_filter = ('category', )
+
+
+@admin.register(PhotoApplications)
+class PhotoApplicationsAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'application', 'date')
+    list_display_links = ('pk', 'application', 'date')
+    search_fields = ('application__pk',)
