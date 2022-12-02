@@ -1229,6 +1229,10 @@ def handler_call_back(data):
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
     elif 'Notification' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
         if 'yes' in button_press:
             app = SellApplication.objects.get(pk=button_press.split()[2])
             app.notifications = True
