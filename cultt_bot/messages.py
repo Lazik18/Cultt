@@ -266,6 +266,17 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_the_cultt, reply_markup=keyboard)
         return
+    elif coop_option.swap_url and application.swap_url is None:
+        user.step = f'SwapUrl {coop_option_id}'
+        user.save()
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.button_swap_url, callback_data=f'SwapUrl')],
+                    [InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_the_cultt, reply_markup=keyboard)
+        return
     elif coop_option.photo and application.is_photo is False:
         if not finish_photo:
             user.step = 'Photo'
@@ -744,6 +755,19 @@ def handler_message(data):
             bot.sendMessage(chat_id=user_telegram_id, text='Некорректный ввод')
         except:
             bot.sendMessage(chat_id=user_telegram_id, text='Заявка с таким номером не найдена')
+    elif 'SwapUrl' in user.step:
+        try:
+            application.swap_url = message_text
+            application.save()
+
+            option_od = user.step.split()[1]
+
+            user.step = ''
+            user.save()
+
+            create_applications(user_telegram_id, option_od, last_step='SwapUrl')
+        except:
+            pass
 
 
 @debug_dec
@@ -909,6 +933,12 @@ def handler_call_back(data):
             return
         elif 'TheCultt' in button_press:
             application.the_cultt = None
+            application.save()
+
+            create_applications(user_telegram_id, application.cooperation_option.pk)
+            return
+        elif 'SwapUrl' in button_press:
+            application.swap_url = None
             application.save()
 
             create_applications(user_telegram_id, application.cooperation_option.pk)
@@ -1369,6 +1399,24 @@ def handler_call_back(data):
             application.save()
 
         create_applications(user_telegram_id, application.cooperation_option.pk, last_step='TheCultt')
+        return
+    elif 'SwapUrl' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+            return
+
+        application = application.first()
+        application.swap_url = bot_settings.button_swap_url
+        application.save()
+        user.step = ''
+        user.save()
+
+        create_applications(user_telegram_id, application.cooperation_option.pk, last_step='SwapUrl')
         return
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())

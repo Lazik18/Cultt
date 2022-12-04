@@ -176,6 +176,10 @@ class AmoCrmSession:
                             {
                                 "field_id": 905359,
                                 "values": [{"value": application.the_cultt}, ]
+                            },
+                            {
+                                "field_id": 905361,
+                                "values": [{"value": f"{application.swap_url}"}, ]
                             }
                         ],
                         "_embedded": {

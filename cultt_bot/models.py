@@ -142,6 +142,9 @@ class TelegramBot(models.Model):
     text_faq = models.TextField(default='Текст F.A.Q.', verbose_name='Текст F.A.Q.')
     # приобретен в THE CULTT
     text_the_cultt = models.TextField(default='приобретен в THE CULTT', verbose_name='приобретен в THE CULTT')
+    #
+    button_swap_url = models.TextField(default='Не опредилился', verbose_name='Не опредилился')
+    text_swap_url = models.TextField(default='Укажите ссылку на товар обмена', verbose_name='Укажите ссылку на товар')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
@@ -282,6 +285,7 @@ class CooperationOption(models.Model):
     price = models.BooleanField(default=False, verbose_name='Цена')
     photo = models.BooleanField(default=False, verbose_name='Фото')
     the_cultt = models.BooleanField(default=False, verbose_name='Приобретен в THE CULTT')
+    swap_url = models.BooleanField(default=False, verbose_name='Ссылка на обмен')
 
     amocrm_pipeline_id = models.IntegerField(default=0, verbose_name='ID воронки в амосрм')
     amocrm_status_id = models.IntegerField(default=0, verbose_name='ID статуса в амосрм')
@@ -329,6 +333,8 @@ class SellApplication(models.Model):
     concierge_count = models.IntegerField(default=0)
     # Товар приобретен в THE CULTT
     the_cultt = models.BooleanField(default=None, blank=True, null=True, verbose_name='приобретен в THE CULTT')
+    # Ссылка на обмен
+    swap_url = models.TextField(default=None, blank=True, null=True, verbose_name='Ссылка на обмен')
     # Дата создания
     date_create = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Дата создания')
     # Уведомления
