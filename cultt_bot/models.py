@@ -328,7 +328,7 @@ class SellApplication(models.Model):
     #
     concierge_count = models.IntegerField(default=0)
     # Товар приобретен в THE CULTT
-    the_cultt = models.TextField(default=None, blank=True, null=True, verbose_name='приобретен в THE CULTT')
+    the_cultt = models.BooleanField(default=None, blank=True, null=True, verbose_name='приобретен в THE CULTT')
     # Дата создания
     date_create = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Дата создания')
     # Уведомления

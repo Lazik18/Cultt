@@ -907,6 +907,12 @@ def handler_call_back(data):
 
             create_applications(user_telegram_id, application.cooperation_option.pk)
             return
+        elif 'TheCultt' in button_press:
+            application.the_cultt = None
+            application.save()
+
+            create_applications(user_telegram_id, application.cooperation_option.pk)
+            return
 
         return
     elif 'CreateApp Category' in button_press:
@@ -1356,12 +1362,13 @@ def handler_call_back(data):
         cultt_status = button_press.split()[1]
 
         if cultt_status == 'yes':
-            application.the_cultt = 'Да'
+            application.the_cultt = True
             application.save()
         elif cultt_status == 'no':
-            application.the_cultt = 'Нет'
+            application.the_cultt = False
             application.save()
 
+        create_applications(user_telegram_id, application.cooperation_option.pk, last_step='TheCultt')
         return
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
