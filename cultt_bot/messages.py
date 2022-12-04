@@ -398,12 +398,11 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         return
     elif application.oferta is None:
         keyboard = [[InlineKeyboardButton(text="Да", callback_data=f'Oferta yes'),
-                     InlineKeyboardButton(text="Нет", callback_data=f'Oferta no')],
-                    [InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')]]
+                     InlineKeyboardButton(text="Нет", callback_data=f'Oferta no')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_oferta, reply_markup=keyboard)
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_oferta, reply_markup=keyboard, parse_mode='HTML')
         return
     else:
         bot_text = bot_settings.applications_main_text + '\n\n'
