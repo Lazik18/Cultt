@@ -275,7 +275,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_the_cultt, reply_markup=keyboard)
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_swap_url, reply_markup=keyboard)
         return
     elif coop_option.photo and application.is_photo is False:
         if not finish_photo:
@@ -395,6 +395,15 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.tel_message, reply_markup=keyboard)
+        return
+    elif application.oferta is None:
+        keyboard = [[InlineKeyboardButton(text="Да", callback_data=f'Oferta yes'),
+                     InlineKeyboardButton(text="Нет", callback_data=f'Oferta no')],
+                    [InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_oferta, reply_markup=keyboard)
         return
     else:
         bot_text = bot_settings.applications_main_text + '\n\n'
@@ -1417,6 +1426,29 @@ def handler_call_back(data):
         user.save()
 
         create_applications(user_telegram_id, application.cooperation_option.pk, last_step='SwapUrl')
+        return
+    elif 'Oferta' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+            return
+
+        application = application.first()
+
+        oferta_status = button_press.split()[1]
+
+        if oferta_status == 'yes':
+            application.oferta = True
+            application.save()
+        elif oferta_status == 'no':
+            application.oferta = False
+            application.save()
+
+        create_applications(user_telegram_id, application.cooperation_option.pk, last_step='TheCultt')
         return
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())

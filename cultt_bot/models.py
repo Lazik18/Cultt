@@ -145,6 +145,8 @@ class TelegramBot(models.Model):
     #
     button_swap_url = models.TextField(default='Не опредилился', verbose_name='Не опредилился')
     text_swap_url = models.TextField(default='Укажите ссылку на товар обмена', verbose_name='Укажите ссылку на товар')
+    #
+    text_oferta = models.TextField(default='оферта', verbose_name='Публичная оферта')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
@@ -343,6 +345,8 @@ class SellApplication(models.Model):
     status = models.TextField(blank=True, null=True, verbose_name='Статус')
     # AmoCRM id
     amocrm_id = models.IntegerField(blank=True, null=True, verbose_name='AmoCRM id')
+    # Принял ли оферту
+    oferta = models.BooleanField(default=None, blank=True, null=True, verbose_name='Принял оферту')
 
     def cooperation_option_name(self):
         return self.cooperation_option.name
