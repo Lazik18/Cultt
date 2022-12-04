@@ -1341,5 +1341,27 @@ def handler_call_back(data):
         faq_menu(user_telegram_id)
 
         return
+    elif 'TheCultt' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+            return
+
+        application = application.first()
+
+        cultt_status = button_press.split()[1]
+
+        if cultt_status == 'yes':
+            application.the_cultt = 'Да'
+            application.save()
+        elif cultt_status == 'no':
+            application.the_cultt = 'Нет'
+            application.save()
+
+        return
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
