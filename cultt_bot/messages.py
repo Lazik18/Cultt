@@ -257,6 +257,15 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.waiting_price_message, reply_markup=keyboard)
         return
+    elif coop_option.the_cultt and application.the_cultt is None:
+        keyboard = [[InlineKeyboardButton(text="Да", callback_data=f'TheCultt yes'),
+                     InlineKeyboardButton(text="Нет", callback_data=f'TheCultt no')],
+                    [InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_the_cultt, reply_markup=keyboard)
+        return
     elif coop_option.photo and application.is_photo is False:
         if not finish_photo:
             user.step = 'Photo'

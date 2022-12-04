@@ -140,6 +140,8 @@ class TelegramBot(models.Model):
     faq = models.TextField(default='F.A.Q.', verbose_name='F.A.Q.')
     # Текст F.A.Q.
     text_faq = models.TextField(default='Текст F.A.Q.', verbose_name='Текст F.A.Q.')
+    # приобретен в THE CULTT
+    text_the_cultt = models.TextField(default='приобретен в THE CULTT', verbose_name='приобретен в THE CULTT')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
@@ -279,11 +281,11 @@ class CooperationOption(models.Model):
     defect = models.BooleanField(default=False, verbose_name='Дефекты')
     price = models.BooleanField(default=False, verbose_name='Цена')
     photo = models.BooleanField(default=False, verbose_name='Фото')
+    the_cultt = models.BooleanField(default=False, verbose_name='Приобретен в THE CULTT')
 
     amocrm_pipeline_id = models.IntegerField(default=0, verbose_name='ID воронки в амосрм')
     amocrm_status_id = models.IntegerField(default=0, verbose_name='ID статуса в амосрм')
     amocrm_tag = models.TextField(default='бот', verbose_name='Тег в амосрм')
-
 
     def __str__(self):
         return self.name
@@ -325,6 +327,8 @@ class SellApplication(models.Model):
     is_photo = models.BooleanField(default=False)
     #
     concierge_count = models.IntegerField(default=0)
+    # Товар приобретен в THE CULTT
+    the_cultt = models.TextField(default=None, blank=True, null=True, verbose_name='приобретен в THE CULTT')
     # Дата создания
     date_create = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Дата создания')
     # Уведомления
