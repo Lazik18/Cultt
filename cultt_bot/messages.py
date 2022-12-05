@@ -1443,11 +1443,17 @@ def handler_call_back(data):
         if oferta_status == 'yes':
             application.oferta = True
             application.save()
+
+            create_applications(user_telegram_id, application.cooperation_option.pk, last_step='TheCultt')
+            return
         elif oferta_status == 'no':
             application.oferta = False
             application.save()
 
-        create_applications(user_telegram_id, application.cooperation_option.pk, last_step='TheCultt')
-        return
+            keyboard = [[InlineKeyboardButton(text='В меню', callback_data=f'MainMenu')]]
+            keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+            bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_cancel_oferta, reply_markup=keyboard)
+            return
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())

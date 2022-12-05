@@ -147,6 +147,7 @@ class TelegramBot(models.Model):
     text_swap_url = models.TextField(default='Укажите ссылку на товар обмена', verbose_name='Укажите ссылку на товар')
     #
     text_oferta = models.TextField(default='оферта', verbose_name='Публичная оферта')
+    text_cancel_oferta = models.TextField(default='отмена оферты', verbose_name='Текст после отказа от оферты')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
