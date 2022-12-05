@@ -1450,7 +1450,7 @@ def handler_call_back(data):
             application.oferta = False
             application.save()
 
-            keyboard = [[InlineKeyboardButton(text='В меню', callback_data=f'MainMenu')]]
+            keyboard = [[InlineKeyboardButton(text='В меню', callback_data=f'CancelApp')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
             bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_cancel_oferta, reply_markup=keyboard)
