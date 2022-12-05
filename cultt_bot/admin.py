@@ -17,7 +17,7 @@ admin.site.register(CRMStatusID)
 @admin.register(SellApplication)
 class SellApplicationAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'email', 'tel', 'active', 'date_create')
-    search_fields = ('name', 'email', 'tel')
+    search_fields = ('name', 'email', 'tel', 'amocrm_id')
 
 
 @admin.register(AmoCRMLog)

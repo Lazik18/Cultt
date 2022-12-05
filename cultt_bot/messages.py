@@ -1320,7 +1320,7 @@ def handler_call_back(data):
             keyboard = []
 
             applications = SellApplication.objects.filter(active=False, user=user,
-                                                          date_create__gte=(datetime.datetime.now() - timedelta(days=30))).exclude(amocrm_id=None)
+                                                          date_create__gte=(datetime.datetime.now() - timedelta(days=45))).exclude(amocrm_id=None)
 
             line_keyboard = []
 
