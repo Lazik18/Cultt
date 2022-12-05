@@ -12,6 +12,8 @@ class TelegramBot(models.Model):
     url = models.TextField(verbose_name='URL для бота')
     # Токен бота
     token = models.TextField(verbose_name='Токен бота')
+    # Токен для статуса заказа
+    status_token = models.TextField(verbose_name='Токен для статуса заказа')
 
     # Текст бота
     # Приветственное сообщение
@@ -126,6 +128,26 @@ class TelegramBot(models.Model):
     text_edit_app = models.TextField(default='Выберите, что бы вы хотели изменить', verbose_name='Текст при редактировании заявки')
     # Фото
     photo_img = models.ImageField(verbose_name='Референс для загрузки фото', blank=True, null=True)
+    # Сообщение трекинг
+    track_message = models.TextField(verbose_name='Сообщение про отслеживание', default='Сообщение про отслеживание')
+    # Отслеживать заявку
+    track_application = models.TextField(verbose_name='Отслеживать заявку', default='Отслеживать заявку')
+    # Текст отслеживать заявку
+    track_application_msg = models.TextField(verbose_name='Текст отслеживать заявку', default='Текст отслеживать заявку')
+    # Статус заявки по умолчанию
+    default_status = models.TextField(default='Статус', verbose_name='Статус заявки по умолчанию')
+    # F.A.Q.
+    faq = models.TextField(default='F.A.Q.', verbose_name='F.A.Q.')
+    # Текст F.A.Q.
+    text_faq = models.TextField(default='Текст F.A.Q.', verbose_name='Текст F.A.Q.')
+    # приобретен в THE CULTT
+    text_the_cultt = models.TextField(default='приобретен в THE CULTT', verbose_name='приобретен в THE CULTT')
+    #
+    button_swap_url = models.TextField(default='Не опредилился', verbose_name='Не опредилился')
+    text_swap_url = models.TextField(default='Укажите ссылку на товар обмена', verbose_name='Укажите ссылку на товар')
+    #
+    text_oferta = models.TextField(default='оферта', verbose_name='Публичная оферта')
+    text_cancel_oferta = models.TextField(default='отмена оферты', verbose_name='Текст после отказа от оферты')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
@@ -265,11 +287,12 @@ class CooperationOption(models.Model):
     defect = models.BooleanField(default=False, verbose_name='Дефекты')
     price = models.BooleanField(default=False, verbose_name='Цена')
     photo = models.BooleanField(default=False, verbose_name='Фото')
+    the_cultt = models.BooleanField(default=False, verbose_name='Приобретен в THE CULTT')
+    swap_url = models.BooleanField(default=False, verbose_name='Ссылка на обмен')
 
     amocrm_pipeline_id = models.IntegerField(default=0, verbose_name='ID воронки в амосрм')
     amocrm_status_id = models.IntegerField(default=0, verbose_name='ID статуса в амосрм')
     amocrm_tag = models.TextField(default='бот', verbose_name='Тег в амосрм')
-
 
     def __str__(self):
         return self.name
@@ -311,10 +334,21 @@ class SellApplication(models.Model):
     is_photo = models.BooleanField(default=False)
     #
     concierge_count = models.IntegerField(default=0)
+    # Товар приобретен в THE CULTT
+    the_cultt = models.BooleanField(default=None, blank=True, null=True, verbose_name='приобретен в THE CULTT')
+    # Ссылка на обмен
+    swap_url = models.TextField(default=None, blank=True, null=True, verbose_name='Ссылка на обмен')
     # Дата создания
     date_create = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Дата создания')
+    # Уведомления
+    notifications = models.BooleanField(default=False, verbose_name='Уведомления')
+    # Статус
+    status = models.TextField(blank=True, null=True, verbose_name='Статус')
     # AmoCRM id
     amocrm_id = models.IntegerField(blank=True, null=True, verbose_name='AmoCRM id')
+    # Принял ли оферту
+    oferta = models.BooleanField(default=None, blank=True, null=True, verbose_name='Принял оферту')
+
 
     def cooperation_option_name(self):
         return self.cooperation_option.name
@@ -441,3 +475,41 @@ class StageLog(models.Model):
 class TelegramLog(models.Model):
     text = models.TextField()
     date_create = models.DateTimeField(auto_now=True, verbose_name='Дата')
+
+
+class FAQFirstLevel(models.Model):
+    question = models.TextField(verbose_name='Вопрос')
+    answer = models.TextField(verbose_name='Ответ')
+
+    def __str__(self):
+        return f'Вопрос - {self.question}'
+
+    class Meta:
+        verbose_name = "Вопрос"
+        verbose_name_plural = "Вопросы первого уровня"
+
+
+class FAQSecondLevel(models.Model):
+    question = models.TextField(verbose_name='Вопрос')
+    answer = models.TextField(verbose_name='Ответ')
+    main_question = models.ForeignKey(verbose_name='Основной вопрос', to='FAQFirstLevel', on_delete=models.PROTECT)
+
+    def __str__(self):
+        return f'{self.main_question} - {self.question}'
+
+    class Meta:
+        verbose_name = "Вопрос"
+        verbose_name_plural = "Вопросы второго уровня"
+
+
+class CRMStatusID(models.Model):
+    status_id = models.IntegerField(verbose_name='id статуса')
+    name = models.TextField(verbose_name='Название статуса')
+    status_text = models.TextField(verbose_name='Текст статуса')
+
+    def __str__(self):
+        return f'{self.status_id} - {self.name} - {self.status_text}'
+
+    class Meta:
+        verbose_name = "Статус заявки"
+        verbose_name_plural = "Статусы заявок"

@@ -13,7 +13,7 @@ import datetime
 # Для отравки уведомлений Илье и тестов
 def send_telegram_error_message(message):
     bot = telepot.Bot(cultt_telegram_bot_token)
-    bot.sendMessage(chat_id='673616491', text=f'Только для Ильи:\n{message}')
+    bot.sendMessage(chat_id=673616491, text=f'Только для Ильи:\n{message}')
 
 
 # Для работы с API
@@ -53,7 +53,7 @@ class AmoCrmSession:
 
             return True
         else:
-            send_telegram_error_message(result)
+            # send_telegram_error_message(result)
 
             if not double:
                 if grant_type == 'authorization_code':
@@ -172,6 +172,14 @@ class AmoCrmSession:
                             {
                                 "field_id": 904333,
                                 "values": [{"value": f"https://culttbot.ru/views/application/{application.id}"}, ]
+                            },
+                            {
+                                "field_id": 905359,
+                                "values": [{"value": application.the_cultt}, ]
+                            },
+                            {
+                                "field_id": 905361,
+                                "values": [{"value": f"{application.swap_url}"}, ]
                             }
                         ],
                         "_embedded": {
@@ -209,6 +217,24 @@ class AmoCrmSession:
                 }
             }]
 
+        get_headers = {
+            'Authorization': f'Bearer {self.amo_crm_data.access_token}',
+            'Cookie': 'user_lang=ru'
+        }
+        resp = requests.request('GET',
+                                f'https://thecultt.amocrm.ru/api/v4/contacts?filter[custom_fields_values][67727]={application.email}',
+                                headers=get_headers)
+        if resp.status_code == 204:
+            pass
+        elif resp.status_code == 200 and user.amocrm_id is None:
+            try:
+                user.amocrm_id = int(resp.json()['_embedded']['contacts'][0]['id'])
+                user.save()
+            except Exception as ex:
+                TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
+
+        # data[0]['_embedded']['contacts'][0]['_embedded'] = {'tags': [{'name': "Новая регистрация"}]}
+
         if user.amocrm_id is not None:
             data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
 
@@ -216,9 +242,9 @@ class AmoCrmSession:
 
         if user.username is not None:
             data[0]['_embedded']['leads'][0]['custom_fields_values'].append({
-                            "field_id": 904993,
-                            "values": [{"value": user.username}, ]
-                        })
+                "field_id": 904993,
+                "values": [{"value": user.username}, ]
+            })
 
         result = requests.post(f'https://{self.sub_domain}/api/v4/leads/unsorted/forms', headers=headers, json=data)
 
@@ -243,6 +269,15 @@ class AmoCrmSession:
 
         status_data = {'status_id': application.cooperation_option.amocrm_status_id}
 
+        requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers,
+                       params=status_data)
+
+        tags_contact_data = json.dumps({'_embedded': {'tags': [{'name': "Новая регистрация"}]}})
+        res_tag = requests.request("PATCH", f'https://{self.sub_domain}/api/v4/contacts/{user.amocrm_id}',
+                                   headers=headers,
+                                   data=tags_contact_data)
+
         result_status = requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers, params=status_data)
+
 
         return result.text

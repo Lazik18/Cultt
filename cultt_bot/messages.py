@@ -12,7 +12,8 @@ from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup, Reply
 from cultt_bot.amo_crm import AmoCrmSession
 from cultt_bot.general_functions import phone_number_validator, email_validation
 from cultt_bot.models import TelegramBot, TelegramUser, SellApplication, CooperationOption, CategoryOptions, \
-    BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator, TelegramLog
+    BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator, TelegramLog, FAQFirstLevel, \
+    FAQSecondLevel
 
 
 def debug_dec(func):
@@ -47,7 +48,8 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
                                                                    cooperation_option=coop_option)
 
     if is_create:
-        pass
+        application.status = bot_settings.default_status
+        application.save()
 
     cancel_keyboard = InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')
 
@@ -255,6 +257,26 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.waiting_price_message, reply_markup=keyboard)
         return
+    elif coop_option.the_cultt and application.the_cultt is None:
+        keyboard = [[InlineKeyboardButton(text="Да", callback_data=f'TheCultt yes'),
+                     InlineKeyboardButton(text="Нет", callback_data=f'TheCultt no')],
+                    [InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_the_cultt, reply_markup=keyboard)
+        return
+    elif coop_option.swap_url and application.swap_url is None:
+        user.step = f'SwapUrl {coop_option_id}'
+        user.save()
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.button_swap_url, callback_data=f'SwapUrl')],
+                    [InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_swap_url, reply_markup=keyboard)
+        return
     elif coop_option.photo and application.is_photo is False:
         if not finish_photo:
             user.step = 'Photo'
@@ -374,6 +396,14 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.tel_message, reply_markup=keyboard)
         return
+    elif application.oferta is None:
+        keyboard = [[InlineKeyboardButton(text="Да", callback_data=f'Oferta yes'),
+                     InlineKeyboardButton(text="Нет", callback_data=f'Oferta no')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_oferta, reply_markup=keyboard, parse_mode='HTML')
+        return
     else:
         bot_text = bot_settings.applications_main_text + '\n\n'
 
@@ -420,7 +450,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if application.concierge_count != 0:
             bot_text += bot_settings.applications_concierge_count + f': {application.concierge_count}\n'
 
-        keyboard = [[#InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp'),
+        keyboard = [[# InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp'),
                      InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp'),
                      InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp')]]
 
@@ -428,6 +458,35 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_text, reply_markup=keyboard)
 
+
+@debug_dec
+def faq_menu(user_telegram_id):
+    bot_settings = TelegramBot.objects.filter().first()
+    bot = telepot.Bot(token=bot_settings.token)
+
+    text = bot_settings.text_faq
+    keyboard = []
+    line_keyboard = []
+
+    questions = FAQFirstLevel.objects.all()
+
+    i = 1
+    for question in questions:
+        text += f'\n{i}. {question.question}'
+        line_keyboard.append(InlineKeyboardButton(text=f'{i}', callback_data=f'QuestionFirst {question.pk}'))
+        i += 1
+
+        if len(line_keyboard) >= 2:
+            keyboard.append(line_keyboard)
+            line_keyboard = []
+
+    if len(line_keyboard) != 0:
+        keyboard.append(line_keyboard)
+
+    keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
+    keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
 
 @debug_dec
 def main_menu(user_telegram_id):
@@ -490,7 +549,11 @@ def handler_command(data):
         user.step = ''
         user.save()
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')]]
+        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+                    [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')],
+                    [InlineKeyboardButton(text=bot_settings.track_application, callback_data='TrackApp None')],
+                    [InlineKeyboardButton(text=bot_settings.faq, callback_data='FAQ')],
+                    [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
@@ -534,14 +597,19 @@ def handler_message(data):
             application.delete()
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+                    [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')],
+                    [InlineKeyboardButton(text=bot_settings.track_application, callback_data='TrackApp None')],
+                    [InlineKeyboardButton(text=bot_settings.faq, callback_data='FAQ')],
                     [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        keyboard_r = [[KeyboardButton(text=bot_settings.my_profile_button)]]
+        # keyboard_r = [#[KeyboardButton(text=bot_settings.my_profile_button)],
+        #               [KeyboardButton(text=bot_settings.track_application)],
+        #               [KeyboardButton(text=bot_settings.faq)]]
+        #
+        # keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
 
-        keyboard_r = ReplyKeyboardMarkup(keyboard=keyboard_r, resize_keyboard=True)
-
-        bot.sendMessage(chat_id=user_telegram_id, text='Заявка отменена', reply_markup=keyboard_r)
+        bot.sendMessage(chat_id=user_telegram_id, text='Заявка отменена', reply_markup=ReplyKeyboardRemove())
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
         return
@@ -550,13 +618,43 @@ def handler_message(data):
         text += f'Имя: {user.name or "не задано"}\nФамилия: {user.surname or "не задано"}' \
                 f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
 
-        keyboard = [#[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
-                    # [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
                     [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+        return
+    elif bot_settings.track_application in message_text:
+        text = bot_settings.track_application_msg
+
+        user.step = 'TrackApp'
+        user.save()
+
+        keyboard = []
+
+        applications = SellApplication.objects.filter(active=False, user=user).exclude(amocrm_id=None)
+
+        line_keyboard = []
+
+        for app in applications:
+            line_keyboard.append(InlineKeyboardButton(text=f'#{app.amocrm_id}', callback_data=f'TrackApp {app.amocrm_id}'))
+
+            if len(line_keyboard) >= 2:
+                keyboard.append(line_keyboard)
+                line_keyboard = []
+
+        if len(line_keyboard) != 0:
+            keyboard.append(line_keyboard)
+
+        keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+        return
+    elif bot_settings.faq in message_text:
+        faq_menu(user_telegram_id)
         return
 
     if application is None:
@@ -652,6 +750,33 @@ def handler_message(data):
         application.save()
 
         create_applications(user_telegram_id, option_od, last_step='Brand')
+    elif 'TrackApp' in user.step:
+        try:
+            app_id = int(message_text)
+
+            app = SellApplication.objects.get(pk=app_id)
+
+            bot.sendMessage(chat_id=user_telegram_id, text=app.status)
+
+            user.step = ''
+            user.save()
+        except ValueError:
+            bot.sendMessage(chat_id=user_telegram_id, text='Некорректный ввод')
+        except:
+            bot.sendMessage(chat_id=user_telegram_id, text='Заявка с таким номером не найдена')
+    elif 'SwapUrl' in user.step:
+        try:
+            application.swap_url = message_text
+            application.save()
+
+            option_od = user.step.split()[1]
+
+            user.step = ''
+            user.save()
+
+            create_applications(user_telegram_id, option_od, last_step='SwapUrl')
+        except:
+            pass
 
 
 @debug_dec
@@ -692,8 +817,6 @@ def handler_photo(data):
 
             if PhotoApplications.objects.filter(application=application, date__gte=date_start,
                                                 date__lte=date_end).count() < 2:
-                # user.step = ''
-                # user.save()
                 create_applications(user_telegram_id, application.cooperation_option.pk, finish_photo=True)
 
 
@@ -733,13 +856,13 @@ def handler_call_back(data):
         except telepot.exception.TelegramError:
             pass
         main_menu(user_telegram_id)
-        stats = Indicator.objects.filter().last()
+        stats, create = Indicator.objects.get_or_create(date__day=datetime.datetime.now().day)
         stats.dialogs_started += 1
         stats.save()
     elif 'ConnectManager' in button_press:
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.contact_manager)
 
-        stats = Indicator.objects.filter().last()
+        stats, create = Indicator.objects.get_or_create(date__day=datetime.datetime.now().day)
         stats.clicks_manager += 1
         stats.save()
     elif 'CancelApp' in button_press:
@@ -751,6 +874,9 @@ def handler_call_back(data):
         application.delete()
 
         keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+                    [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')],
+                    [InlineKeyboardButton(text=bot_settings.track_application, callback_data='TrackApp None')],
+                    [InlineKeyboardButton(text=bot_settings.faq, callback_data='FAQ')],
                     [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -810,6 +936,18 @@ def handler_call_back(data):
             return
         elif 'Count' in button_press:
             application.concierge_count = None
+            application.save()
+
+            create_applications(user_telegram_id, application.cooperation_option.pk)
+            return
+        elif 'TheCultt' in button_press:
+            application.the_cultt = None
+            application.save()
+
+            create_applications(user_telegram_id, application.cooperation_option.pk)
+            return
+        elif 'SwapUrl' in button_press:
+            application.swap_url = None
             application.save()
 
             create_applications(user_telegram_id, application.cooperation_option.pk)
@@ -1003,6 +1141,8 @@ def handler_call_back(data):
             bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
             return
 
+        bot.sendMessage(chat_id=user_telegram_id, text='Заявка отправлена', reply_markup=ReplyKeyboardRemove())
+
         application = application.first()
         application.active = False
         application.save()
@@ -1010,7 +1150,7 @@ def handler_call_back(data):
         amo_crm_session = AmoCrmSession('thecultt.amocrm.ru')
         result = amo_crm_session.create_leads_complex(application.id, user)
 
-        stats = Indicator.objects.filter().last()
+        stats, create = Indicator.objects.get_or_create(date__day=datetime.datetime.now().day)
         stats.applications_sent += 1
         stats.save()
 
@@ -1018,12 +1158,16 @@ def handler_call_back(data):
             if amo_crm_session.get_access_token('refresh_token'):
                 amo_crm_session.create_leads_complex(application.id, user)
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
-                    [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')]]
+        keyboard = [[InlineKeyboardButton(text='Да', callback_data=f'Notification yes {application.pk}'),
+                     InlineKeyboardButton(text='Нет', callback_data=f'Notification no {application.pk}')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.end_message, reply_markup=keyboard)
+        application = SellApplication.objects.get(pk=application.pk)
+
+        text = bot_settings.end_message + f' {application.amocrm_id}\nХотите получать уведомления?'
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
     elif 'CreateApp' in button_press:
         try:
             bot.deleteMessage(current_message)
@@ -1053,8 +1197,7 @@ def handler_call_back(data):
         text += f'Имя: {user.name or "не задано"}\nФамилия: {user.surname or "не задано"}' \
                 f'\nПочта: {user.email or "не задано"}\nТелефон: {user.tel or "не задано"}'
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')],
-                    # [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')],
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')], # s
                     [InlineKeyboardButton(text=bot_settings.reset_data, callback_data='MyProfile Reset')]]
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
@@ -1139,5 +1282,179 @@ def handler_call_back(data):
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+    elif 'Notification' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+        if 'yes' in button_press:
+            app = SellApplication.objects.get(pk=button_press.split()[2])
+            app.notifications = True
+            app.save()
+
+            bot.sendMessage(chat_id=user_telegram_id, text='Уведомления включены')
+        elif 'no' in button_press:
+            app = SellApplication.objects.get(pk=button_press.split()[2])
+            app.notifications = False
+            app.save()
+
+            bot.sendMessage(chat_id=user_telegram_id, text='Уведомления отключены')
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.start_button, callback_data='MainMenu')],
+                    [InlineKeyboardButton(text=bot_settings.my_profile_button, callback_data='MyProfile')],
+                    [InlineKeyboardButton(text=bot_settings.track_application, callback_data='TrackApp None')],
+                    [InlineKeyboardButton(text=bot_settings.faq, callback_data='FAQ')],
+                    [InlineKeyboardButton(text=bot_settings.contact_to_manager, callback_data='ConnectManager')]]
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
+    elif 'TrackApp' in button_press:
+        app_id = button_press.split()[1]
+
+        if app_id == 'None':
+            text = bot_settings.track_application_msg
+
+            user.step = 'TrackApp'
+            user.save()
+
+            keyboard = []
+
+            applications = SellApplication.objects.filter(active=False, user=user).exclude(amocrm_id=None)
+
+            line_keyboard = []
+
+            for app in applications:
+                line_keyboard.append(
+                    InlineKeyboardButton(text=f'#{app.amocrm_id}', callback_data=f'TrackApp {app.amocrm_id}'))
+
+                if len(line_keyboard) >= 2:
+                    keyboard.append(line_keyboard)
+                    line_keyboard = []
+
+            if len(line_keyboard) != 0:
+                keyboard.append(line_keyboard)
+
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='CancelApp')])
+            keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+            bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+            return
+
+        app = SellApplication.objects.get(amocrm_id=app_id)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=app.status)
+        return
+    elif 'QuestionFirst' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+        question = FAQFirstLevel.objects.get(pk=button_press.split()[1])
+        questions_second = FAQSecondLevel.objects.filter(main_question=question)
+
+        keyboard = []
+
+        for que in questions_second:
+            keyboard.append([InlineKeyboardButton(text=f'{que.question}', callback_data=f'QuestionSecond {que.pk}')])
+
+        keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data='FAQ')])
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        text = f'- {question.question}\n{question.answer}'
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+        return
+    elif 'QuestionSecond' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+        question = FAQSecondLevel.objects.get(pk=button_press.split()[1])
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'QuestionFirst {question.main_question.pk}')]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        text = f'- {question.main_question.question}\n({question.question})\n{question.answer}'
+
+        bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+    elif 'FAQ' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        faq_menu(user_telegram_id)
+
+        return
+    elif 'TheCultt' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+            return
+
+        application = application.first()
+
+        cultt_status = button_press.split()[1]
+
+        if cultt_status == 'yes':
+            application.the_cultt = True
+            application.save()
+        elif cultt_status == 'no':
+            application.the_cultt = False
+            application.save()
+
+        create_applications(user_telegram_id, application.cooperation_option.pk, last_step='TheCultt')
+        return
+    elif 'SwapUrl' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+            return
+
+        application = application.first()
+        application.swap_url = bot_settings.button_swap_url
+        application.save()
+        user.step = ''
+        user.save()
+
+        create_applications(user_telegram_id, application.cooperation_option.pk, last_step='SwapUrl')
+        return
+    elif 'Oferta' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+            return
+
+        application = application.first()
+
+        oferta_status = button_press.split()[1]
+
+        if oferta_status == 'yes':
+            application.oferta = True
+            application.save()
+
+            create_applications(user_telegram_id, application.cooperation_option.pk, last_step='TheCultt')
+            return
+        elif oferta_status == 'no':
+            application.oferta = False
+            application.save()
+
+            keyboard = [[InlineKeyboardButton(text='В меню', callback_data=f'CancelApp')]]
+            keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+            bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_cancel_oferta, reply_markup=keyboard)
+            return
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())

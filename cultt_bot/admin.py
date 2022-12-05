@@ -9,6 +9,9 @@ admin.site.register(StateOptions)
 admin.site.register(DefectOptions)
 admin.site.register(AmoCRMData)
 admin.site.register(CooperationOption)
+admin.site.register(FAQFirstLevel)
+admin.site.register(FAQSecondLevel)
+admin.site.register(CRMStatusID)
 
 
 @admin.register(SellApplication)

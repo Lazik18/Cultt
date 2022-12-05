@@ -3,6 +3,7 @@ import traceback
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from urllib.parse import unquote
 
 from cultt_bot.messages import handler_call_back, handler_photo, handler_message
 from cultt_bot.models import *
@@ -16,6 +17,17 @@ import os
 import pwd, grp
 
 from cultt_bot.amo_crm import AmoCrmSession
+
+
+def debug_dec(func):
+    def wrapper(*args, **kwargs):
+        bot_settings = TelegramBot.objects.filter().first()
+        bot = telepot.Bot(token=bot_settings.token)
+        try:
+            func(*args, **kwargs)
+        except Exception as ex:
+            TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
+    return wrapper
 
 
 # Редирект в админку
@@ -114,3 +126,42 @@ def test(request):
     result = amo_crm_session.create_leads_complex(10)
     return HttpResponse(result, content_type="text/plain", status=200)
 
+
+@csrf_exempt
+@debug_dec
+def web_hook_amocrm(request):
+    telegram_bot = TelegramBot.objects.filter().first()
+
+    if request.method == 'POST':
+        data = unquote(request.body.decode('utf-8'))
+        AmoCRMLog.objects.create(result=str(data))
+
+        data = data.split('&')
+
+        try:
+            id_leads = data[0].split('=')[1]
+        except:
+            resp = {"status": "error",
+                    "message": "no required fields"}
+            return HttpResponse(str(resp), content_type="text/plain", status=200)
+
+        # response = requests.get(f'https://thecultt.amocrm.ru/api/v4/leads/{id_leads}')
+
+        try:
+            status_id = data[1].split('=')[1]
+        except:
+            resp = {"status": "error",
+                    "message": "no leads"}
+            return HttpResponse(str(resp), content_type="text/plain", status=200)
+
+        application = SellApplication.objects.get(amocrm_id=id_leads)
+        status = CRMStatusID.objects.get(status_id=status_id)
+        application.status = status.status_text
+        application.save()
+
+        if application.notifications:
+            telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=status.status_text)
+
+        resp = {"status": "success",
+                "message": "ok"}
+        return HttpResponse(str(resp), content_type="text/plain", status=200)
