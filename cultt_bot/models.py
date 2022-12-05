@@ -349,6 +349,7 @@ class SellApplication(models.Model):
     # Принял ли оферту
     oferta = models.BooleanField(default=None, blank=True, null=True, verbose_name='Принял оферту')
 
+
     def cooperation_option_name(self):
         return self.cooperation_option.name
 
@@ -388,7 +389,7 @@ class PhotoApplications(models.Model):
     photo = models.ImageField(upload_to='application_image', blank=True, null=True)
 
     def __str__(self):
-        return self.application.user.chat_id
+        return f'{self.pk}'
 
     class Meta:
         verbose_name = "Фото заявки"

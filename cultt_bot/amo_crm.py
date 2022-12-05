@@ -238,6 +238,8 @@ class AmoCrmSession:
         if user.amocrm_id is not None:
             data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
 
+        # data[0]['_embedded']['contacts'][0]['_embedded'] = {'tags': [{'name': "Новая регистрация"}]}
+
         if user.username is not None:
             data[0]['_embedded']['leads'][0]['custom_fields_values'].append({
                 "field_id": 904993,
@@ -266,6 +268,7 @@ class AmoCrmSession:
             TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
 
         status_data = {'status_id': application.cooperation_option.amocrm_status_id}
+
         requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers,
                        params=status_data)
 
@@ -273,5 +276,8 @@ class AmoCrmSession:
         res_tag = requests.request("PATCH", f'https://{self.sub_domain}/api/v4/contacts/{user.amocrm_id}',
                                    headers=headers,
                                    data=tags_contact_data)
+
+        result_status = requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers, params=status_data)
+
 
         return result.text
