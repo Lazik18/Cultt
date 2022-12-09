@@ -160,7 +160,8 @@ def web_hook_amocrm(request):
         application.save()
 
         if application.notifications:
-            telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=status.status_text)
+            text_msg = f'Заявка №{application.amocrm_id}\n{status.status_text}'
+            telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=text_msg)
 
         resp = {"status": "success",
                 "message": "ok"}
