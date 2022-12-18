@@ -250,6 +250,9 @@ class AmoCrmSession:
 
         AmoCRMLog.objects.create(result=str(result.json()))
 
+        application.date_send = datetime.datetime.now()
+        application.save()
+
         if 'Can not found linked entities by id' in str(result.json()):
             user.amocrm_id = None
             user.save()
