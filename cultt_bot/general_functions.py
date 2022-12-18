@@ -28,7 +28,7 @@ def random_string(length=10, numbers=True, letters=True):
 
 # Проверка на email
 def email_validation(email):
-    pat = "^[a-zA-Z0-9-_.]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
+    pat = "^[a-zA-Z0-9.!#$%&’*+\=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
 
     if re.match(pat, email):
         return True
@@ -38,7 +38,7 @@ def email_validation(email):
 
 # Проверка на номера телефона
 def phone_number_validator(phone_number):
-    pattern = '(^8|7|\+7)((\d{10})|(\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}))'
+    pattern = '(^8|7|\+\d{1,2})((\d{10})|(\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}))'
 
     if re.match(pattern, phone_number) is not None:
         return True
