@@ -1309,6 +1309,11 @@ def handler_call_back(data):
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
     elif 'TrackApp' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
         app_id = button_press.split()[1]
 
         if app_id == 'None':
@@ -1354,7 +1359,9 @@ def handler_call_back(data):
         if app.model is not None:
             text_msg += f'\nМодель: {app.model}'
 
-        bot.sendMessage(chat_id=user_telegram_id, text=text_msg)
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='TrackApp')]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+        bot.sendMessage(chat_id=user_telegram_id, text=text_msg, reply_markup=keyboard)
         return
     elif 'QuestionFirst' in button_press:
         try:
