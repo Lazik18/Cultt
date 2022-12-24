@@ -1343,6 +1343,15 @@ def handler_call_back(data):
 
         app = SellApplication.objects.get(amocrm_id=app_id)
 
+        text_msg = f'{app.status_text}\n' \
+                   f'Заявка №{app.amocrm_id}\n' \
+                   f'Вариант сотрудничества: {app.cooperation_option.name}\n' \
+                   f'Категория: {app.category.name}'
+
+        if app.brand is not None:
+            text_msg += f'\nБренд: {app.brand.name}\n' \
+                        f'Модель: {app.model}'
+
         bot.sendMessage(chat_id=user_telegram_id, text=app.status)
         return
     elif 'QuestionFirst' in button_press:
