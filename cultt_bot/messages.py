@@ -1359,7 +1359,7 @@ def handler_call_back(data):
         if app.model is not None:
             text_msg += f'\nМодель: {app.model}'
 
-        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='TrackApp')]]
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='TrackApp None')]]
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
         bot.sendMessage(chat_id=user_telegram_id, text=text_msg, reply_markup=keyboard)
         return
