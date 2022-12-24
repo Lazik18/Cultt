@@ -1349,8 +1349,10 @@ def handler_call_back(data):
                    f'Категория: {app.category.name}'
 
         if app.brand is not None:
-            text_msg += f'\nБренд: {app.brand.name}\n' \
-                        f'Модель: {app.model}'
+            text_msg += f'\nБренд: {app.brand.name}'
+
+        if app.model is not None:
+            text_msg += f'\nМодель: {app.model}'
 
         bot.sendMessage(chat_id=user_telegram_id, text=text_msg)
         return
