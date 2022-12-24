@@ -250,6 +250,9 @@ class AmoCrmSession:
 
         AmoCRMLog.objects.create(result=str(result.json()))
 
+        application.date_send = datetime.datetime.now()
+        application.save()
+
         if 'Can not found linked entities by id' in str(result.json()):
             user.amocrm_id = None
             user.save()
@@ -272,12 +275,24 @@ class AmoCrmSession:
         requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers,
                        params=status_data)
 
-        tags_contact_data = json.dumps({'_embedded': {'tags': [{'name': "Новая регистрация"}]}})
+        tags_contact_data = json.dumps({'first_name': application.name,
+                                        'last_name': application.surname,
+                                        "custom_fields_values": [
+                                            {
+                                                "field_id": 67725,
+                                                "values": [{"value": application.tel}, ]
+                                            },
+                                            {
+                                                "field_id": 67727,
+                                                "values": [{"value": application.email}, ]
+                                            }
+                                        ],
+                                        '_embedded': {'tags': [{'name': "Новая регистрация"}]}})
+
         res_tag = requests.request("PATCH", f'https://{self.sub_domain}/api/v4/contacts/{user.amocrm_id}',
                                    headers=headers,
                                    data=tags_contact_data)
 
         result_status = requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers, params=status_data)
-
 
         return result.text

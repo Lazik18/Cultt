@@ -145,8 +145,6 @@ def web_hook_amocrm(request):
                     "message": "no required fields"}
             return HttpResponse(str(resp), content_type="text/plain", status=200)
 
-        # response = requests.get(f'https://thecultt.amocrm.ru/api/v4/leads/{id_leads}')
-
         try:
             status_id = data[1].split('=')[1]
         except:
@@ -160,7 +158,11 @@ def web_hook_amocrm(request):
         application.save()
 
         if application.notifications:
-            telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=status.status_text)
+            text_msg = f'{status.status_text}\n' \
+                       f'Заявка №{application.amocrm_id}\n' \
+                       f'Вариант сотрудничества: {application.cooperation_option.name}\n' \
+                       f'Категория: {application.category.name}'
+            telegram_bot.send_telegram_message(chat_id=application.user.chat_id, text=text_msg)
 
         resp = {"status": "success",
                 "message": "ok"}

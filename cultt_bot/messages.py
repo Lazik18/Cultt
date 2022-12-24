@@ -1309,6 +1309,11 @@ def handler_call_back(data):
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.close_message, reply_markup=keyboard)
     elif 'TrackApp' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
         app_id = button_press.split()[1]
 
         if app_id == 'None':
@@ -1319,7 +1324,8 @@ def handler_call_back(data):
 
             keyboard = []
 
-            applications = SellApplication.objects.filter(active=False, user=user).exclude(amocrm_id=None)
+            applications = SellApplication.objects.filter(active=False, user=user,
+                                                          date_create__gte=(datetime.datetime.now() - timedelta(days=45))).exclude(amocrm_id=None)
 
             line_keyboard = []
 
@@ -1342,7 +1348,20 @@ def handler_call_back(data):
 
         app = SellApplication.objects.get(amocrm_id=app_id)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=app.status)
+        text_msg = f'{app.status}\n' \
+                   f'Заявка №{app.amocrm_id}\n' \
+                   f'Вариант сотрудничества: {app.cooperation_option.name}\n' \
+                   f'Категория: {app.category.name}'
+
+        if app.brand is not None:
+            text_msg += f'\nБренд: {app.brand.name}'
+
+        if app.model is not None:
+            text_msg += f'\nМодель: {app.model}'
+
+        keyboard = [[InlineKeyboardButton(text=bot_settings.back_button, callback_data='TrackApp None')]]
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+        bot.sendMessage(chat_id=user_telegram_id, text=text_msg, reply_markup=keyboard)
         return
     elif 'QuestionFirst' in button_press:
         try:
