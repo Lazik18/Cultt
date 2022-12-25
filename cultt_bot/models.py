@@ -235,7 +235,7 @@ class BrandOptions(models.Model):
     is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.category}"
 
     class Meta:
         verbose_name = "Вариант бренда"
@@ -451,6 +451,8 @@ class Indicator(models.Model):
 class ModelsOption(models.Model):
     brand = models.ForeignKey(to='BrandOptions', on_delete=models.CASCADE, verbose_name='Бренд')
     name = models.TextField(verbose_name='Название')
+    # Имеет предложение цены
+    have_offer_price = models.BooleanField(default=False, verbose_name='Предложение цены')
 
     def __str__(self):
         return f'{self.pk}'
