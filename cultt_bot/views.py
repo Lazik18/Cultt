@@ -38,9 +38,9 @@ def admin_redirect(request):
 # Функция для ловли сообщений
 @csrf_exempt
 def web_hook_bot(request, bot_url):
-    telegram_bot = TelegramBot.objects.get(url=bot_url)
-
     try:
+        telegram_bot = TelegramBot.objects.get(url=bot_url)
+
         if request.method == "POST":
             data = json.loads(request.body.decode('utf-8'))
 
@@ -66,7 +66,6 @@ def web_hook_bot(request, bot_url):
                     #     handler_message(data)
                     # else:
                     #     bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
-
                     handler_message(data)
 
                 elif 'photo' in data['message'].keys():
@@ -78,7 +77,6 @@ def web_hook_bot(request, bot_url):
                     #     handler_photo(data)
                     # else:
                     #     bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
-
                     handler_photo(data)
                 elif 'document' in data['message'].keys():
                     chat_id = data['message']['chat']['id']

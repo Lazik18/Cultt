@@ -6,6 +6,9 @@ from cultt_bot import views as cultt_bot_views
 from django.conf.urls.static import static
 from django.conf import settings
 
+admin.site.site_header = "The Cultt"
+admin.site.site_title = "The Cultt"
+
 urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
