@@ -170,8 +170,8 @@ def web_hook_amocrm(request):
 
 
 def download_file(request):
-    filename = 'new_model.xlsx'
-    filepath = BASE_DIR + '/static/' + filename
+    filename = 'изображение_2022-10-18_013949169.png'
+    filepath = BASE_DIR + '/' + filename
     path = open(filepath, 'r')
     mime_type, _ = mimetypes.guess_type(filepath)
     response = HttpResponse(path, content_type=mime_type)
