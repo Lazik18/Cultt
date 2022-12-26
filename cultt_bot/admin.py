@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponseRedirect
-from django.template.defaulttags import url
+from django.urls import re_path
 
 from cultt_bot.models import *
 
@@ -24,7 +24,7 @@ class SellApplicationAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super(SellApplicationAdmin, self).get_urls()
-        custom_urls = [url('^import/$', self.download, name='download'), ]
+        custom_urls = [re_path('^import/$', self.download, name='download'), ]
         return custom_urls + urls
 
     def download(self, request):
