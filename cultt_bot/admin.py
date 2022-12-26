@@ -31,7 +31,7 @@ class SellApplicationAdmin(admin.ModelAdmin):
 
     def download(self, request):
         df = pd.DataFrame(list(SellApplication.objects.filter(active=False).values()))
-        df.to_csv('data.csv', index=False)
+        df.to_csv(BASE_DIR + '/static/data.csv', index=False)
 
         return HttpResponseRedirect("/download")
 
