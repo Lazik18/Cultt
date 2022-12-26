@@ -1,11 +1,12 @@
+import datetime
 import json
 import time
-
+from datetime import timedelta
 import requests
 from django.core.management import BaseCommand
 
 from cultt_bot.amo_crm import AmoCrmSession
-from cultt_bot.models import CategoryOptions, BrandOptions, ModelsOption, SellApplication
+from cultt_bot.models import SellApplication
 
 
 class Command(BaseCommand):
@@ -25,4 +26,5 @@ class Command(BaseCommand):
 
             if response.status_code == 200:
                 # application.date_send = response.json()
-                print(response.json()["created_at"])
+                print(datetime.datetime.fromtimestamp(response.json()["created_at"]))
+
