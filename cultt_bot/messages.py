@@ -1552,5 +1552,12 @@ def handler_call_back(data):
             return
 
         application = application.first()
+
+        application.price_from = int(button_press.split()[1])
+        application.price_up = int(button_press.split()[2])
+        application.save()
+
+        create_applications(create_applications(user_telegram_id, application.cooperation_option.pk, last_step='TheCultt'))
+        return
     else:
         bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
