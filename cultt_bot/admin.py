@@ -28,7 +28,7 @@ class SellApplicationAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def download(self, request):
-
+        self.message_user(request, f"тест")
         return HttpResponseRedirect("../")
 
 
