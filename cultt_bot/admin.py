@@ -30,9 +30,6 @@ class SellApplicationAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def download(self, request):
-        df = pd.DataFrame(list(SellApplication.objects.all().values()))
-        df.to_csv(BASE_DIR + '/static/data.csv', index=False)
-
         return HttpResponseRedirect("/download")
 
 
