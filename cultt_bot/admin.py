@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.conf.urls import url
+from django.http import HttpResponseRedirect
 
 from cultt_bot.models import *
 
@@ -19,6 +21,15 @@ class SellApplicationAdmin(admin.ModelAdmin):
     change_list_template = "admin/model_change_list.html"
     list_display = ('pk', 'name', 'email', 'tel', 'active', 'date_create', 'date_send')
     search_fields = ('name', 'email', 'tel', 'amocrm_id')
+
+    def get_urls(self):
+        urls = super(SellApplicationAdmin, self).get_urls()
+        custom_urls = [url('^import/$', self.download, name='download'), ]
+        return custom_urls + urls
+
+    def download(self, request):
+
+        return HttpResponseRedirect("../")
 
 
 @admin.register(AmoCRMLog)
