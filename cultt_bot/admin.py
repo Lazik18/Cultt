@@ -32,7 +32,7 @@ class SellApplicationAdmin(admin.ModelAdmin):
 
     def download(self, request):
 
-        return HttpResponseRedirect("/downloads")
+        return HttpResponseRedirect("/download")
 
 
 @admin.register(AmoCRMLog)
