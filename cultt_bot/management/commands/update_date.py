@@ -17,14 +17,14 @@ class Command(BaseCommand):
         get_headers = {'Authorization': f'Bearer {amo_crm_session.amo_crm_data.access_token}',
                        'Cookie': 'user_lang=ru'}
 
+        i = 0
         for application in applications:
-            time.sleep(1)
+            print(f'{i}/{len(applications)}')
+            time.sleep(0.5)
 
             response = requests.request('GET',
                                         f'https://thecultt.amocrm.ru/api/v4/leads/{application.amocrm_id}',
                                         headers=get_headers)
 
             if response.status_code == 200:
-                # application.date_send = response.json()
-                print(datetime.datetime.fromtimestamp(response.json()["created_at"]))
-
+                application.date_send = datetime.datetime.fromtimestamp(response.json()["created_at"])
