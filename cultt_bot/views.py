@@ -170,7 +170,6 @@ def web_hook_amocrm(request):
         return HttpResponse(str(resp), content_type="text/plain", status=200)
 
 
-@debug_dec
 def download_file(request):
     filename = 'data.csv'
     filepath = BASE_DIR + '/static/' + filename
