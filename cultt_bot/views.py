@@ -170,7 +170,7 @@ def web_hook_amocrm(request):
 
 
 def download_file(request):
-    filename = 'new_models.csv'
+    filename = 'new_model.csv'
     filepath = BASE_DIR + '/static/' + filename
     path = open(filepath, 'r')
     mime_type, _ = mimetypes.guess_type(filepath)
