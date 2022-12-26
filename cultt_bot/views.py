@@ -175,5 +175,5 @@ def download_file(request):
     path = open(filepath, 'r')
     mime_type, _ = mimetypes.guess_type(filepath)
     response = HttpResponse(path, content_type=mime_type)
-    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    response['Content-Disposition'] = f"attachment; filename={filename}"
     return response
