@@ -349,7 +349,10 @@ class SellApplication(models.Model):
     amocrm_id = models.IntegerField(blank=True, null=True, verbose_name='AmoCRM id')
     # Принял ли оферту
     oferta = models.BooleanField(default=None, blank=True, null=True, verbose_name='Принял оферту')
-
+    # сумма от
+    price_from = models.IntegerField(default=None, blank=True, null=True, verbose_name='сумма от')
+    # сумма до
+    price_up = models.IntegerField(default=None, blank=True, null=True, verbose_name='сумма до')
 
     def cooperation_option_name(self):
         return self.cooperation_option.name
@@ -453,6 +456,7 @@ class ModelsOption(models.Model):
     name = models.TextField(verbose_name='Название')
     # Имеет предложение цены
     have_offer_price = models.BooleanField(default=False, verbose_name='Предложение цены')
+    offer_priority = models.BooleanField(default=False, verbose_name='Приоритет выкупа')
     # Цена выкупа
     price_redemption_min = models.IntegerField(verbose_name='min цена выкупа', blank=True, null=True)
     price_redemption_max = models.IntegerField(verbose_name='max цена выкупа', blank=True, null=True)
