@@ -404,6 +404,9 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_oferta, reply_markup=keyboard, parse_mode='HTML')
         return
+    elif ModelsOption.objects.filter(brand=application.brand, name=str(application.model), have_offer_price=True).exists():
+        bot.sendMessage(chat_id=user_telegram_id, text="123")
+        return
     else:
         bot_text = bot_settings.applications_main_text + '\n\n'
 

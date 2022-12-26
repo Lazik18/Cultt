@@ -453,6 +453,12 @@ class ModelsOption(models.Model):
     name = models.TextField(verbose_name='Название')
     # Имеет предложение цены
     have_offer_price = models.BooleanField(default=False, verbose_name='Предложение цены')
+    # Цена выкупа
+    price_redemption_min = models.IntegerField(verbose_name='min цена выкупа', blank=True, null=True)
+    price_redemption_max = models.IntegerField(verbose_name='max цена выкупа', blank=True, null=True)
+    # Цена реализации
+    price_sale_min = models.IntegerField(verbose_name='min цена реализации', blank=True, null=True)
+    price_sale_max = models.IntegerField(verbose_name='max цена реализации', blank=True, null=True)
 
     def __str__(self):
         return f'{self.pk}'
