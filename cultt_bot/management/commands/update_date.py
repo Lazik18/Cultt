@@ -20,6 +20,7 @@ class Command(BaseCommand):
         i = 0
         for application in applications:
             print(f'{i}/{len(applications)}')
+            i += 1
             time.sleep(0.5)
 
             response = requests.request('GET',
