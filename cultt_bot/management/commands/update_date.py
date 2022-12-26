@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
         i = 0
         for application in applications:
-            print(f'{i}/{len(applications)}')
+            print(f'{i}/{len(applications)} for {application.pk}')
             i += 1
             time.sleep(0.5)
 
@@ -29,3 +29,4 @@ class Command(BaseCommand):
 
             if response.status_code == 200:
                 application.date_send = datetime.datetime.fromtimestamp(response.json()["created_at"])
+                application.save()
