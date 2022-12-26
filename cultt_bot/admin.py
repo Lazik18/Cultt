@@ -1,8 +1,11 @@
+import mimetypes
+
 from django.contrib import admin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import re_path
 
 from cultt_bot.models import *
+from django_project.settings import BASE_DIR
 
 admin.site.register(TelegramBot)
 admin.site.register(TelegramUser)
@@ -28,8 +31,8 @@ class SellApplicationAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def download(self, request):
-        self.message_user(request, f"тест")
-        return HttpResponseRedirect("../")
+
+        return HttpResponseRedirect("/downloads")
 
 
 @admin.register(AmoCRMLog)
