@@ -1,9 +1,8 @@
 import mimetypes
-
+import pandas as pd
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import re_path
-
 from cultt_bot.models import *
 from django_project.settings import BASE_DIR
 
@@ -31,6 +30,8 @@ class SellApplicationAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def download(self, request):
+        df = pd.DataFrame(list(SellApplication.objects.filter(active=False).values()))
+        df.to_csv('data.csv', index=False)
 
         return HttpResponseRedirect("/download")
 
