@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.conf.urls import url
 from django.http import HttpResponseRedirect
+from django.template.defaulttags import url
 
 from cultt_bot.models import *
 
