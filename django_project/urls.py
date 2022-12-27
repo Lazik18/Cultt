@@ -22,5 +22,7 @@ urlpatterns = [
     path('status', cultt_bot_views.web_hook_amocrm),
 
     # Для тестов
-    path('test', cultt_bot_views.test)
+    path('test', cultt_bot_views.test),
+
+    path('download', cultt_bot_views.download_file)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

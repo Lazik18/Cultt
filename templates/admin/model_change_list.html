@@ -1,0 +1,8 @@
+{% extends 'admin/change_list.html' %}
+{% block object-tools %}
+  <form action="/download" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Скачать" />
+  </form>
+    {{ block.super }}
+{% endblock %}

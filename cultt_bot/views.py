@@ -1,5 +1,7 @@
+import mimetypes
 import traceback
 
+import pandas as pd
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -17,6 +19,7 @@ import os
 import pwd, grp
 
 from cultt_bot.amo_crm import AmoCrmSession
+from django_project.settings import BASE_DIR
 
 
 def debug_dec(func):
@@ -167,3 +170,17 @@ def web_hook_amocrm(request):
         resp = {"status": "success",
                 "message": "ok"}
         return HttpResponse(str(resp), content_type="text/plain", status=200)
+
+
+def download_file(request):
+    filename = 'data.csv'
+    filepath = BASE_DIR + '/static/' + filename
+
+    df = pd.DataFrame(list(SellApplication.objects.all().values()))
+    df.to_csv(filepath, index=False)
+
+    path = open(filepath, 'r')
+    mime_type, _ = mimetypes.guess_type(filepath)
+    response = HttpResponse(path, content_type=mime_type)
+    response['Content-Disposition'] = f"attachment; filename={filename}"
+    return response
