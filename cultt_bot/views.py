@@ -183,6 +183,6 @@ def download_file(request):
 
     path = open(filepath, 'r')
     mime_type, _ = mimetypes.guess_type(filepath)
-    response = HttpResponse(path, content_type=mime_type)
+    response = HttpResponse(path, content_type=mime_type, encoding='Windows-1251')
     response['Content-Disposition'] = f"attachment; filename={filename}"
     return response
