@@ -173,11 +173,11 @@ def web_hook_amocrm(request):
 
 
 def download_file(request):
-    filename = 'data.csv'
+    filename = 'data.xlsx'
     filepath = BASE_DIR + '/static/' + filename
 
     df = pd.DataFrame(list(SellApplication.objects.all().values()))
-    df.to_csv(filepath, index=False)
+    df.to_excel(filepath)
 
     path = open(filepath, 'r')
     mime_type, _ = mimetypes.guess_type(filepath)
