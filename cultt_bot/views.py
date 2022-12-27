@@ -177,6 +177,8 @@ def download_file(request):
     filepath = BASE_DIR + '/static/' + filename
 
     df = pd.DataFrame(list(SellApplication.objects.all().values()))
+    df['date_create'] = df['date_create'].apply(lambda a: pd.to_datetime(a).date())
+    df['date_send'] = df['date_send'].apply(lambda a: pd.to_datetime(a).date())
     df.to_excel(filepath)
 
     path = open(filepath, 'r')
