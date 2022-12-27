@@ -177,12 +177,13 @@ def download_file(request):
     filepath = BASE_DIR + '/static/' + filename
 
     df = pd.DataFrame(list(SellApplication.objects.all().values()))
-    df['date_create'] = df['date_create'].apply(lambda a: pd.to_datetime(a).date())
-    df['date_send'] = df['date_send'].apply(lambda a: pd.to_datetime(a).date())
-    df.to_excel(filepath)
+    # df['date_create'] = df['date_create'].apply(lambda a: pd.to_datetime(a).date())
+    # df['date_send'] = df['date_send'].apply(lambda a: pd.to_datetime(a).date())
+    # df.to_excel(filepath)
+    df.to_csv(filepath, index=False)
 
     path = open(filepath, 'r')
     mime_type, _ = mimetypes.guess_type(filepath)
-    response = HttpResponse(path, content_type=mime_type, charset='Windows-1251')
+    response = HttpResponse(path, content_type=mime_type)
     response['Content-Disposition'] = f"attachment; filename={filename}"
     return response
