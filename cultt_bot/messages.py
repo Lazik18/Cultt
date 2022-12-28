@@ -415,7 +415,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             else:
                 text = f"Предварительный размер выплаты по реализации вашего аксессуара будет составлять " \
                        f"от {int(price[0])} до {int(price[1])} рублей"
-            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {price[0]} {price[1]}')]]
+            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {int(price[0])} {int(price[1])}')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
             bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
         elif 0.7 * models.price_redemption_max <= application.waiting_price <= models.price_redemption_max:
@@ -426,14 +426,14 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             else:
                 text = f"Предварительный размер выплаты по реализации вашего аксессуара будет составлять " \
                        f"от {int(price[0])} до {int(price[1])} рублей"
-            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {price[0]} {price[1]}')]]
+            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {int(price[0])} {int(price[1])}')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
             bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
         elif models.price_sale_min < application.waiting_price < models.price_sale_max:
             price = [models.price_sale_min, models.price_sale_max]
             text = f"Предварительный размер выплаты по реализации вашего аксессуара будет составлять " \
                    f"от {int(price[0])} до {int(price[1])} рублей"
-            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {price[0]} {price[1]}')]]
+            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {int(price[0])} {int(price[1])}')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
             bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
         elif models.price_redemption_min <= application.waiting_price < models.price_sale_max:
