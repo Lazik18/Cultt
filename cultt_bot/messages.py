@@ -13,7 +13,7 @@ from cultt_bot.amo_crm import AmoCrmSession
 from cultt_bot.general_functions import phone_number_validator, email_validation
 from cultt_bot.models import TelegramBot, TelegramUser, SellApplication, CooperationOption, CategoryOptions, \
     BrandOptions, ModelsOption, StateOptions, DefectOptions, PhotoApplications, Indicator, TelegramLog, FAQFirstLevel, \
-    FAQSecondLevel
+    FAQSecondLevel, AccessorySize, AccessoryColor, AccessoryMaterial
 
 
 def debug_dec(func):
@@ -175,6 +175,51 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.model_message, reply_markup=keyboard)
+        return
+    elif coop_option.model and application.size is None and application.category.have_size:
+        keyboard = []
+
+        sizes = AccessorySize.objects.all()
+
+        for size in sizes:
+            keyboard.append([InlineKeyboardButton(text=size.name, callback_data=f'CreateApp Size {size.pk}')])
+
+        if last_step is not None:
+            keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.size_message, reply_markup=keyboard)
+        return
+    elif coop_option.model and application.color is None and application.category.have_color:
+        keyboard = []
+
+        colors = AccessoryColor.objects.all()
+
+        for color in colors:
+            keyboard.append([InlineKeyboardButton(text=color.name, callback_data=f'CreateApp Color {color.pk}')])
+
+        if last_step is not None:
+            keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.color_message, reply_markup=keyboard)
+        return
+    elif coop_option.model and application.material is None and application.category.have_material:
+        keyboard = []
+
+        materials = AccessoryMaterial.objects.all()
+
+        for material in materials:
+            keyboard.append([InlineKeyboardButton(text=material.name, callback_data=f'CreateApp Material {material.pk}')])
+
+        if last_step is not None:
+            keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.size_message, reply_markup=keyboard)
         return
     elif coop_option.state and application.state is None and application.category.have_model:
         keyboard = []
@@ -978,11 +1023,29 @@ def handler_call_back(data):
 
             create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Brand')
             return
+        elif 'Size' in button_press:
+            application.size = None
+            application.save()
+
+            create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Model')
+            return
+        elif 'Color' in button_press:
+            application.color = None
+            application.save()
+
+            create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Size')
+            return
+        elif 'Material' in button_press:
+            application.material = None
+            application.save()
+
+            create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Color')
+            return
         elif 'State' in button_press:
             application.state = None
             application.save()
 
-            create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Model')
+            create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Material')
             return
         elif 'Defect' in button_press:
             application.defect_finished = False
@@ -1109,6 +1172,57 @@ def handler_call_back(data):
             application.save()
 
         create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Model')
+        return
+    elif 'CreateApp Size' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+            return
+
+        application = application.first()
+
+        application.size = AccessorySize.objects.get(pk=button_press.split()[2]).name
+        application.save()
+
+        create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Size')
+        return
+    elif 'CreateApp Color' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+            return
+
+        application = application.first()
+
+        application.color = AccessoryColor.objects.get(pk=button_press.split()[2]).name
+        application.save()
+
+        create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Color')
+        return
+    elif 'CreateApp Material' in button_press:
+        try:
+            bot.deleteMessage(current_message)
+        except telepot.exception.TelegramError:
+            pass
+
+        if application is None:
+            bot.sendMessage(chat_id=user_telegram_id, text='Воспользуйтесь командой /start', reply_markup=ReplyKeyboardRemove())
+            return
+
+        application = application.first()
+
+        application.material = AccessoryMaterial.objects.get(pk=button_press.split()[2]).name
+        application.save()
+
+        create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Material')
         return
     elif 'CreateApp State' in button_press:
         try:

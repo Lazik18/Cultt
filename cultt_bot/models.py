@@ -217,6 +217,12 @@ class CategoryOptions(models.Model):
     have_brand = models.BooleanField(default=False, verbose_name='Имеет ли бренд?')
     # Имеет ли модель?
     have_model = models.BooleanField(default=False, verbose_name='Имеет ли модель?')
+    # Имеет ли модель?
+    have_size = models.BooleanField(default=False, verbose_name='Имеет ли размер?')
+    # Имеет ли модель?
+    have_color = models.BooleanField(default=False, verbose_name='Имеет ли цвет?')
+    # Имеет ли модель?
+    have_material = models.BooleanField(default=False, verbose_name='Имеет ли материал?')
 
     def __str__(self):
         return self.name
@@ -325,6 +331,10 @@ class SellApplication(models.Model):
     model = models.TextField(default=None, blank=True, null=True)
     # Размер
     size = models.ForeignKey(to='AccessorySize', on_delete=models.CASCADE, default=None, blank=True, null=True)
+    # Размер
+    color = models.ForeignKey(to='AccessoryColor', on_delete=models.CASCADE, default=None, blank=True, null=True)
+    # Размер
+    material = models.ForeignKey(to='AccessoryMaterial', on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Состояние
     state = models.ForeignKey(StateOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Наличие дефектов
@@ -539,3 +549,25 @@ class AccessorySize(models.Model):
     class Meta:
         verbose_name = "Размер аксессуара"
         verbose_name_plural = "Размеры аксессуаров"
+
+
+class AccessoryColor(models.Model):
+    name = models.TextField(verbose_name='Название цвета')
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = "Цвет аксессуара"
+        verbose_name_plural = "Цвета аксессуаров"
+
+
+class AccessoryMaterial(models.Model):
+    name = models.TextField(verbose_name='Название материала')
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = "Материал аксессуара"
+        verbose_name_plural = "Материалы аксессуаров"
