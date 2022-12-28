@@ -16,6 +16,9 @@ admin.site.register(CooperationOption)
 admin.site.register(FAQFirstLevel)
 admin.site.register(FAQSecondLevel)
 admin.site.register(CRMStatusID)
+admin.site.register(AccessoryMaterial)
+admin.site.register(AccessoryColor)
+admin.site.register(AccessorySize)
 
 
 @admin.register(SellApplication)
