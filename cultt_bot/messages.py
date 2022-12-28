@@ -1185,7 +1185,7 @@ def handler_call_back(data):
 
         application = application.first()
 
-        application.size = AccessorySize.objects.get(pk=button_press.split()[2]).name
+        application.size = AccessorySize.objects.get(pk=button_press.split()[2])
         application.save()
 
         create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Size')
@@ -1202,7 +1202,7 @@ def handler_call_back(data):
 
         application = application.first()
 
-        application.color = AccessoryColor.objects.get(pk=button_press.split()[2]).name
+        application.color = AccessoryColor.objects.get(pk=button_press.split()[2])
         application.save()
 
         create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Color')
@@ -1219,7 +1219,7 @@ def handler_call_back(data):
 
         application = application.first()
 
-        application.material = AccessoryMaterial.objects.get(pk=button_press.split()[2]).name
+        application.material = AccessoryMaterial.objects.get(pk=button_press.split()[2])
         application.save()
 
         create_applications(user_telegram_id, application.cooperation_option.pk, last_step='Material')
