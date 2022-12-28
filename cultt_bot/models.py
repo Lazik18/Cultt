@@ -148,6 +148,10 @@ class TelegramBot(models.Model):
     #
     text_oferta = models.TextField(default='оферта', verbose_name='Публичная оферта')
     text_cancel_oferta = models.TextField(default='отмена оферты', verbose_name='Текст после отказа от оферты')
+    #
+    size_message = models.TextField(default='Размер', verbose_name='Размер акссесуара')
+    color_message = models.TextField(default='Цвет', verbose_name='Цвет акссесуара')
+    material_message = models.TextField(default='Материал', verbose_name='Материал акссесуара')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):

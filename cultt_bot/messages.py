@@ -219,7 +219,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.size_message, reply_markup=keyboard)
+        bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.material_message, reply_markup=keyboard)
         return
     elif coop_option.state and application.state is None and application.category.have_model:
         keyboard = []
