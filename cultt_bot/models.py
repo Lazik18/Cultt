@@ -323,6 +323,8 @@ class SellApplication(models.Model):
     brand = models.ForeignKey(BrandOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Модель
     model = models.TextField(default=None, blank=True, null=True)
+    # Размер
+    size = models.ForeignKey(to='AccessorySize', on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Состояние
     state = models.ForeignKey(StateOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Наличие дефектов
@@ -526,3 +528,14 @@ class CRMStatusID(models.Model):
     class Meta:
         verbose_name = "Статус заявки"
         verbose_name_plural = "Статусы заявок"
+
+
+class AccessorySize(models.Model):
+    name = models.TextField(verbose_name='Название размера')
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = "Размер аксессуара"
+        verbose_name_plural = "Размеры аксессуаров"
