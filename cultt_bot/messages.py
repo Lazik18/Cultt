@@ -185,7 +185,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             keyboard.append([InlineKeyboardButton(text=size.name, callback_data=f'CreateApp Size {size.pk}')])
 
         if last_step is not None:
-            keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -200,7 +200,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             keyboard.append([InlineKeyboardButton(text=color.name, callback_data=f'CreateApp Color {color.pk}')])
 
         if last_step is not None:
-            keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -215,7 +215,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             keyboard.append([InlineKeyboardButton(text=material.name, callback_data=f'CreateApp Material {material.pk}')])
 
         if last_step is not None:
-            keyboard.append(InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}'))
+            keyboard.append([InlineKeyboardButton(text=bot_settings.back_button, callback_data=f'BackApp {last_step}')])
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
