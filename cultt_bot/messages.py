@@ -139,8 +139,6 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             keyboard.append([InlineKeyboardButton(text=bot_settings.brand_not_found,
                                                   callback_data=f'BrandNotFound')])
 
-        # keyboard.append([cancel_keyboard])
-
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.brand_message, reply_markup=keyboard)
@@ -449,68 +447,107 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_oferta, reply_markup=keyboard, parse_mode='HTML')
         return
-    elif application.price_from is None:
+    elif application.price_from is None and application.model is not None:
         models = ModelsOption.objects.get(brand=application.brand, name=str(application.model), have_offer_price=True)
 
-        if application.waiting_price < models.price_redemption_min:
-            price = [0.7 * models.price_redemption_min, models.price_redemption_min]
-            if models.offer_priority:
-                text = f"Предварительная стоимость выкупа вашего аксессуара будет составлять " \
-                       f"от {int(price[0])} до {int(price[1])} рублей"
-            else:
-                text = f"Предварительный размер выплаты по реализации вашего аксессуара будет составлять " \
-                       f"от {int(price[0])} до {int(price[1])} рублей"
-            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {int(price[0])} {int(price[1])}')]]
-            keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
-            bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
-        elif 0.7 * models.price_redemption_max <= application.waiting_price <= models.price_redemption_max:
-            price = [0.7 * models.price_redemption_max, models.price_redemption_max]
-            if models.offer_priority:
-                text = f"Предварительная стоимость выкупа вашего аксессуара будет составлять " \
-                       f"от {int(price[0])} до {int(price[1])} рублей"
-            else:
-                text = f"Предварительный размер выплаты по реализации вашего аксессуара будет составлять " \
-                       f"от {int(price[0])} до {int(price[1])} рублей"
-            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {int(price[0])} {int(price[1])}')]]
-            keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
-            bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
-        elif models.price_sale_min < application.waiting_price < models.price_sale_max:
-            price = [models.price_sale_min, models.price_sale_max]
-            text = f"Предварительный размер выплаты по реализации вашего аксессуара будет составлять " \
-                   f"от {int(price[0])} до {int(price[1])} рублей"
-            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {int(price[0])} {int(price[1])}')]]
-            keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
-            bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
-        elif models.price_redemption_min <= application.waiting_price < models.price_sale_max:
-            if models.offer_priority:
-                price1 = [models.price_redemption_min, models.price_redemption_max]
-                price2 = [models.price_sale_min, models.price_sale_max]
-                text = f"Предварительная стоимость выкупа вашего аксессуара будет составлять от {int(price1[0])} до {int(price1[1])} рублей\n\n" \
-                       f"Предварительный размер выплаты по реализации вашего аксессуара составит от {int(price2[0])} до {int(price2[1])} рублей\n\n" \
-                       f"Подробнее о различиях между типами реализации - в разделе FAQ"
+        if not models.have_offer_price:
+            application.price_from = 0
+            application.save()
+            create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
 
-                keyboard = [[InlineKeyboardButton(text="Мне подходит выкуп", callback_data=f'PriceOffer {int(price1[0])} {int(price1[1])}')],
-                            [InlineKeyboardButton(text="Мне подходит реализация", callback_data=f'PriceOffer {int(price2[0])} {int(price2[1])}')]]
-                keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
-                bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+        coefficients = 1
+
+        if 's' in application.size.name.lower():
+            coefficients *= models.size_S
+        elif 'm' in application.size.name.lower():
+            coefficients *= models.size_M
+        elif 'l' in application.size.name.lower():
+            coefficients *= models.size_L
+
+        if 'яркий' in application.color.name.lower():
+            coefficients *= models.color_L
+        elif 'нейтральный' in application.color.name.lower():
+            coefficients *= models.color_N
+        elif 'классический' in application.color.name.lower():
+            coefficients *= models.color_C
+
+        if 'текстиль' in application.material.name.lower():
+            coefficients *= models.material_T
+        elif 'экзотическая кожа' in application.material.name.lower():
+            coefficients *= models.material_EL
+        elif 'кожа' in application.material.name.lower():
+            coefficients *= models.material_L
+
+        if 'винтаж' in application.state.name.lower():
+            coefficients *= models.state_V
+        elif 'хорошее' in application.state.name.lower():
+            coefficients *= models.state_G
+        elif 'отличное' in application.state.name.lower():
+            coefficients *= models.state_E
+        elif 'новое' in application.state.name.lower():
+            coefficients *= models.state_N
+
+        price_site_max = models.price_site_max * coefficients
+        price_site_min = price_site_max * 0.8
+
+        if price_site_min < models.price_site_min:
+            price_site_min = models.price_site_min
+
+        def formula_sale(r5):
+            if r5 < 15000:
+                return r5 * 0.6
+            elif r5 < 25000:
+                return r5 * 0.65
+            elif r5 < 35000:
+                return r5 * 0.67
+            elif r5 < 60000:
+                return r5 * 0.7
+            elif r5 < 100000:
+                return r5 * 0.72
+            elif r5 < 250000:
+                return r5 * 0.75
+            elif r5 < 600000:
+                return r5 * 0.8
+            elif r5 >= 600000:
+                return r5 * 0.85
+
+        price_sale_min = price_site_min * formula_sale(price_site_min)
+        price_sale_max = price_site_max * formula_sale(price_site_max)
+
+        def formula_purchase(r5):
+            return r5 - (0.35 * r5) - 4300
+
+        price_purchase_min = price_site_min * formula_purchase(price_site_min)
+        price_purchase_max = price_site_max * formula_purchase(price_site_max)
+
+        if application.waiting_price < price_purchase_min:
+            application.price_from = 0.7 * price_purchase_min
+            application.price_up = price_purchase_min
+            application.save()
+        elif 0.7 * price_purchase_max <= application.waiting_price <= price_purchase_max:
+            application.price_from = 0.7 * price_purchase_max
+            application.price_up = price_purchase_max
+            application.save()
+        elif price_purchase_min <= application.waiting_price < price_sale_max:
+            if models.offer_priority:
+                application.price_from = price_purchase_min
+                application.price_up = price_purchase_max
+                application.save()
             else:
-                price = [models.price_sale_min, models.price_sale_max]
-                text = f"Предварительный размер выплаты по реализации вашего аксессуара будет составлять " \
-                       f"от {int(price[0])} до {int(price[1])} рублей"
-                keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {int(price[0])} {int(price[1])}')]]
-                keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
-                bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
-        elif application.waiting_price >= models.price_sale_max:
+                application.price_from = price_sale_min
+                application.price_up = price_sale_max
+                application.save()
+        elif application.waiting_price >= price_sale_max:
             if application.waiting_price < 200000:
-                price = [0.7 * models.price_sale_max, models.price_sale_max]
+                application.price_from = 0.7 * price_sale_max
+                application.price_up = price_sale_max
+                application.save()
             else:
-                price = [0.9 * models.price_sale_max, models.price_sale_max]
-            text = f"Предварительный размер выплаты по реализации вашего аксессуара будет составлять " \
-                   f"от {int(price[0])} до {int(price[1])} рублей"
-            keyboard = [[InlineKeyboardButton(text="Далее", callback_data=f'PriceOffer {int(price[0])} {int(price[1])}')]]
-            keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
-            bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
-        return
+                application.price_from = 0.9 * price_sale_max
+                application.price_up = price_sale_max
+                application.save()
+
+        create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
     else:
         bot_text = bot_settings.applications_main_text + '\n\n'
 

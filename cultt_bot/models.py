@@ -473,12 +473,29 @@ class ModelsOption(models.Model):
     # Имеет предложение цены
     have_offer_price = models.BooleanField(default=False, verbose_name='Предложение цены')
     offer_priority = models.BooleanField(default=False, verbose_name='Приоритет выкупа')
-    # Цена выкупа
-    price_redemption_min = models.IntegerField(verbose_name='min цена выкупа', blank=True, null=True)
-    price_redemption_max = models.IntegerField(verbose_name='max цена выкупа', blank=True, null=True)
-    # Цена реализации
-    price_sale_min = models.IntegerField(verbose_name='min цена реализации', blank=True, null=True)
-    price_sale_max = models.IntegerField(verbose_name='max цена реализации', blank=True, null=True)
+    # Цена сайта (базовая)
+    price_site_min = models.IntegerField(verbose_name='Цена сайта min (базовая)', blank=True, null=True)
+    price_site_max = models.IntegerField(verbose_name='Цена сайта max (базовая)', blank=True, null=True)
+    # Выплата по выкупу
+    price_purchase_min = models.IntegerField(verbose_name='Выплата по выкупу min', blank=True, null=True)
+    price_purchase_max = models.IntegerField(verbose_name='Выплата по выкупу max', blank=True, null=True)
+    # Выплата по реализации
+    price_sale_min = models.IntegerField(verbose_name='Выплата по реализации min', blank=True, null=True)
+    price_sale_max = models.IntegerField(verbose_name='Выплата по реализации max', blank=True, null=True)
+    # Коэффициенты
+    size_S = models.FloatField(verbose_name='Размер S', default=1)
+    size_M = models.FloatField(verbose_name='Размер M', default=1)
+    size_L = models.FloatField(verbose_name='Размер L', default=1)
+    color_L = models.FloatField(verbose_name='Цвет Яркие/Лимитированные', default=1)
+    color_N = models.FloatField(verbose_name='Цвет Нейтральные', default=1)
+    color_C = models.FloatField(verbose_name='Цвет Классические', default=1)
+    state_V = models.FloatField(verbose_name='Состояние Винтаж', default=1)
+    state_G = models.FloatField(verbose_name='Состояние Хорошее', default=1)
+    state_E = models.FloatField(verbose_name='Состояние Отличное', default=1)
+    state_N = models.FloatField(verbose_name='Состояние Новое с биркой', default=1)
+    material_T = models.FloatField(verbose_name='Материал Текстиль/Рафия/PVX', default=1)
+    material_L = models.FloatField(verbose_name='Материал Кожа/Замша', default=1)
+    material_EL = models.FloatField(verbose_name='Материал Экзотическая кожа', default=1)
 
     def __str__(self):
         return f'{self.pk}'
