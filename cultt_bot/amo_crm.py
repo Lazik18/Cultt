@@ -180,6 +180,10 @@ class AmoCrmSession:
                             {
                                 "field_id": 905361,
                                 "values": [{"value": f"{application.swap_url}"}, ]
+                            },
+                            {
+                                "field_id": 906657,
+                                "values": [{"value": f"{application.price_from} - {application.price_up}"}, ]
                             }
                         ],
                         "_embedded": {

@@ -594,9 +594,9 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if application.concierge_count != 0:
             bot_text += bot_settings.applications_concierge_count + f': {application.concierge_count}\n'
 
-        if application.price_from is not None:
-            bot_text += f"Предварительная стоимость выкупа или размер выплаты по реализации:" \
-                        f" от {application.price_from} до {application.price_up} рублей\n"
+        # if application.price_from is not None:
+        #     bot_text += f"Предварительная стоимость выкупа или размер выплаты по реализации:" \
+        #                 f" от {application.price_from} до {application.price_up} рублей\n"
 
         keyboard = [[# InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp'),
                      InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp'),
