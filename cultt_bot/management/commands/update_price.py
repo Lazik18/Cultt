@@ -22,12 +22,12 @@ class Command(BaseCommand):
             print(f'Бренд: {brand}')
             models = data[data['Бренд'] == brand]['Модель'].tolist()
 
-            brand_option = BrandOptions.objects.filter(category=category_option, name__istartswith=brand).first()
+            brand_option = BrandOptions.objects.filter(category=category_option, name__icontains=brand).first()
 
             for model in models:
-                if ModelsOption.objects.filter(brand=brand_option, name__istartswith=model).exists():
+                if ModelsOption.objects.filter(brand=brand_option, name__icontains=model).exists():
                     print(f'Модель {model}')
-                    model_option = ModelsOption.objects.filter(brand=brand_option, name__istartswith=model).first()
+                    model_option = ModelsOption.objects.filter(brand=brand_option, name__icontains=model).first()
                     model_option.have_offer_price = True
 
                     if data[data['Бренд'] == brand][data['Модель'] == model]['Приоритет выкуп'].tolist()[0] is not None:
