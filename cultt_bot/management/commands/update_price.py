@@ -10,11 +10,8 @@ class Command(BaseCommand):
 
         print(data)
 
-        # categories = list(set(data['Тип аксессуара'].tolist()))
-        #
-        # for category in categories:
-        #     print(f'=== Категория {category} ===')
-        #     brands = list(set(data[data['Тип аксессуара'] == category]['Бренд'].tolist()))
+        brands = list(set(data['Бренд'].tolist()))
+        print(brands)
         #
         #     category_option = CategoryOptions.objects.filter(name=category).first()
         #
