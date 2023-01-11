@@ -28,8 +28,6 @@ class Command(BaseCommand):
                 if ModelsOption.objects.filter(brand=brand_option, name__istartswith=model).exists():
                     print(f'Модель {model}')
                     model_option = ModelsOption.objects.filter(brand=brand_option, name__istartswith=model).first()
-                    if model_option is None:
-                        return 1
                     model_option.have_offer_price = True
 
                     if data[data['Бренд'] == brand][data['Модель'] == model]['Приоритет выкуп'].tolist()[0] is not None:
@@ -82,3 +80,5 @@ class Command(BaseCommand):
 
                     if data[data['Бренд'] == brand][data['Модель'] == model]['Материал Экзотическая кожа'].tolist()[0] != '-':
                         model_option.material_EL = data[data['Бренд'] == brand][data['Модель'] == model]['Материал Экзотическая кожа'].tolist()[0]
+
+                    model_option.save()
