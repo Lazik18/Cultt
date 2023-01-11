@@ -511,14 +511,14 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             elif r5 >= 600000:
                 return r5 * 0.85
 
-        price_sale_min = price_site_min * formula_sale(price_site_min)
-        price_sale_max = price_site_max * formula_sale(price_site_max)
+        price_sale_min = formula_sale(price_site_min)
+        price_sale_max = formula_sale(price_site_max)
 
         def formula_purchase(r5):
             return r5 - (0.35 * r5) - 4300
 
-        price_purchase_min = price_site_min * formula_purchase(price_site_min)
-        price_purchase_max = price_site_max * formula_purchase(price_site_max)
+        price_purchase_min = formula_purchase(price_site_min)
+        price_purchase_max = formula_purchase(price_site_max)
 
         if application.waiting_price < price_purchase_min:
             application.price_from = 0.7 * price_purchase_min
