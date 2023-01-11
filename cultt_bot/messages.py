@@ -448,7 +448,12 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_oferta, reply_markup=keyboard, parse_mode='HTML')
         return
     elif application.price_from is None and application.model is not None:
-        models = ModelsOption.objects.get(brand=application.brand, name=str(application.model), have_offer_price=True)
+        models = ModelsOption.objects.filter(brand=application.brand, name=str(application.model), have_offer_price=True).first()
+
+        if models is None:
+            application.price_from = 0
+            application.save()
+            create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
 
         if not models.have_offer_price:
             application.price_from = 0
