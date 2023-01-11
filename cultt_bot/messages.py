@@ -454,11 +454,13 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             application.price_from = 0
             application.save()
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
+            return
 
         if not models.have_offer_price:
             application.price_from = 0
             application.save()
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
+            return
 
         coefficients = 1
 
