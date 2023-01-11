@@ -82,3 +82,6 @@ class Command(BaseCommand):
                         model_option.material_EL = data[data['Бренд'] == brand][data['Модель'] == model]['Материал Экзотическая кожа'].tolist()[0]
 
                     model_option.save()
+
+                else:
+                    print(f'Модель {model} не найдена')
