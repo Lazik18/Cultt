@@ -53,6 +53,8 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
     cancel_keyboard = InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp')
 
+    have_offer_price = ModelsOption.objects.filter(name=f'{application.model}', have_offer_price=True).exists()
+
     if coop_option.count_accessory and application.concierge_count == 0:
         user.step = f'CountAccessory {coop_option_id}'
         user.save()
@@ -174,7 +176,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.model_message, reply_markup=keyboard)
         return
-    elif coop_option.model and application.size is None and application.category.have_size:
+    elif have_offer_price and application.size is None and application.category.have_size:
         keyboard = []
 
         sizes = AccessorySize.objects.all()
@@ -189,7 +191,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.size_message, reply_markup=keyboard)
         return
-    elif coop_option.model and application.color is None and application.category.have_color:
+    elif have_offer_price and application.color is None and application.category.have_color:
         keyboard = []
 
         colors = AccessoryColor.objects.all()
@@ -204,7 +206,7 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.color_message, reply_markup=keyboard)
         return
-    elif coop_option.model and application.material is None and application.category.have_material:
+    elif have_offer_price and application.material is None and application.category.have_material:
         keyboard = []
 
         materials = AccessoryMaterial.objects.all()
@@ -447,17 +449,23 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
 
         bot.sendMessage(chat_id=user_telegram_id, text=bot_settings.text_oferta, reply_markup=keyboard, parse_mode='HTML')
         return
-    elif application.price_from is None and application.model is not None:
+    elif application.price_from_sale is None and application.model is not None:
         models = ModelsOption.objects.filter(brand=application.brand, name=str(application.model), have_offer_price=True).first()
 
         if models is None:
-            application.price_from = 0
+            application.price_from_sale = 0
+            application.price_up_sale = 0
+            application.price_from_purchase = 0
+            application.price_up_purchase = 0
             application.save()
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
 
         if not models.have_offer_price:
-            application.price_from = 0
+            application.price_from_sale = 0
+            application.price_up_sale = 0
+            application.price_from_purchase = 0
+            application.price_up_purchase = 0
             application.save()
             create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
             return
@@ -528,30 +536,35 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         price_purchase_max = formula_purchase(price_site_max)
 
         if application.waiting_price < price_purchase_min:
-            application.price_from = 0.7 * price_purchase_min
-            application.price_up = price_purchase_min
+            application.price_from_sale = 0
+            application.price_up_sale = 0
+            application.price_from_purchase = 0.7 * price_purchase_min
+            application.price_up_purchase = price_purchase_min
             application.save()
         elif 0.7 * price_purchase_max <= application.waiting_price <= price_purchase_max:
-            application.price_from = 0.7 * price_purchase_max
-            application.price_up = price_purchase_max
+            application.price_from_sale = 0
+            application.price_up_sale = 0
+            application.price_from_purchase = 0.7 * price_purchase_max
+            application.price_up_purchase = price_purchase_max
             application.save()
         elif price_purchase_min <= application.waiting_price < price_sale_max:
-            if models.offer_priority:
-                application.price_from = price_purchase_min
-                application.price_up = price_purchase_max
-                application.save()
-            else:
-                application.price_from = price_sale_min
-                application.price_up = price_sale_max
-                application.save()
+            application.price_from_sale = price_sale_min
+            application.price_up_sale = price_sale_max
+            application.price_from_purchase = price_purchase_min
+            application.price_up_purchase = price_purchase_max
+            application.save()
         elif application.waiting_price >= price_sale_max:
             if application.waiting_price < 200000:
-                application.price_from = 0.7 * price_sale_max
-                application.price_up = price_sale_max
+                application.price_from_sale = 0.7 * price_sale_max
+                application.price_up_sale = price_sale_max
+                application.price_from_purchase = 0
+                application.price_up_purchase = 0
                 application.save()
             else:
-                application.price_from = 0.9 * price_sale_max
-                application.price_up = price_sale_max
+                application.price_from_sale = 0.9 * price_sale_max
+                application.price_up_sale = price_sale_max
+                application.price_from_purchase = 0
+                application.price_up_purchase = 0
                 application.save()
 
         create_applications(user_telegram_id, coop_option_id, last_step, letter, finish_photo)
@@ -601,10 +614,6 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         if application.concierge_count != 0:
             bot_text += bot_settings.applications_concierge_count + f': {application.concierge_count}\n'
 
-        # if application.price_from is not None:
-        #     bot_text += f"Предварительная стоимость выкупа или размер выплаты по реализации:" \
-        #                 f" от {application.price_from} до {application.price_up} рублей\n"
-
         keyboard = [[# InlineKeyboardButton(text=bot_settings.cancel_applications, callback_data='CancelApp'),
                      InlineKeyboardButton(text=bot_settings.error_application, callback_data=f'EditApp'),
                      InlineKeyboardButton(text=bot_settings.send_application_button, callback_data='SendApp')]]
@@ -642,6 +651,7 @@ def faq_menu(user_telegram_id):
     keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     bot.sendMessage(chat_id=user_telegram_id, text=text, reply_markup=keyboard)
+
 
 @debug_dec
 def main_menu(user_telegram_id):

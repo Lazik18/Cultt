@@ -365,10 +365,14 @@ class SellApplication(models.Model):
     amocrm_id = models.IntegerField(blank=True, null=True, verbose_name='AmoCRM id')
     # Принял ли оферту
     oferta = models.BooleanField(default=None, blank=True, null=True, verbose_name='Принял оферту')
-    # сумма от
-    price_from = models.IntegerField(default=None, blank=True, null=True, verbose_name='сумма от')
-    # сумма до
-    price_up = models.IntegerField(default=None, blank=True, null=True, verbose_name='сумма до')
+    # реализация сумма от
+    price_from_sale = models.IntegerField(default=None, blank=True, null=True, verbose_name='Реализация: сумма от')
+    # реализация сумма до
+    price_up_sale = models.IntegerField(default=None, blank=True, null=True, verbose_name='Реализация: сумма до')
+    # выкуп сумма от
+    price_from_purchase = models.IntegerField(default=None, blank=True, null=True, verbose_name='Выкуп: сумма от')
+    # выкуп сумма до
+    price_up_purchase = models.IntegerField(default=None, blank=True, null=True, verbose_name='Выкуп: сумма до')
 
     def cooperation_option_name(self):
         return self.cooperation_option.name
