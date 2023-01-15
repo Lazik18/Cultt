@@ -355,7 +355,7 @@ class SellApplication(models.Model):
     # Ссылка на обмен
     swap_url = models.TextField(default=None, blank=True, null=True, verbose_name='Ссылка на обмен')
     # Дата создания
-    date_create = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Последнее изменение')
+    date_create = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name='Дата создания')
     date_send = models.DateTimeField(blank=True, null=True, verbose_name='Дата отправки')
     # Уведомления
     notifications = models.BooleanField(default=False, verbose_name='Уведомления')
