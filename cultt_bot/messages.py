@@ -505,9 +505,6 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
         price_site_max = models.price_site_max * coefficients
         price_site_min = price_site_max * 0.8
 
-        if price_site_min < models.price_site_min:
-            price_site_min = models.price_site_min
-
         def formula_sale(r5):
             if r5 < 15000:
                 return r5 * 0.6
@@ -547,11 +544,15 @@ def create_applications(user_telegram_id, coop_option_id, last_step=None, letter
             application.price_from_purchase = 0.7 * price_purchase_max
             application.price_up_purchase = price_purchase_max
             application.save()
-        elif price_purchase_min <= application.waiting_price < price_sale_max:
+        elif price_purchase_max <= application.waiting_price < price_sale_max:
             application.price_from_sale = price_sale_min
             application.price_up_sale = price_sale_max
-            application.price_from_purchase = price_purchase_min
-            application.price_up_purchase = price_purchase_max
+            if models.offer_priority:
+                application.price_from_purchase = price_purchase_min
+                application.price_up_purchase = price_purchase_max
+            else:
+                application.price_from_purchase = 0
+                application.price_up_purchase = 0
             application.save()
         elif application.waiting_price >= price_sale_max:
             if application.waiting_price < 200000:
