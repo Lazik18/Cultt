@@ -28,6 +28,7 @@ class SellApplicationAdmin(admin.ModelAdmin):
     change_list_template = "admin/model_change_list.html"
     list_display = ('pk', 'name', 'email', 'tel', 'active', 'date_create', 'date_send')
     search_fields = ('name', 'email', 'tel', 'amocrm_id')
+    list_filter = ('date_send',)
 
     def get_urls(self):
         urls = super(SellApplicationAdmin, self).get_urls()
