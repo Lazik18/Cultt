@@ -1,8 +1,12 @@
+import mimetypes
+import pandas as pd
 from django.contrib import admin
-from django.http import HttpResponseRedirect
+
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import re_path
 
 from cultt_bot.models import *
+from django_project.settings import BASE_DIR
 
 admin.site.register(TelegramBot)
 admin.site.register(TelegramUser)
@@ -14,6 +18,9 @@ admin.site.register(CooperationOption)
 admin.site.register(FAQFirstLevel)
 admin.site.register(FAQSecondLevel)
 admin.site.register(CRMStatusID)
+admin.site.register(AccessoryMaterial)
+admin.site.register(AccessoryColor)
+admin.site.register(AccessorySize)
 
 
 @admin.register(SellApplication)

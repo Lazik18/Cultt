@@ -41,9 +41,9 @@ def admin_redirect(request):
 # Функция для ловли сообщений
 @csrf_exempt
 def web_hook_bot(request, bot_url):
-    telegram_bot = TelegramBot.objects.get(url=bot_url)
-
     try:
+        telegram_bot = TelegramBot.objects.get(url=bot_url)
+
         if request.method == "POST":
             data = json.loads(request.body.decode('utf-8'))
 
@@ -69,7 +69,6 @@ def web_hook_bot(request, bot_url):
                     #     handler_message(data)
                     # else:
                     #     bot_logic(telegram_bot.id, chat_id, chat_msg, 'message', message_id)
-
                     handler_message(data)
 
                 elif 'photo' in data['message'].keys():
@@ -81,7 +80,6 @@ def web_hook_bot(request, bot_url):
                     #     handler_photo(data)
                     # else:
                     #     bot_logic(telegram_bot.id, chat_id, photo_id, 'photo', message_id)
-
                     handler_photo(data)
                 elif 'document' in data['message'].keys():
                     chat_id = data['message']['chat']['id']
@@ -173,13 +171,11 @@ def web_hook_amocrm(request):
 
 
 def download_file(request):
-    filename = 'data.xlsx'
+    filename = 'data.csv'
     filepath = BASE_DIR + '/static/' + filename
 
     df = pd.DataFrame(list(SellApplication.objects.all().values()))
-    # df['date_create'] = df['date_create'].apply(lambda a: pd.to_datetime(a).date())
-    # df['date_send'] = df['date_send'].apply(lambda a: pd.to_datetime(a).date())
-    # df.to_excel(filepath)
+
     df.to_csv(filepath, index=False)
 
     path = open(filepath, 'r')

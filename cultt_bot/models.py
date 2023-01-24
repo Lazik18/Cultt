@@ -148,6 +148,10 @@ class TelegramBot(models.Model):
     #
     text_oferta = models.TextField(default='оферта', verbose_name='Публичная оферта')
     text_cancel_oferta = models.TextField(default='отмена оферты', verbose_name='Текст после отказа от оферты')
+    #
+    size_message = models.TextField(default='Размер', verbose_name='Размер акссесуара')
+    color_message = models.TextField(default='Цвет', verbose_name='Цвет акссесуара')
+    material_message = models.TextField(default='Материал', verbose_name='Материал акссесуара')
 
     # Отправить сообщение ботом
     def send_telegram_message(self, chat_id, text, keyboard=None, parse_mode=None):
@@ -217,6 +221,12 @@ class CategoryOptions(models.Model):
     have_brand = models.BooleanField(default=False, verbose_name='Имеет ли бренд?')
     # Имеет ли модель?
     have_model = models.BooleanField(default=False, verbose_name='Имеет ли модель?')
+    # Имеет ли модель?
+    have_size = models.BooleanField(default=False, verbose_name='Имеет ли размер?')
+    # Имеет ли модель?
+    have_color = models.BooleanField(default=False, verbose_name='Имеет ли цвет?')
+    # Имеет ли модель?
+    have_material = models.BooleanField(default=False, verbose_name='Имеет ли материал?')
 
     def __str__(self):
         return self.name
@@ -235,7 +245,7 @@ class BrandOptions(models.Model):
     is_visible = models.BooleanField(default=True, verbose_name='Отображать в боте')
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.category}"
 
     class Meta:
         verbose_name = "Вариант бренда"
@@ -323,6 +333,12 @@ class SellApplication(models.Model):
     brand = models.ForeignKey(BrandOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Модель
     model = models.TextField(default=None, blank=True, null=True)
+    # Размер
+    size = models.ForeignKey(to='AccessorySize', on_delete=models.CASCADE, default=None, blank=True, null=True)
+    # Размер
+    color = models.ForeignKey(to='AccessoryColor', on_delete=models.CASCADE, default=None, blank=True, null=True)
+    # Размер
+    material = models.ForeignKey(to='AccessoryMaterial', on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Состояние
     state = models.ForeignKey(StateOptions, on_delete=models.CASCADE, default=None, blank=True, null=True)
     # Наличие дефектов
@@ -339,7 +355,7 @@ class SellApplication(models.Model):
     # Ссылка на обмен
     swap_url = models.TextField(default=None, blank=True, null=True, verbose_name='Ссылка на обмен')
     # Дата создания
-    date_create = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Последнее изменение')
+    date_create = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name='Дата создания')
     date_send = models.DateTimeField(blank=True, null=True, verbose_name='Дата отправки')
     # Уведомления
     notifications = models.BooleanField(default=False, verbose_name='Уведомления')
@@ -349,7 +365,14 @@ class SellApplication(models.Model):
     amocrm_id = models.IntegerField(blank=True, null=True, verbose_name='AmoCRM id')
     # Принял ли оферту
     oferta = models.BooleanField(default=None, blank=True, null=True, verbose_name='Принял оферту')
-
+    # реализация сумма от
+    price_from_sale = models.IntegerField(default=None, blank=True, null=True, verbose_name='Реализация: сумма от')
+    # реализация сумма до
+    price_up_sale = models.IntegerField(default=None, blank=True, null=True, verbose_name='Реализация: сумма до')
+    # выкуп сумма от
+    price_from_purchase = models.IntegerField(default=None, blank=True, null=True, verbose_name='Выкуп: сумма от')
+    # выкуп сумма до
+    price_up_purchase = models.IntegerField(default=None, blank=True, null=True, verbose_name='Выкуп: сумма до')
 
     def cooperation_option_name(self):
         return self.cooperation_option.name
@@ -451,6 +474,32 @@ class Indicator(models.Model):
 class ModelsOption(models.Model):
     brand = models.ForeignKey(to='BrandOptions', on_delete=models.CASCADE, verbose_name='Бренд')
     name = models.TextField(verbose_name='Название')
+    # Имеет предложение цены
+    have_offer_price = models.BooleanField(default=False, verbose_name='Предложение цены')
+    offer_priority = models.BooleanField(default=False, verbose_name='Приоритет выкупа')
+    # Цена сайта (базовая)
+    price_site_min = models.IntegerField(verbose_name='Цена сайта min (базовая)', blank=True, null=True)
+    price_site_max = models.IntegerField(verbose_name='Цена сайта max (базовая)', blank=True, null=True)
+    # Выплата по выкупу
+    price_purchase_min = models.IntegerField(verbose_name='Выплата по выкупу min', blank=True, null=True)
+    price_purchase_max = models.IntegerField(verbose_name='Выплата по выкупу max', blank=True, null=True)
+    # Выплата по реализации
+    price_sale_min = models.IntegerField(verbose_name='Выплата по реализации min', blank=True, null=True)
+    price_sale_max = models.IntegerField(verbose_name='Выплата по реализации max', blank=True, null=True)
+    # Коэффициенты
+    size_S = models.FloatField(verbose_name='Размер S', default=1)
+    size_M = models.FloatField(verbose_name='Размер M', default=1)
+    size_L = models.FloatField(verbose_name='Размер L', default=1)
+    color_L = models.FloatField(verbose_name='Цвет Яркие/Лимитированные', default=1)
+    color_N = models.FloatField(verbose_name='Цвет Нейтральные', default=1)
+    color_C = models.FloatField(verbose_name='Цвет Классические', default=1)
+    state_V = models.FloatField(verbose_name='Состояние Винтаж', default=1)
+    state_G = models.FloatField(verbose_name='Состояние Хорошее', default=1)
+    state_E = models.FloatField(verbose_name='Состояние Отличное', default=1)
+    state_N = models.FloatField(verbose_name='Состояние Новое с биркой', default=1)
+    material_T = models.FloatField(verbose_name='Материал Текстиль/Рафия/PVX', default=1)
+    material_L = models.FloatField(verbose_name='Материал Кожа/Замша', default=1)
+    material_EL = models.FloatField(verbose_name='Материал Экзотическая кожа', default=1)
 
     def __str__(self):
         return f'{self.pk}'
@@ -514,3 +563,36 @@ class CRMStatusID(models.Model):
     class Meta:
         verbose_name = "Статус заявки"
         verbose_name_plural = "Статусы заявок"
+
+
+class AccessorySize(models.Model):
+    name = models.TextField(verbose_name='Название размера')
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = "Размер аксессуара"
+        verbose_name_plural = "Размеры аксессуаров"
+
+
+class AccessoryColor(models.Model):
+    name = models.TextField(verbose_name='Название цвета')
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = "Цвет аксессуара"
+        verbose_name_plural = "Цвета аксессуаров"
+
+
+class AccessoryMaterial(models.Model):
+    name = models.TextField(verbose_name='Название материала')
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = "Материал аксессуара"
+        verbose_name_plural = "Материалы аксессуаров"
