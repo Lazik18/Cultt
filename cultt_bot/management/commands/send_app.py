@@ -7,7 +7,7 @@ from cultt_bot.models import CategoryOptions, BrandOptions, ModelsOption, SellAp
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        apps = [3540, 3537, 3536]
+        apps = [4587]
 
         for app_id in apps:
             application = SellApplication.objects.get(pk=app_id)

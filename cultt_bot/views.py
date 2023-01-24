@@ -175,6 +175,7 @@ def download_file(request):
     filepath = BASE_DIR + '/static/' + filename
 
     df = pd.DataFrame(list(SellApplication.objects.all().values()))
+
     df.to_csv(filepath, index=False)
 
     path = open(filepath, 'r')

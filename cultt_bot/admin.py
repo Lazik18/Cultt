@@ -1,8 +1,10 @@
 import mimetypes
 import pandas as pd
 from django.contrib import admin
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import re_path
+
 from cultt_bot.models import *
 from django_project.settings import BASE_DIR
 
