@@ -154,12 +154,6 @@ def web_hook_amocrm(request):
             return HttpResponse(str(resp), content_type="text/plain", status=200)
 
         application = SellApplication.objects.filter(amocrm_id=id_leads)
-        if application is None:
-            resp = {"status": "success",
-                    "message": "ok"}
-            return HttpResponse(str(resp), content_type="text/plain", status=200)
-        else:
-            application = application.first()
         status = CRMStatusID.objects.get(status_id=status_id)
         application.status = status.status_text
         application.save()
