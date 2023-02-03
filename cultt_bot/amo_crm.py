@@ -102,9 +102,9 @@ class AmoCrmSession:
                                 {
                                     "name": application.cooperation_option.amocrm_tag
                                 },
-                                # {
-                                #     "name": "Чат-бот"
-                                # }
+                                {
+                                    "name": "Чат-бот"
+                                }
                             ]
                         }
                     }],
@@ -195,9 +195,9 @@ class AmoCrmSession:
                                 {
                                     "name": application.cooperation_option.amocrm_tag
                                 },
-                                # {
-                                #     "name": "Чат-бот"
-                                # }
+                                {
+                                    "name": "Чат-бот"
+                                }
                             ]
                         }
                     }],
