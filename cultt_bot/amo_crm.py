@@ -241,12 +241,8 @@ class AmoCrmSession:
             except Exception as ex:
                 TelegramLog.objects.create(text=repr(ex) + '\n' + traceback.format_exc())
 
-        # data[0]['_embedded']['contacts'][0]['_embedded'] = {'tags': [{'name': "Новая регистрация"}]}
-
         if user.amocrm_id is not None:
             data[0]['_embedded']['contacts'][0]['id'] = user.amocrm_id
-
-        # data[0]['_embedded']['contacts'][0]['_embedded'] = {'tags': [{'name': "Новая регистрация"}]}
 
         if user.username is not None:
             data[0]['_embedded']['leads'][0]['custom_fields_values'].append({
@@ -300,7 +296,5 @@ class AmoCrmSession:
         res_tag = requests.request("PATCH", f'https://{self.sub_domain}/api/v4/contacts/{user.amocrm_id}',
                                    headers=headers,
                                    data=tags_contact_data)
-
-        result_status = requests.patch(f'https://{self.sub_domain}/api/v4/leads/{application.amocrm_id}', headers=headers, params=status_data)
 
         return result.text
